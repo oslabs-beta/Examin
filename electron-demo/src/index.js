@@ -1,4 +1,4 @@
-const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
+// const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 
@@ -10,23 +10,23 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1400,
+    height: 800,
     minHeight: 500,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
-      sandbox: false,
+      webviewTag: true,
     },
   });
 
   // and load the index.html of the app.
-  // mainWindow.loadFile(path.join(__dirname, 'index.html'));
-  mainWindow.loadURL('http://localhost:3000/')
+  mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  // mainWindow.loadURL('http://localhost:3000/')
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
   // console.log('hello world!');
   // mainWindow.webContents.executeJavaScript('window.__REACT_DEVTOOLS_GLOBAL_HOOK__')
   //   .then(result => console.log(result));
@@ -35,11 +35,11 @@ const createWindow = () => {
 
 };
 
-app.whenReady().then(() => {
-  installExtension(REACT_DEVELOPER_TOOLS)
-    .then((name) => console.log(`Added Extension: ${name}`))
-    .catch((err) => console.log('An error occurred: ', err));
-});
+// app.whenReady().then(() => {
+//   installExtension(REACT_DEVELOPER_TOOLS)
+//     .then((name) => console.log(`Added Extension: ${name}`))
+//     .catch((err) => console.log('An error occurred: ', err));
+// });
 
 
 // This method will be called when Electron has finished

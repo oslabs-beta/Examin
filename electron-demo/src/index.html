@@ -9,17 +9,35 @@
     <script defer src="render.js"></script>
   </head>
   <body>
-    <h1>⚡ Electron Screen Recorder</h1>
+    <h1>⚡ Webview Window</h1>
     
-    <video></video>
+    <div id='webviewWindow'></div>
+    <!-- <webview 
+      id="foo" 
+      src="http://localhost:3000/" 
+      style="display:inline-flex; width:640px; height:280px; border: 1px solid"
+      preload="test.js"
+      nodeintegration
+    ></webview> -->
 
-    <button id="startBtn" class="button is-primary">Start</button>
-    <button id="stopBtn" class="button is-warning">Stop</button>
+    <ol>
+      <li>Electron loads index.js</li>
+      <li>index.js constructs a new BrowserWindow class</li>
+      <li>index.js loads the index.html file to the BrowserWindow</li>
+      <li>index.html loads and then render.js runs</li>
+      <li>render.js adds the webview element inside of the id='webviewWindow' div tag</li>
+      <li>the webview element preloads the 'preload.js' file before the webview element is loaded on the DOM</li>
+      <li>the preload.js file logs "Logging from preload!"</li>
+      <li>the webview element renders on the DOM</li>
+    </ol>
+
+    <!-- <button id="startBtn" class="button is-primary">Start</button>
+    <button id="stopBtn" class="button is-warning">Stop</button> -->
 
     <hr />
 
-    <button id="videoSelectBtn" class="button is-text">
+    <!-- <button id="videoSelectBtn" class="button is-text">
       Choose a video source
-    </button>
+    </button> -->
   </body>
 </html>
