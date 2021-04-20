@@ -111,6 +111,8 @@
 
 // const webview = 
 
+// const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
+
 document.getElementById('webviewWindow').innerHTML = `<webview 
   id="foo" 
   src="http://localhost:3000/" 
@@ -122,4 +124,12 @@ document.getElementById('webviewWindow').innerHTML = `<webview
 const webview = document.querySelector("webview");
 webview.addEventListener("dom-ready", () => {
   webview.openDevTools();
-})
+
+  console.log('we are in the webview!');
+  console.log(window);
+  // alert(window)
+  // console.log(webview.webC)
+  // console.log(webview)
+});
+// console.log(window);
+
