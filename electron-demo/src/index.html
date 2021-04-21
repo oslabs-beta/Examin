@@ -2,23 +2,30 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Electron Screen Recorder</title>
+    <title>examin</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
     <link rel="stylesheet" href="index.css">
 
     <script defer src="render.js"></script>
   </head>
   <body>
-    <h1>⚡ Webview Window</h1>
+    <h1>⚡ Webview Window - localhost:3000</h1>
     
-    <div id='webviewWindow'></div>
-    <!-- <webview 
+    <!-- <div id='webviewWindow'></div> -->
+    <webview 
       id="foo" 
       src="http://localhost:3000/" 
       style="display:inline-flex; width:640px; height:280px; border: 1px solid"
-      preload="test.js"
+      preload="preload.js"
       nodeintegration
-    ></webview> -->
+    ></webview>
+    <!-- <iframe 
+      id="foo" 
+      src="http://localhost:3000/" 
+      style="display:inline-flex; width:640px; height:280px; border: 1px solid"
+      preload="preload.js"
+      nodeintegration
+    ></iframe> -->
 
     <ol>
       <li>Electron loads index.js</li>

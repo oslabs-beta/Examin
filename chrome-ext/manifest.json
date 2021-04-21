@@ -1,0 +1,28 @@
+{
+  "name": "examin-demo",
+  "description": "basic demo chrome extension",
+  "version": "0.1",
+  "manifest_version": 2,
+  "content_scripts": [
+    {
+      "matches": [
+        "http://localhost/*",
+        "https://localhost/*"
+      ],
+      "js": ["content.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    "backend/injected.js"
+  ],
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "activeTab",
+    "http://localhost/*",
+    "https://localhost/*"
+  ]
+}
