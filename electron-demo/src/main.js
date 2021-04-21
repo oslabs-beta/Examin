@@ -1,5 +1,5 @@
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
-const { app, BrowserWindow, BrowserView } = require('electron');
+const { app, BrowserWindow, BrowserView, ipcMain } = require('electron');
 const path = require('path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -13,7 +13,9 @@ const createWindow = () => {
     width: 1600,
     height: 800,
     minHeight: 500,
+    darkTheme: false,
     webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
@@ -26,32 +28,58 @@ const createWindow = () => {
   // view.webContents.loadURL('http://localhost:3000/');
   // view.webContents.openDevTools();
 
-  const childWindow = new BrowserWindow({
-    width: 800,
-    height: 400,
-    parent: mainWindow,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      enableRemoteModule: true,
-    },
-  })
+  // const childWindow = new BrowserWindow({
+  //   width: 800,
+  //   height: 400,
+  //   parent: mainWindow,
+  //   webPreferences: {
+  //     preload: path.join(__dirname, "preload.js"),
+  //     nodeIntegration: true,
+  //     contextIsolation: false,
+  //     enableRemoteModule: true,
+  //   },
+  // })
 
 
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
-  childWindow.loadURL('http://localhost:3000/')
+  // mainWindow.loadURL('http://localhost:3000/');
+  // childWindow.loadURL('http://localhost:3000/');
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
-  childWindow.webContents.openDevTools();
+  // childWindow.webContents.openDevTools();
   // console.log('hello world!');
-  // mainWindow.webContents.executeJavaScript('window.__REACT_DEVTOOLS_GLOBAL_HOOK__')
+  // mainWindow.webContents.executeJavaScript('window')
+  //   .then(result => console.log(result));
+
+  // childWindow.webContents.executeJavaScript('window')
   //   .then(result => console.log(result));
   // const contents = mainWindow.webContents
   // console.log(mainWindow.webContents)
   // console.log('hello')
+  // console.log('🦄');
+
+  mainWindow.webContents.on('did-finish-load', function() {
+
+    // mainWindow.webContents.executeJavaScript('window.__REACT_DEVTOOLS_GLOBAL_HOOK__')
+    //   .then(result => 
+    //     mainWindow.webContents.send('ping', result)
+    //   ).catch(err => console.log(err))
+
+    // mainWindow.webContents.send('marco', 'Sending marco message from main.js: whooooooooahhhh!!');
+
+    // mainWindow.webContents.send('ping', 'Sending ping message from main.js: whooooooooahhhh!!');
+
+    
+
+  });
+
+
+
+
+
 };
 
 app.whenReady().then(() => {
@@ -65,6 +93,7 @@ app.whenReady().then(() => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
+
 
 
 // Quit when all windows are closed, except on macOS. There, it's common

@@ -113,23 +113,67 @@
 
 // const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
 
-document.getElementById('webviewWindow').innerHTML = `<webview 
-  id="foo" 
-  src="http://localhost:3000/" 
-  style="display:inline-flex; width:640px; height:280px; border: 1px solid"
-  preload="file://${__dirname}/preload.js"
-  nodeintegration
-  ></webview>`;
+// document.getElementById('webviewWindow').innerHTML = `<webview 
+//   id="foo" 
+//   src="http://localhost:3000/" 
+//   style="display:inline-flex; width:640px; height:280px; border: 1px solid"
+//   nodeintegration
+//   preload="file://${__dirname}/preload.js"
+//   ></webview>`;
+  
+
+
+// const path = require('path');
+
 
 const webview = document.querySelector("webview");
 webview.addEventListener("dom-ready", () => {
   webview.openDevTools();
 
-  console.log('we are in the webview!');
-  console.log(window);
+  // console.log('we are in the webview!');
+  // console.log('🦄')
+
+  // console.log(window);
   // alert(window)
   // console.log(webview.webC)
   // console.log(webview)
 });
 // console.log(window);
+
+webview.addEventListener("did-stop-loading", async ()=> {
+  console.log('we are logging after webview content loads!');
+  // console.log('🦄🦄');
+
+  // console.log(`file://${__dirname}/backend/injected.js`)
+
+  // console.log(window);
+  
+  // webview.executeJavaScript('console.log(window.__REACT_DEVTOOLS_GLOBAL_HOOK__)')
+  // .then(result => console.log(result))
+  
+  // const REACTDEVTOOLS = await webview.executeJavaScript('window.__REACT_DEVTOOLS_GLOBAL_HOOK__');
+  // const injectJsFile = `file://${__dirname}/backend/injected.js`
+  // webview.executeJavaScript(`
+  //   console.log('injecting javascript----');
+
+  //   const injectScript = (file, tag) => {
+  //     const htmlBody = document.getElementsByTagName(tag)[0];
+  //     const script = document.createElement('script');
+  //     script.setAttribute('type', 'text/javascript');
+  //     script.setAttribute('src', file);
+  //     htmlBody.appendChild(script);
+  //   };
+  //   injectScript(${injectJsFile}, 'body');
+  // `);
+
+
+});
+
+// const { ipcRenderer } = require('electron')
+
+// ipcRenderer.on('ping', function(event, message){
+//   console.log(message);
+//   // console.log(window);
+// });
+
 

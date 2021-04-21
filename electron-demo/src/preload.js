@@ -1,12 +1,19 @@
 console.log('Logging from preload!');
+console.log('🦄🦄🦄');
 
-// const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
+// // console.log(window);
+// // setTimeout(console.log(window), 5000);
 
-// app.whenReady().then(() => {
-//   installExtension(REACT_DEVELOPER_TOOLS)
-//     .then((name) => console.log(`Added Extension: ${name}`))
-//     .catch((err) => console.log('An error occurred: ', err));
-// });
+// console.log(window.__REACT_DEVTOOLS_GLOBAL_HOOK__);
 
-// console.log(window);
-// setTimeout(console.log(window), 5000);
+
+// console.log('Logging the window object: ', window);
+
+window.onload = function injectJs() {
+  const htmlBody = document.getElementsByTagName('body')[0];
+  const script = document.createElement('script');
+  script.setAttribute('type', 'text/javascript');
+  script.setAttribute('src', 'backend/injected.js');
+  htmlBody.appendChild(script);
+}
+
