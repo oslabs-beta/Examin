@@ -7,7 +7,7 @@ console.log('Currently in injected.js');
 // console.log(window.__REACT_DEVTOOLS_GLOBAL_HOOK__);
 
 // WHERE THE LOGIC TO MANIPULATE __REACT_DEVTOOLS_GLOBAL_HOOK__
-
+// commit change
 
 const dev = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
 
