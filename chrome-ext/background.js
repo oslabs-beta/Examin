@@ -1,24 +1,25 @@
+// Loads when chrome extension is loaded
+
 // console.log(window);
 
-
 // const injectedCode = `
-  
+
 // `
 
 // Injecting a script
 // chrome.tabs.executeScript(null, {code: injectedCode, runAt: 'document_end',})
 
-// request = { action: 'injectScript' }
 // Establishing incoming connection with devtools.
+// request = { action: 'injectScript' } (refer to content.js)
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  const { action } = request;
+	const { action } = request;
 
-  switch (action) {
-    case 'injectScript': {
-      console.log('injecting script to the current tab');
+	switch (action) {
+		case 'injectScript': {
+			console.log('injecting script to the current tab');
 
-      chrome.tabs.executeScript(null, {
-        code: `
+			chrome.tabs.executeScript(null, {
+				code: `
           console.log('injecting javascript----');
 
           const injectScript = (file, tag) => {
@@ -30,10 +31,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           };
           injectScript(chrome.runtime.getURL('backend/injected.js'), 'body');
         `,
-      });
-      break;
-    }
-    default: 
-      break;
-  }
-})
+			});
+			break;
+		}
+		default:
+			break;
+	}
+});
