@@ -1,24 +1,19 @@
-// <<<<<<< main
 // console.log(window);
 console.log('logging in background.js')
-=======
 // Loads when chrome extension is loaded
-// >>>>>>> main
 
-console.log(window);
+// console.log(window);
 
-// <<<<<<< main
 // Injecting a script
 // chrome.tabs.executeScript(null, {code: injectedCode, runAt: 'document_end',})
 // request = { action: 'injectScript' }
-=======
+
 // const injectedCode = `
 
 // `
 
 // Injecting a script
 // chrome.tabs.executeScript(null, {code: injectedCode, runAt: 'document_end',})
-// >>>>>>> main
 
 // Establishing incoming connection with devtools.
 // request = { action: 'injectScript' } (refer to content.js)

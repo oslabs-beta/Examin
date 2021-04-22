@@ -11,21 +11,27 @@ console.log('Currently in injected.js');
 
 const dev = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
 
-console.log(dev);
+// console.log(dev);
 
 dev.onCommitFiberRoot = (function (original) {
   return function (...args) {
 
     // console.log('logging from onCommitFiberRoot!!');
     
-    // const fiberNode = args[1].current.child;
+    const fiberNode = args[1].current.child;
     // console.log('This is the fiberNode(args[1].current.child): ', fiberNode);
     
-    // console.log('This is the fiberNode.memoizedState: ', fiberNode.memoizedState);
+    console.log('This is the fiberNode.memoizedState: ', fiberNode.memoizedState);
     // console.log('This is the fiberNode.child.memoizedState: ', fiberNode.child.memoizedState);
     
-    console.log('Logging dev.onCommitFiberRoot: ', dev.onCommitFiberRoot);
+    // console.log('Logging dev.onCommitFiberRoot: ', dev.onCommitFiberRoot);
     // console.log('logging args: ', args)
+
+
+    // CONDITIONAL: IF STATE CHANGED
+      // THEN add to Linked List
+
+
   };
 })(dev.onCommitFiberRoot);
 
