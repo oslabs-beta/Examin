@@ -15,16 +15,25 @@ console.log('logging in background.js')
 // Injecting a script
 // chrome.tabs.executeScript(null, {code: injectedCode, runAt: 'document_end',})
 
+
 // Establishing incoming connection with devtools.
+// chrome.runtime.onConnect.addListener((port) => {
+//   port.onMessage.addListener((msg) => {
+//     const { tabId } = msg;
+//   })
+// })
+
+// background.js listening for a message from contentScript.js
 // request = { action: 'injectScript' } (refer to content.js)
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	const { action } = request;
-
+  const tabId = sender.tab.id;
+  
 	switch (action) {
 		case 'injectScript': {
 			console.log('injecting script to the current tab');
 
-			chrome.tabs.executeScript(null, {
+			chrome.tabs.executeScript(tabId, {
 				code: `
           console.log('injecting javascript----');
 
@@ -33,6 +42,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             const script = document.createElement('script');
             script.setAttribute('type', 'text/javascript');
             script.setAttribute('src', file);
+            document.title=${tabId} + '-' + document.title
             htmlBody.appendChild(script);
           };
           injectScript(chrome.runtime.getURL('backend/injected.js'), 'body');

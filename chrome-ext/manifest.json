@@ -12,7 +12,9 @@
 	"background": {
 		"service_worker": "background.js"
 	},
-	"web_accessible_resources": ["backend/injected.js"],
+	"web_accessible_resources": [
+    "backend/injected.js"
+  ],
 	"permissions": [
 		"contextMenus",
 		"tabs",
