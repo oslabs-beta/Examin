@@ -1,5 +1,5 @@
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
-const { app, BrowserWindow, BrowserView, ipcMain } = require('electron');
+const { app, BrowserWindow, BrowserView, ipcMain, MessageChannelMain } = require('electron');
 const path = require('path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -61,6 +61,20 @@ const createWindow = () => {
   // console.log('hello')
   // console.log('🦄');
 
+
+  const { port1, port2 } = new MessageChannelMain()
+
+  // It's OK to send a message on the channel before the other end has
+  // registered a listener. Messages will be queued until a listener is
+  // registered.
+  port2.postMessage({ test: 21 })
+
+  // We can also receive messages from the main world of the renderer.
+  port2.on('message', (event) => {
+    console.log('from renderer main world:', event.data)
+  })
+  port2.start()
+
   mainWindow.webContents.on('did-finish-load', function() {
 
     // mainWindow.webContents.executeJavaScript('window.__REACT_DEVTOOLS_GLOBAL_HOOK__')
@@ -70,8 +84,9 @@ const createWindow = () => {
 
     // mainWindow.webContents.send('marco', 'Sending marco message from main.js: whooooooooahhhh!!');
 
-    // mainWindow.webContents.send('ping', 'Sending ping message from main.js: whooooooooahhhh!!');
+    mainWindow.webContents.send('ping', 'Sending ping message from main.js: whooooooooahhhh!!');
 
+    mainWindow.webContents.postMessage('main-world-port', null, [port1]);
     
 
   });
@@ -93,7 +108,6 @@ app.whenReady().then(() => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
-
 
 
 // Quit when all windows are closed, except on macOS. There, it's common

@@ -1,14 +1,11 @@
 // console.log(window);
+console.log('logging in background.js')
 
-
-// const injectedCode = `
-  
-// `
 
 // Injecting a script
 // chrome.tabs.executeScript(null, {code: injectedCode, runAt: 'document_end',})
-
 // request = { action: 'injectScript' }
+
 // Establishing incoming connection with devtools.
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const { action } = request;
