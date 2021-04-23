@@ -5,11 +5,11 @@ const ChromeExtensionReloader = require("webpack-chrome-extension-reloader");
 const config = {
   entry: {
     // Entry for front-end files
-    // app: './src/app/index.tsx',
+    // app: './src/app/devtools.html',
     // Entry for background.js service worker
-    background: './src/extension/background.js',
+    background: './src/extension/background.ts',
     // Entry for chrome extension content script
-    content: './src/extension/content.js',
+    content: './src/extension/content.ts',
     // Entry for injected backend file bundle
     backend: './src/backend/injected.js',
   },
@@ -36,6 +36,10 @@ const config = {
             presets: ["@babel/preset-env", "@babel/preset-react"],
           },
         },
+      },
+      {
+        test: /\.html$/i,
+        loader: 'html-loader',
       },
       {
         test: /\.scss$/,
