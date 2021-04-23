@@ -1,0 +1,1 @@
+(()=>{console.log("Currently in injected.js");var o=window.__REACT_DEVTOOLS_GLOBAL_HOOK__;console.log(o),o.onCommitFiberRoot=(o.onCommitFiberRoot,function(){for(var o=arguments.length,r=new Array(o),e=0;e<o;e++)r[e]=arguments[e];var n=r[1].current.child;console.log("This is the fiberNode(args[1].current.child): ",n)})})();
