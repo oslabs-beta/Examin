@@ -1,0 +1,25 @@
+{
+	"name": "examin-demo",
+	"description": "basic demo chrome extension",
+	"version": "0.1",
+	"manifest_version": 2,
+  "background": {
+    "scripts": ["bundles/background.bundle.js"],
+    "persistent": false
+  },
+	"content_scripts": [
+		{
+			"matches": ["http://localhost/*", "https://localhost/*"],
+			"js": ["bundles/content.bundle.js"]
+		}
+	],
+	"web_accessible_resources": ["bundles/backend.bundle.js"],
+	"permissions": [
+		"contextMenus",
+		"tabs",
+		"activeTab",
+		"http://localhost/*",
+		"https://localhost/*"
+	],
+	"devtools_page": "./devtools.html"
+}
