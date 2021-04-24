@@ -3,9 +3,10 @@ const ChromeExtensionReloader = require("webpack-chrome-extension-reloader");
 
 // REACTIME / ATOMOS
 const config = {
+  devtool: 'eval-cheap-module-source-map',
   entry: {
     // Entry for front-end files
-    // app: './src/app/devtools.html',
+    app: './src/app/index.tsx',
     // Entry for background.js service worker
     background: './src/extension/background.ts',
     // Entry for chrome extension content script
@@ -67,6 +68,8 @@ module.exports = (env, argv) => {
         },
       })
     )
+  } else {
+    config.mode = 'production';
   }
   return config;
 };
