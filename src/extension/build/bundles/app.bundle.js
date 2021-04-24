@@ -131,13 +131,13 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/extension/content.ts":
-/*!**********************************!*\
-  !*** ./src/extension/content.ts ***!
-  \**********************************/
+/***/ "./src/app/index.tsx":
+/*!***************************!*\
+  !*** ./src/app/index.tsx ***!
+  \***************************/
 /***/ (() => {
 
-eval("// Runs when user navigates to localhost:3000\r\nconsole.log('Chrome Extension READY!!');\r\n// Use chrome extension method chrome.runtime.sendMessage()\r\n// to send message to chrome runtime (refer to background.js)\r\nchrome.runtime.sendMessage({ action: 'injectScript' });\r\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9zcmMvZXh0ZW5zaW9uL2NvbnRlbnQudHMuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly9leGFtaW4vLi9zcmMvZXh0ZW5zaW9uL2NvbnRlbnQudHM/Mzc2MyJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBSdW5zIHdoZW4gdXNlciBuYXZpZ2F0ZXMgdG8gbG9jYWxob3N0OjMwMDBcclxuY29uc29sZS5sb2coJ0Nocm9tZSBFeHRlbnNpb24gUkVBRFkhIScpO1xyXG4vLyBVc2UgY2hyb21lIGV4dGVuc2lvbiBtZXRob2QgY2hyb21lLnJ1bnRpbWUuc2VuZE1lc3NhZ2UoKVxyXG4vLyB0byBzZW5kIG1lc3NhZ2UgdG8gY2hyb21lIHJ1bnRpbWUgKHJlZmVyIHRvIGJhY2tncm91bmQuanMpXHJcbmNocm9tZS5ydW50aW1lLnNlbmRNZXNzYWdlKHsgYWN0aW9uOiAnaW5qZWN0U2NyaXB0JyB9KTtcclxuIl0sIm1hcHBpbmdzIjoiQUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOyIsInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///./src/extension/content.ts\n");
+
 
 /***/ })
 
@@ -148,7 +148,7 @@ eval("// Runs when user navigates to localhost:3000\r\nconsole.log('Chrome Exten
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval-source-map devtool is used.
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__["./src/extension/content.ts"]();
+/******/ 	__webpack_modules__["./src/app/index.tsx"]();
 /******/ 	
 /******/ })()
 ;
