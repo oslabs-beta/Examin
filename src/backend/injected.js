@@ -1,14 +1,9 @@
+// This file contains the main logic that accesses the user's React application's state
+// Stores state on load
+// Uses React Dev Tools Global Hook to track state changes based on user interactions
 console.log('Currently in injected.js');
 
 import { detailedDiff } from 'deep-object-diff';
-// import updatedDiff from './detailedDiff.js';
-
-// console.log('logging window --------------');
-// console.log(window)
-// console.log('REACT DEVTOOLS GLOBAL HOOK');
-// console.log(window.__REACT_DEVTOOLS_GLOBAL_HOOK__);
-
-// WHERE THE LOGIC TO MANIPULATE __REACT_DEVTOOLS_GLOBAL_HOOK__
 
 // Trying to convert to Typescript:
 // declare global {
@@ -16,89 +11,77 @@ import { detailedDiff } from 'deep-object-diff';
 //     __REACT_DEVTOOLS_GLOBAL_HOOK__?: any;
 //   }
 // }
-
 const dev = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
-console.log('the dev ', dev);
-
-// console.log(dev);
+// console.log('dev ', dev);
 
 let prevMemoizedState;
 let currMemoizedState;
 let memoizedStateDiff;
-// let firstRun = true;
 
-// save fiberRoot on load
-let fiberRoot = dev.getFiberRoots(1).values().next().value.current.child;
-// console.log('fiberRoot on load', fiberRoot);
-// saving state on load
-currMemoizedState = fiberRoot.memoizedState.memoizedState;
-// console.log('on load memoized state', currMemoizedState);
+// Save fiberRoot on load
+// let fiberNodeTest = dev.getFiberRoots(1);
+// console.log('fiber node test', fiberNodeTest)
+let fiberNode = dev.getFiberRoots(1).values().next().value.current.child;
+console.log('fiberNode on load:', fiberNode)
+
+// findMemState returns the user's application's state
+const findMemState = (node) => {
+  // Finds the fiberNode on which memoizedState resides
+	while (node.memoizedState === null) {
+		node = node.child;
+	}
+	//return the memoizedState of the found fiberNode
+	return node.memoizedState.memoizedState;
+}
+
+//assign currMemoizedState the state object which findMemState finds on page load
+currMemoizedState = findMemState(fiberNode);
+//invoke stateChanges on the currMemoizedState to generate the initial state tests
+//stateChanges(currMemoizedState)
+
+// console.log('fiberNode', fiberNode)
+console.log('currMemoizedState on load:', currMemoizedState)
+
+// ****** Invoke function to generate tests ******
 // stateChanges(currMemoizedState);
 
-// console.log(
-// 	'the fiber root',
-// 	fiberRoot.current.child.child.memoizedState.memoizedState
-// );
-// console.log(
-// 	'DEMO APP Fiber Root',
-// 	fiberRoot.current.child.memoizedState.memoizedState
-// );
-
-// dev.onCommitFiberRoot = (function (original) {
-dev.onCommitFiberRoot = (function () {
+// onCommitFiberRoot is USED TO TRACK STATE CHANGES
+// patching / rewriting the onCommitFiberRoot functionality
+// onCommitFiberRoot runs functionality every time there is a change to the page
+dev.onCommitFiberRoot = (function (original) {
 	return function (...args) {
-		// console.log('the args', args);
-		// FiberRootNode.current.child.child.memoizedState
+		console.log('args:', args);
 
-		// Reassign fiberRoot when onCommitFiberRoot is invoked
-		fiberRoot = args[1].current.child;
-		// console.log('Fiber root on commitfiberroot ', fiberRoot);
-		// console.log('This is the fiberNode(args[1].current.child): ', fiberNode);
-		// console.log('This is the fiberNode.child.memoizedState: ', fiberNode.child.memoizedState);
-		// console.log('Logging dev.onCommitFiberRoot: ', dev.onCommitFiberRoot);
-		// console.log('logging args: ', args);
+		// Reassign fiberNode when onCommitFiberRoot is invoked
+		fiberNode = args[1].current.child;
 
-		// save memState
-		// To Do: account for apps that store state in fiberNode.memoizedState.memoizedState
-		let newMemState = fiberRoot.memoizedState.memoizedState;
-		// console.log('onCommitFiberRoot memState', newMemState);
-		let stateChange;
-		stateChange =
+		// save newMemState
+		const newMemState = findMemState(fiberNode);
+		// console.log('newMemState', newMemState);
+
+		// initialize a stateChange variable as a boolean which will tell if state changed or not
+		// onCommitFiberRoot will run every time the user interacts with the page, regardless of if 
+		// that interaction actually changes state
+		const stateChange =
 			JSON.stringify(newMemState) !== JSON.stringify(currMemoizedState);
+		// Run the test generation function only if the state has actually changed
 		if (stateChange) {
-			// console.log('did state change?', stateChange);
+			// console.log('state changed:', stateChange);
 			prevMemoizedState = currMemoizedState;
 			currMemoizedState = newMemState;
-			console.log('prevMemoizedState', prevMemoizedState);
-			console.log('currMemoizedState', currMemoizedState);
+      // memoizedState will return an object with 3 properties: {added: {}, deleted: {}, updated: {}}
 			memoizedStateDiff = detailedDiff(prevMemoizedState, currMemoizedState);
-			console.log('memoizedStateDiff', memoizedStateDiff);
+			console.log('prevMemoizedState:', prevMemoizedState);
+			console.log('currMemoizedState:', currMemoizedState);
+			console.log('memoizedStateDiff:', memoizedStateDiff);
+
+      // ****** Invoke function to generate tests ******
+      // stateChanges(currMemoizedState, prevMemoizedState, memoizedStateDiff);
 		}
-
-		// Conditional: check if memoizedState is on fiberNode
-		// If so, assign memState to fiberNode.memoizedState
-		// Else, assign memState to fiberNode.child.memoizedState
-
-		// DEPRECATED
-		// // On first run
-		// if (firstRun) {
-		// 	currMemoizedState = memState;
-		// 	console.log('first run memstate', memState);
-		// 	firstRun = false;
-		// 	// stateChanges(currMemoizedState);
-		// 	// Not first run
-		// } else {
-		// 	// Conditional: check if state changed
-		// 	// If so, change currMemoizedState
-		// 	prevMemoizedState = currMemoizedState;
-		// 	// currMemoizedState = memState;
-		// 	// let MemoizedStateDiff = diffingAlgo(currMemoizedState, prevMemoizedState);
-		// 	// stateChanges(prevMemoizedState, currMemoizedState, MemoizedStateDiff);
-		// }
 	};
 })(dev.onCommitFiberRoot);
-// setTimeout(dev.onCommitFiberRoot(), 10000)
 
+// NOTES ABOUT DIFFING ALGORITHM / currently using deep-object-diff library
 // function diffingAlgo()
 // INPUT needed
 // @param prevMemoizedState :
