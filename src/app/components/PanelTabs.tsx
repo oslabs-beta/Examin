@@ -5,7 +5,9 @@ import {
   Box, 
   Drawer, 
   Divider, 
-  IconButton, 
+  IconButton,
+  Fab, 
+  Grid,
   List,
   ListItem,
   ListItemText, 
@@ -16,8 +18,66 @@ import {
 import { ChevronLeft, ChevronRight, Inbox, Mail, Menu } from '@material-ui/icons';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
+import FastRewindIcon from '@material-ui/icons/FastRewind';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import FastForwardIcon from '@material-ui/icons/FastForward';
+import GetAppIcon from '@material-ui/icons/GetApp';
+
+import CodeMirror from '@uiw/react-codemirror';
+import 'codemirror/keymap/sublime';
+import 'codemirror/theme/dracula.css';
 
 const drawerWidth = 240;
+const code = `
+  // Initial describe statement for default initialized state
+  describe('default state', () => {
+    it('should return a default state when given an undefined input', () => {
+      // expect(currMemoizedState[0]).toEqual({});
+      // expect(currMemoizedState[1]).toEqual({});
+      // expect(currMemoizedState).toEqual([{},{}]);
+    });
+  });
+  // Initial describe statement for default initialized state
+  describe('default state', () => {
+    it('should return a default state when given an undefined input', () => {
+      // expect(currMemoizedState[0]).toEqual({});
+      // expect(currMemoizedState[1]).toEqual({});
+      // expect(currMemoizedState).toEqual([{},{}]);
+    });
+  });
+  // Initial describe statement for default initialized state
+  describe('default state', () => {
+    it('should return a default state when given an undefined input', () => {
+      // expect(currMemoizedState[0]).toEqual({});
+      // expect(currMemoizedState[1]).toEqual({});
+      // expect(currMemoizedState).toEqual([{},{}]);
+    });
+  });
+  // Initial describe statement for default initialized state
+  describe('default state', () => {
+    it('should return a default state when given an undefined input', () => {
+      // expect(currMemoizedState[0]).toEqual({});
+      // expect(currMemoizedState[1]).toEqual({});
+      // expect(currMemoizedState).toEqual([{},{}]);
+    });
+  });
+  // Initial describe statement for default initialized state
+  describe('default state', () => {
+    it('should return a default state when given an undefined input', () => {
+      // expect(currMemoizedState[0]).toEqual({});
+      // expect(currMemoizedState[1]).toEqual({});
+      // expect(currMemoizedState).toEqual([{},{}]);
+    });
+  });
+  // Initial describe statement for default initialized state
+  describe('default state', () => {
+    it('should return a default state when given an undefined input', () => {
+      // expect(currMemoizedState[0]).toEqual({});
+      // expect(currMemoizedState[1]).toEqual({});
+      // expect(currMemoizedState).toEqual([{},{}]);
+    });
+  });
+`;
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -58,23 +118,25 @@ const useStyles = makeStyles((theme: Theme) => ({
     zIndex: theme.zIndex.drawer + 1,
   },
   appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
+    // width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginRight: drawerWidth,
+    // marginRight: drawerWidth,
     zIndex: theme.zIndex.drawer + 1,
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginTop: theme.spacing(3),
-    marginRight: theme.spacing(3),
+    backgroundColor: theme.palette.background.paper,
+    paddingTop: theme.spacing(5),
+    paddingLeft: theme.spacing(0),
+    paddingRight: theme.spacing(0),
+    paddingBottom: theme.spacing(0),
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -88,6 +150,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexShrink: 0,
   },
   drawerPaper: {
+    marginTop: 50,
     width: drawerWidth,
   },
   drawerHeader: {
@@ -98,9 +161,52 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-start',
   },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
+  },
   hide: {
     display: 'none',
   },
+  logo: {
+    width: 70,
+    height: 27,
+  },
+  exportBtn: {
+    margin: 0,
+    top: 'auto',
+    right: 20,
+    bottom: 20,
+    left: 'auto',
+    position: 'fixed',
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  recordBtn: {
+    position: 'fixed',
+    margin: 0,
+    top: 'auto',
+    bottom: 15,
+    left: 70,
+    right: 'auto',
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  prevBtn: {
+    position: 'fixed',
+    margin: 0,
+    top: 'auto',
+    bottom: 20,
+    left: 20,
+    right: 'auto',
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  nextBtn: {
+    position: 'fixed',
+    margin: 0,
+    top: 'auto',
+    bottom: 20,
+    left: 130,
+    right: 'auto',
+    zIndex: theme.zIndex.drawer + 1,
+  }
 }));
 
 
@@ -131,20 +237,40 @@ const PanelTabs = () => {
           [classes.appBarShift]: open,
         })}
       >
-        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-          <Tab label="Testing" />
-          <Tab label="Branched Testing" />
-          <Tab label="Components" />
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={handleDrawerOpen}
-            className={clsx(open && classes.hide)}
-          >
-            <Menu />
-          </IconButton>
-        </Tabs>
+        <Grid 
+          container 
+          justify="space-between"
+          alignItems="center"
+        >
+          <Grid item>
+            <Box style={{marginLeft: theme.spacing(2)}}>
+              <img 
+                className={classes.logo}
+                src='../assets/examin-small.png'
+                alt="Examin Logo"
+              />
+            </Box>
+          </Grid>
+          <Grid item>
+            <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+              <Tab label="Testing" />
+              <Tab label="Branched Testing" />
+              <Tab label="Components" />
+            </Tabs>
+          </Grid>
+          <Grid item>
+            <IconButton 
+              color="inherit"
+              aria-label="open drawer"
+              edge="end"
+              onClick={open ? handleDrawerClose : handleDrawerOpen}
+              className={clsx(open)}
+              style={{marginRight: theme.spacing(2)}}
+            >
+              { open ? <ChevronRight /> : <ChevronLeft />}
+            </IconButton>
+          </Grid>
+        </Grid>
       </AppBar>
           <TabPanel 
             value={value} 
@@ -153,8 +279,20 @@ const PanelTabs = () => {
               [classes.contentShift]: open,
             })}
           >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien faucibus et molestie ac.
-          </TabPanel>
+            <div>
+              <CodeMirror
+                value={code}
+                options={{
+                  theme: 'dracula',
+                  mode: 'javascript',
+                  lineWrapping: true,
+                  // height: auto,
+                  viewportMargin: Infinity,
+                  scrollbarStyle: 'null',
+                }}
+              />
+            </div>
+          </TabPanel> 
           <TabPanel 
             value={value} 
             index={1}
@@ -183,12 +321,6 @@ const PanelTabs = () => {
           paper: classes.drawerPaper,
         }}
       >
-        <div className={classes.drawerHeader}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronLeft /> : <ChevronRight />}
-          </IconButton>
-        </div>
-        <Divider />
         <List>
           {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
             <ListItem button key={text}>
@@ -207,6 +339,20 @@ const PanelTabs = () => {
           ))}
         </List>
       </Drawer>
+
+      <Fab size="small" color="primary" aria-label="prev" className={classes.prevBtn}>
+        <FastRewindIcon />
+      </Fab>
+      <Fab size="medium" color="secondary" aria-label="play" className={classes.recordBtn}>
+        <FiberManualRecordIcon />
+      </Fab>
+      <Fab size="small" color="primary" aria-label="next" className={classes.nextBtn}>
+        <FastForwardIcon />
+      </Fab>
+      <Fab size="small" variant="extended" className={classes.exportBtn}>
+        <GetAppIcon className={classes.extendedIcon} />
+        Export
+      </Fab>
 
     </div>
   )
