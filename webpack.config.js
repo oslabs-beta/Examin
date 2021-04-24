@@ -63,7 +63,7 @@ module.exports = (env, argv) => {
     config.plugins.push(
       new ChromeExtensionReloader({
         entries: {
-          contentScript: ["app", "content"],
+          contentScript: ["content"],
           background: ["background"],
         },
       })

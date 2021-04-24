@@ -121,9 +121,15 @@
 /* End of Webpack Chrome Hot Extension Middleware  */
 
 /* ----------------------------------------------- *//*
+<<<<<<< HEAD
  * ATTENTION: An "eval-source-map" devtool has been used.
  * This devtool is neither made for production nor for readable output files.
  * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+=======
+ * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file in the browser devtools.
+>>>>>>> main
  * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
  * or disable the default devtool with "devtool: false".
  * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
@@ -137,7 +143,11 @@
   \**********************************/
 /***/ (() => {
 
+<<<<<<< HEAD
 eval("// Runs when user navigates to localhost:3000\r\nconsole.log('Chrome Extension READY!!');\r\n// Use chrome extension method chrome.runtime.sendMessage()\r\n// to send message to chrome runtime (refer to background.js)\r\nchrome.runtime.sendMessage({ action: 'injectScript' });\r\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9zcmMvZXh0ZW5zaW9uL2NvbnRlbnQudHMuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly9leGFtaW4vLi9zcmMvZXh0ZW5zaW9uL2NvbnRlbnQudHM/Mzc2MyJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBSdW5zIHdoZW4gdXNlciBuYXZpZ2F0ZXMgdG8gbG9jYWxob3N0OjMwMDBcclxuY29uc29sZS5sb2coJ0Nocm9tZSBFeHRlbnNpb24gUkVBRFkhIScpO1xyXG4vLyBVc2UgY2hyb21lIGV4dGVuc2lvbiBtZXRob2QgY2hyb21lLnJ1bnRpbWUuc2VuZE1lc3NhZ2UoKVxyXG4vLyB0byBzZW5kIG1lc3NhZ2UgdG8gY2hyb21lIHJ1bnRpbWUgKHJlZmVyIHRvIGJhY2tncm91bmQuanMpXHJcbmNocm9tZS5ydW50aW1lLnNlbmRNZXNzYWdlKHsgYWN0aW9uOiAnaW5qZWN0U2NyaXB0JyB9KTtcclxuIl0sIm1hcHBpbmdzIjoiQUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOyIsInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///./src/extension/content.ts\n");
+=======
+eval("// Runs when user navigates to localhost:3000\r\nconsole.log('Chrome Extension READY!!');\r\n// Use chrome extension method chrome.runtime.sendMessage()\r\n// to send message to chrome runtime (refer to background.js)\r\nchrome.runtime.sendMessage({ action: 'injectScript' });\r\n\n\n//# sourceURL=webpack://examin/./src/extension/content.ts?");
+>>>>>>> main
 
 /***/ })
 
@@ -146,7 +156,11 @@ eval("// Runs when user navigates to localhost:3000\r\nconsole.log('Chrome Exten
 /******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	// This entry module can't be inlined because the eval-source-map devtool is used.
+=======
+/******/ 	// This entry module can't be inlined because the eval devtool is used.
+>>>>>>> main
 /******/ 	var __webpack_exports__ = {};
 /******/ 	__webpack_modules__["./src/extension/content.ts"]();
 /******/ 	
