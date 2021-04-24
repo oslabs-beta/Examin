@@ -1,8 +1,7 @@
 console.log('Currently in injected.js');
 
-import { diff } from 'deep-object-diff';
-
-
+// import { detailedDiff } from 'deep-object-diff';
+import updatedDiff from './detailedDiff.js';
 
 // console.log('logging window --------------');
 // console.log(window)
@@ -18,90 +17,98 @@ import { diff } from 'deep-object-diff';
 //   }
 // }
 
-
 const dev = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
-console.log('the dev ', dev)
+console.log('the dev ', dev);
 
 // console.log(dev);
 
 let prevMemoizedState;
 let currMemoizedState;
-let MemoizedStateDiff;
-let firstRun = true;
+let memoizedStateDiff;
+// let firstRun = true;
 
-let fiberRoot = dev.getFiberRoots(1).values().next().value
-console.log('the fiber root', fiberRoot.current.child.child.memoizedState.memoizedState)
+// save fiberRoot on load
+let fiberRoot = dev.getFiberRoots(1).values().next().value.current.child;
+// console.log('fiberRoot on load', fiberRoot);
+// saving state on load
+currMemoizedState = fiberRoot.memoizedState.memoizedState;
+// console.log('on load memoized state', currMemoizedState);
+// stateChanges(currMemoizedState);
 
+// console.log(
+// 	'the fiber root',
+// 	fiberRoot.current.child.child.memoizedState.memoizedState
+// );
+// console.log(
+// 	'DEMO APP Fiber Root',
+// 	fiberRoot.current.child.memoizedState.memoizedState
+// );
 
 // dev.onCommitFiberRoot = (function (original) {
 dev.onCommitFiberRoot = (function () {
-  return function (...args) {
-    console.log('the args', args)
-    // FiberRootNode.current.child.child.memoizedState
+	return function (...args) {
+		// console.log('the args', args);
+		// FiberRootNode.current.child.child.memoizedState
 
+		// Reassign fiberRoot when onCommitFiberRoot is invoked
+		fiberRoot = args[1].current.child;
+		// console.log('Fiber root on commitfiberroot ', fiberRoot);
+		// console.log('This is the fiberNode(args[1].current.child): ', fiberNode);
+		// console.log('This is the fiberNode.child.memoizedState: ', fiberNode.child.memoizedState);
+		// console.log('Logging dev.onCommitFiberRoot: ', dev.onCommitFiberRoot);
+		// console.log('logging args: ', args);
 
-    const fiberNode = args[1].current.child;
-    // console.log('This is the fiberNode: ', fiberNode);
-    // console.log('This is the fiberNode(args[1].current.child): ', fiberNode);
-    // console.log('This is the fiberNode.child.memoizedState: ', fiberNode.child.memoizedState);
-    // console.log('Logging dev.onCommitFiberRoot: ', dev.onCommitFiberRoot);
-    // console.log('logging args: ', args);
+		// save memState
+		// To Do: account for apps that store state in fiberNode.memoizedState.memoizedState
+		let newMemState = fiberRoot.memoizedState.memoizedState;
+		// console.log('onCommitFiberRoot memState', newMemState);
+		let stateChange;
+		stateChange =
+			JSON.stringify(newMemState) !== JSON.stringify(currMemoizedState);
+		if (stateChange) {
+			// console.log('did state change?', stateChange);
+			prevMemoizedState = currMemoizedState;
+			currMemoizedState = newMemState;
+			console.log('prevMemoizedState', prevMemoizedState);
+			console.log('currMemoizedState', currMemoizedState);
+			memoizedStateDiff = updatedDiff(prevMemoizedState, currMemoizedState);
+			console.log('memoizedStateDiff', memoizedStateDiff);
+		}
 
-    // save memState
-    // To Do: account for apps that store state in fiberNode.memoizedState.memoizedState
-    let memState = fiberNode.child.memoizedState;
-    
-    
-    
+		// Conditional: check if memoizedState is on fiberNode
+		// If so, assign memState to fiberNode.memoizedState
+		// Else, assign memState to fiberNode.child.memoizedState
 
-
-    // Conditional: check if memoizedState is on fiberNode
-      // If so, assign memState to fiberNode.memoizedState
-    // Else, assign memState to fiberNode.child.memoizedState
-
-    // // On first run
-    if (firstRun) {
-      currMemoizedState = memState;
-      console.log('first run memstate',memState)
-      firstRun = false;
-      // stateChanges(currMemoizedState);
-      // Not first run
-    } else {
-      // Conditional: check if state changed
-        // If so, change currMemoizedState
-        prevMemoizedState = currMemoizedState;
-        // currMemoizedState = memState;
-        // let MemoizedStateDiff = diffingAlgo(currMemoizedState, prevMemoizedState);
-        // stateChanges(prevMemoizedState, currMemoizedState, MemoizedStateDiff);
-    }
-    
-
-  };
+		// DEPRECATED
+		// // On first run
+		// if (firstRun) {
+		// 	currMemoizedState = memState;
+		// 	console.log('first run memstate', memState);
+		// 	firstRun = false;
+		// 	// stateChanges(currMemoizedState);
+		// 	// Not first run
+		// } else {
+		// 	// Conditional: check if state changed
+		// 	// If so, change currMemoizedState
+		// 	prevMemoizedState = currMemoizedState;
+		// 	// currMemoizedState = memState;
+		// 	// let MemoizedStateDiff = diffingAlgo(currMemoizedState, prevMemoizedState);
+		// 	// stateChanges(prevMemoizedState, currMemoizedState, MemoizedStateDiff);
+		// }
+	};
 })(dev.onCommitFiberRoot);
 // setTimeout(dev.onCommitFiberRoot(), 10000)
 
-
-
-
 // function diffingAlgo()
 // INPUT needed
-// @param prevMemoizedState :  
-// @param currMemoizedState : 
+// @param prevMemoizedState :
+// @param currMemoizedState :
 
 // OUTPUT:
 // @param MemoizedStateDiff : an object(s) that contain the difference in prevMemoizedState and currMemoizedState
 // -----------------------------------------------------------------------------------
 
-
 // -----------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
 
 // Function to check for the differences in memoizedState --------------------------------------------
 
@@ -133,8 +140,7 @@ dev.onCommitFiberRoot = (function () {
 // Input: checkMemoizedStateDifferences(prevMemoizedState, currMemoizedState)
 // Output: {text: "Walk the dog", complete: true}, {text: "Write app", complete: false}, {text: "test", complete: false}
 
-
-// Assumptions (check if true): the currMemoizedState's difference will either be a single additional object or the object's property value 
+// Assumptions (check if true): the currMemoizedState's difference will either be a single additional object or the object's property value
 // function checkMemoizedStateDifferences(prevMemoizedState, currMemoizedState) {
 //   // Conditional: Check if array lengths are different
 //   if (prevMemoizedState.length !== currMemoizedState.length) {
@@ -149,10 +155,8 @@ dev.onCommitFiberRoot = (function () {
 //       if (currMemoizedState[i] !== prevMemoizedState[i]) return currMemoizedState[i];
 //     }
 //   }
-//   // No Differences, Return null 
+//   // No Differences, Return null
 //   return null;
 // }
 
 // -----------------------------------------------------------------------------------------------------
-
-
