@@ -20,6 +20,7 @@ import { diff } from 'deep-object-diff';
 
 
 const dev = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+console.log('the dev ', dev)
 
 // console.log(dev);
 
@@ -31,17 +32,22 @@ let firstRun = true;
 
 dev.onCommitFiberRoot = (function (original) {
   return function (...args) {
+    console.log('the args', args)
+    // FiberRootNode.current.child.child.memoizedState
 
-    // console.log('logging from onCommitFiberRoot!!');
+
+    const fiberNode = args[1].current.child;
     // console.log('This is the fiberNode: ', fiberNode);
     // console.log('This is the fiberNode(args[1].current.child): ', fiberNode);
-    // console.log('This is the fiberNode.memoizedState: ', fiberNode.memoizedState);
     // console.log('This is the fiberNode.child.memoizedState: ', fiberNode.child.memoizedState);
     // console.log('Logging dev.onCommitFiberRoot: ', dev.onCommitFiberRoot);
     // console.log('logging args: ', args);
+
+    // save memState
+    // To Do: account for apps that store state in fiberNode.memoizedState.memoizedState
+    let memState = fiberNode.child.memoizedState;
     
     
-    const fiberNode = args[1].current.child;
     
 
 
@@ -49,19 +55,20 @@ dev.onCommitFiberRoot = (function (original) {
       // If so, assign memState to fiberNode.memoizedState
     // Else, assign memState to fiberNode.child.memoizedState
 
-    // On first run
+    // // On first run
     if (firstRun) {
       currMemoizedState = memState;
+      console.log('first run memstate',memState)
       firstRun = false;
-      stateChanges(currMemoizedState);
-    // Not first run
+      // stateChanges(currMemoizedState);
+      // Not first run
     } else {
       // Conditional: check if state changed
         // If so, change currMemoizedState
         prevMemoizedState = currMemoizedState;
-        currMemoizedState = memState;
-        let MemoizedStateDiff = diffingAlgo(currMemoizedState, prevMemoizedState);
-        stateChanges(prevMemoizedState, currMemoizedState, MemoizedStateDiff);
+        // currMemoizedState = memState;
+        // let MemoizedStateDiff = diffingAlgo(currMemoizedState, prevMemoizedState);
+        // stateChanges(prevMemoizedState, currMemoizedState, MemoizedStateDiff);
     }
     
 
