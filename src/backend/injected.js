@@ -29,8 +29,12 @@ let currMemoizedState;
 let MemoizedStateDiff;
 let firstRun = true;
 
+let fiberRoot = dev.getFiberRoots(1).values().next().value
+console.log('the fiber root', fiberRoot.current.child.child.memoizedState.memoizedState)
 
-dev.onCommitFiberRoot = (function (original) {
+
+// dev.onCommitFiberRoot = (function (original) {
+dev.onCommitFiberRoot = (function () {
   return function (...args) {
     console.log('the args', args)
     // FiberRootNode.current.child.child.memoizedState
@@ -74,6 +78,7 @@ dev.onCommitFiberRoot = (function (original) {
 
   };
 })(dev.onCommitFiberRoot);
+// setTimeout(dev.onCommitFiberRoot(), 10000)
 
 
 
