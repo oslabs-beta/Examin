@@ -1,7 +1,7 @@
 console.log('Currently in injected.js');
 
-// import { detailedDiff } from 'deep-object-diff';
-import updatedDiff from './detailedDiff.js';
+import { detailedDiff } from 'deep-object-diff';
+// import updatedDiff from './detailedDiff.js';
 
 // console.log('logging window --------------');
 // console.log(window)
@@ -71,7 +71,7 @@ dev.onCommitFiberRoot = (function () {
 			currMemoizedState = newMemState;
 			console.log('prevMemoizedState', prevMemoizedState);
 			console.log('currMemoizedState', currMemoizedState);
-			memoizedStateDiff = updatedDiff(prevMemoizedState, currMemoizedState);
+			memoizedStateDiff = detailedDiff(prevMemoizedState, currMemoizedState);
 			console.log('memoizedStateDiff', memoizedStateDiff);
 		}
 
