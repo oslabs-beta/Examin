@@ -22,8 +22,7 @@ let memoizedStateDiff;
 // let fiberNodeTest = dev.getFiberRoots(1);
 // console.log('fiber node test', fiberNodeTest)
 let fiberNode = dev.getFiberRoots(1).values().next().value.current.child;
-console.log('fiber root', fiberNode)
-// console.log('fiberNode on load', fiberNode);
+console.log('fiberNode on load:', fiberNode)
 
 // findMemState returns the user's application's state
 const findMemState = (node) => {
@@ -40,8 +39,8 @@ currMemoizedState = findMemState(fiberNode);
 //invoke stateChanges on the currMemoizedState to generate the initial state tests
 //stateChanges(currMemoizedState)
 
-console.log('fiberNode', fiberNode)
-console.log('currMemoizedState on load', currMemoizedState)
+// console.log('fiberNode', fiberNode)
+console.log('currMemoizedState on load:', currMemoizedState)
 
 // ****** Invoke function to generate tests ******
 // stateChanges(currMemoizedState);
@@ -51,7 +50,7 @@ console.log('currMemoizedState on load', currMemoizedState)
 // onCommitFiberRoot runs functionality every time there is a change to the page
 dev.onCommitFiberRoot = (function (original) {
 	return function (...args) {
-		console.log('args', args);
+		console.log('args:', args);
 
 		// Reassign fiberNode when onCommitFiberRoot is invoked
 		fiberNode = args[1].current.child;
@@ -72,9 +71,9 @@ dev.onCommitFiberRoot = (function (original) {
 			currMemoizedState = newMemState;
       // memoizedState will return an object with 3 properties: {added: {}, deleted: {}, updated: {}}
 			memoizedStateDiff = detailedDiff(prevMemoizedState, currMemoizedState);
-			console.log('prevMemoizedState', prevMemoizedState);
-			console.log('currMemoizedState', currMemoizedState);
-			console.log('memoizedStateDiff', memoizedStateDiff);
+			console.log('prevMemoizedState:', prevMemoizedState);
+			console.log('currMemoizedState:', currMemoizedState);
+			console.log('memoizedStateDiff:', memoizedStateDiff);
 
       // ****** Invoke function to generate tests ******
       // stateChanges(currMemoizedState, prevMemoizedState, memoizedStateDiff);
