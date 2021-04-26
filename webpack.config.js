@@ -10,7 +10,7 @@ const config = {
     // Entry for background.js service worker
     background: './src/extension/background.ts',
     // Entry for chrome extension content script
-    content: './src/extension/content.ts',
+    content: './src/extension/content.js',
     // Entry for injected backend file bundle
     backend: './src/backend/injected.js',
   },
@@ -57,6 +57,10 @@ const config = {
             loader: 'file-loader',
           },
         ],
+      },
+      {
+        test: /\.txt$/i,
+        use: 'raw-loader',
       },
     ],
   },
