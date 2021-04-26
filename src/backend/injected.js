@@ -30,8 +30,12 @@ const findMemState = (node) => {
 	while (node.memoizedState === null) {
 		node = node.child;
 	}
+	node = node.memoizedState
+	while (typeof(node.memoizedState) !== 'object') {
+		node = node.next
+	}
 	//return the memoizedState of the found fiberNode
-	return node.memoizedState.memoizedState;
+	return node.memoizedState;
 }
 
 //assign currMemoizedState the state object which findMemState finds on page load
