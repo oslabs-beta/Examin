@@ -46,9 +46,15 @@ export default function stateChanges(
       // Initial describe statement for default initialized state
       describe('default state', () => {
         it('should return a default state when given an undefined input', () => {
-          // expect(currMemoizedState[0]).toEqual({});
-          // expect(currMemoizedState[1]).toEqual({});
-          // expect(currMemoizedState).toEqual([{},{}]);
+          // expect(currMemoizedState[0]).toEqual(${JSON.stringify(
+						currMemoizedState[0]
+					)});
+          // expect(currMemoizedState[1]).toEqual(${JSON.stringify(
+						currMemoizedState[1]
+					)});
+          // expect(currMemoizedState).toEqual(${JSON.stringify(
+						currMemoizedState
+					)});
         });
       });
     `);
