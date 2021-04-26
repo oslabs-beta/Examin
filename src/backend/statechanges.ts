@@ -4,48 +4,63 @@
 
 
 // INPUT needed: 
-// @param prevMemoizedState :  
-// @param currMemoizedState : 
-// @param MemoizedStateDiff :
+// @param prevMemoizedState : {}
+// @param currMemoizedState : {}
+// @param MemoizedStateDiff : {}
 
-// OUTPUT: describe string that continually gets concatenated, until user clicks download or save 
+// OUTPUT: '' = describe string that continually gets concatenated, until user clicks download or save 
 
-function stateChanges(currMemoizedState: object, prevMemoizedState = null, MemoizedStateDiff = null) {
-  let describeBlock: string = '';
-
-  // Conditional (on initial): check if prevMemoizedState and MemoizedStateDiff is null
-    describeBlock = `
-      // Initial describe statement for default initialized state
-      describe('default state', () => {
-        it('should return a default state when given an undefined input', () => {
-          // expect(currMemoizedState[0]).toEqual({});
-          // expect(currMemoizedState[1]).toEqual({});
-          // expect(currMemoizedState).toEqual([{},{}]);
-        });
-      });
-    `;
-
-  // Else (not-initial)
-    describeBlock += `
-      // Added a todo!
-      describe('state changed!', () => {
-        // Added a first todo!
-        it('should useStateHook variable where component changed', () => {
-          // expect(prevMemoizedState).toNotEqual(currMemoizedState);
-          // expect(currMemoizedState).toStrictlyEqual([{},{},{text: 'test1', complete: 'false'}]);
-          // expect(MemoizedStateDiff).toStrictlyEqual([{text: 'test1', complete: 'false'}])
-        });
-      });
-    `;
-
-
-
-
-  // let describeString = `describe('TODOS state changes', () => {${describeBlock}});`
+export default function stateChanges(currMemoizedState: object, prevMemoizedState = null, MemoizedStateDiff = null) {
+  //---------------------------------------------------------------------------------------
+  // console.log('in statechanges')  
+  // let testType = 'addTest'
+  // let testMessage = `
+  //   // Initial describe statement for default initialized state
+  //   describe('default state', () => {
+  //     it('should return a default state when given an undefined input', () => {
+  //       // expect(currMemoizedState[0]).toEqual({});
+  //       // expect(currMemoizedState[1]).toEqual({});
+  //       // expect(currMemoizedState).toEqual([{},{}]);
+  //     });
+  //   });
+  // `;
+  // let testOverall = { type: testType, message: testMessage }
+  // let testOverall = { type: testType }
+  // window.postMessage(testOverall,'*')
+  //---------------------------------------------------------------------------------------
   
-  // fsWriteFileSync the describeString
+  // chrome.runtime.sendMessage('kjnelkhbfmfpbpjncbhdpnemfpibomio',{ action: 'addTest' });
+  let describeBlock: string = '';
+  
+  // Conditional (on initial): check if prevMemoizedState and MemoizedStateDiff is null
+  describeBlock = `
+    // Initial describe statement for default initialized state
+    describe('default state', () => {
+      it('should return a default state when given an undefined input', () => {
+        // expect(currMemoizedState[0]).toEqual({});
+        // expect(currMemoizedState[1]).toEqual({});
+        // expect(currMemoizedState).toEqual([{},{}]);
+      });
+    });
+  `;
+  
+  // Else (not-initial)
+  describeBlock += `
+    // Added a todo!
+    describe('state changed!', () => {
+      // Added a first todo!
+      it('should useStateHook variable where component changed', () => {
+        // expect(prevMemoizedState).toNotEqual(currMemoizedState);
+        // expect(currMemoizedState).toStrictlyEqual([{},{},{text: 'test1', complete: 'false'}]);
+        // expect(MemoizedStateDiff).toStrictlyEqual([{text: 'test1', complete: 'false'}])
+      });
+    });
+    `;
+
+  return describeBlock;
 
 }
+
 
 // describe('TODOS state changes', () => {
 

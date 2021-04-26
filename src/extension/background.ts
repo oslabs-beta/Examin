@@ -1,7 +1,7 @@
 console.log('logging in background.js');
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-	const { action } = request;
+	const { action, message } = request;
   const tabId = sender.tab.id;
   
 	switch (action) {
@@ -23,6 +23,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         `,
 			});
 			break;
+		}
+		case 'addTest': {
+			console.log('received addTest');
+      console.log('The request message is: ', message);
+			break;
+			// chrome.runtime.sendMessage({ action: 'receivedAddTest' });
 		}
 		default:
 			break;
