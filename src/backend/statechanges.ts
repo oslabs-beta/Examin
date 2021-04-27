@@ -43,23 +43,24 @@ export default function stateChanges(
 	if (firstInvocation === true) {
 		// add test for default state to describeBlockArray
 		describeBlockArray.push(`
-      // Initial describe statement for default initialized state
-      describe('default state', () => {
-        let state;
+// Initial describe statement for default initialized state
+describe('default state', () => {
+  let state;
 
-        beforeEach(() => {
-          state = ${currMemoizedState};
-        });
+  beforeEach(() => {
+    state = ${JSON.stringify(currMemoizedState)};
+  });
 
-        it('should return a default state when given an undefined input', () => {
-          expect(state[0]).value.toEqual(${currMemoizedState[0]});
-          expect(state[1]).toEqual(${currMemoizedState[1]});
-          expect(state).toEqual(
-						${currMemoizedState}
-					);
-        });
-      });
-    `);
+  it('should return a default state when given an undefined input', () => {
+    expect(state[0]).toEqual(${JSON.stringify(currMemoizedState[0])});
+    expect(state[1]).toEqual(${JSON.stringify(currMemoizedState[1])});
+    expect(state).toEqual(
+      ${JSON.stringify(currMemoizedState)}
+    );
+  });
+});
+`
+);
 		firstInvocation = false;
 		// console.log('firstInvocation Expect FALSE:', firstInvocation);
 
@@ -68,25 +69,26 @@ export default function stateChanges(
 		// add state changed test to describeBlockArray
 		//non-initial
 		describeBlockArray.push(`
-      // Added a todo!
-      describe('state changed!', () => {
-        let prevState, currState, stateDiff;
+// Added a todo!
+describe('state changed!', () => {
+  let prevState, currState, stateDiff;
 
-        beforeEach(() => {
-          prevState = ${prevMemoizedState};
-          currState = ${currMemoizedState};
-          stateDiff = ${memoizedStateDiff};
-        });
+  beforeEach(() => {
+    prevState = ${JSON.stringify(prevMemoizedState)};
+    currState = ${JSON.stringify(currMemoizedState)};
+    stateDiff = ${JSON.stringify(memoizedStateDiff)};
+  });
 
-        it('prevMemoizedState should not equal currMemoizedState', () => {
-          expect(prevState).not.toEqual(currState);
-        });
-        it('should useStateHook variable where component changed', () => {
-          expect(currState).toStrictlyEqual(${currMemoizedState});
-          expect(stateDiff).toStrictlyEqual(${memoizedStateDiff});
-        });
-      });
-    //   `);
+  it('prevMemoizedState should not equal currMemoizedState', () => {
+    expect(prevState).not.toEqual(currState);
+  });
+  it('should useStateHook variable where component changed', () => {
+    expect(currState).toEqual(${JSON.stringify(currMemoizedState)});
+    expect(stateDiff).toEqual(${JSON.stringify(memoizedStateDiff)});
+  });
+});
+//`
+  );
 	}
 	console.log('describeBlockArray:', describeBlockArray);
 	return describeBlockArray;

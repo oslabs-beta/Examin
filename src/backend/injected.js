@@ -19,7 +19,8 @@ let prevMemoizedState;
 let currMemoizedState;
 let memoizedStateDiff;
 // -----------------------------------------------------------------------------------
-const stringArr = [];
+// const stringArr = [];
+// Initializing a message object which will be posted to
 let msgObj = {type: 'addTest', message: []}
 // -----------------------------------------------------------------------------------
 
@@ -47,14 +48,15 @@ const findMemState = (node) => {
 currMemoizedState = findMemState(fiberNode);
 
 // -----------------------------------------------------------------------------------
-stringArr.push(stateChanges(currMemoizedState));
-msgObj.message = stringArr; // msgObj = {type: 'addTest', message: []}
+
+let testArray = stateChanges(currMemoizedState);
+// stringArr.push(stateChanges(currMemoizedState));
+msgObj.message = testArray; // msgObj = {type: 'addTest', message: []}
 // window.postMessage(msgObj,'*');
-window.postMessage({type: 'initial panel load'},'*');
+window.postMessage(msgObj,'*');
 // -----------------------------------------------------------------------------------
 
 //invoke stateChanges on the currMemoizedState to generate the initial state tests
-let testArray = stateChanges(currMemoizedState);
 
 // console.log('fiberNode', fiberNode)
 console.log('currMemoizedState on load:', currMemoizedState);
@@ -103,9 +105,10 @@ dev.onCommitFiberRoot = (function (original) {
 			);
 
       // -----------------------------------------------------------------------------------
-			stringArr.push(testArray);
-      msgObj.message = stringArr;
-	    window.postMessage(msgObj,'*')
+			// stringArr.push(testArray);
+      msgObj.message = testArray; // msgObj = { type: 'addTest', message: [(testArray)] }
+      // msgObj posted to content.js, which is running in the (active window?)
+	    window.postMessage(msgObj,'*') 
       // -----------------------------------------------------------------------------------
 
 

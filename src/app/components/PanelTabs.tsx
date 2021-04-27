@@ -27,6 +27,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/dracula.css';
 
+// Connect chrome to the port where name is "examin-demo" from (examin panel?)
 const port = chrome.runtime.connect({ name: "examin-demo" });
 
 
@@ -239,19 +240,14 @@ const PanelTabs = () => {
   useEffect(() => {
     console.log('inside useEffect in PanelTabs')
 
+    
     port.postMessage({
       name: 'connect',
       tabId: chrome.devtools.inspectedWindow.tabId,
     });
-
-    // chrome.runtime.sendMessage({ action: 'initial panel load'})
-
-    // window.postMessage({
-    //   type: 'initial panel load',
-    // }, '*')
-
     
     port.onMessage.addListener((message) => { 
+      console.log('in panel tabs addListener')
       setCode(message);
     });
 
