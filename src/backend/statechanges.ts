@@ -33,19 +33,21 @@ export default function stateChanges(currMemoizedState: object, prevMemoizedStat
   let describeBlock: string = '';
   
   // Conditional (on initial): check if prevMemoizedState and MemoizedStateDiff is null
-  describeBlock = `
-    // Initial describe statement for default initialized state
-    describe('default state', () => {
-      it('should return a default state when given an undefined input', () => {
-        // expect(currMemoizedState[0]).toEqual({});
-        // expect(currMemoizedState[1]).toEqual({});
-        // expect(currMemoizedState).toEqual([{},{}]);
+  if (prevMemoizedState === null && MemoizedStateDiff === null) {
+    describeBlock = `
+      // Initial describe statement for default initialized state
+      describe('default state', () => {
+        it('should return a default state when given an undefined input', () => {
+          // expect(currMemoizedState[0]).toEqual({});
+          // expect(currMemoizedState[1]).toEqual({});
+          // expect(currMemoizedState).toEqual([{},{}]);
+        });
       });
-    });
-  `;
-  
+    `;
+  }
   // Else (not-initial)
-  describeBlock += `
+  else {
+    describeBlock = `
     // Added a todo!
     describe('state changed!', () => {
       // Added a first todo!
@@ -56,6 +58,7 @@ export default function stateChanges(currMemoizedState: object, prevMemoizedStat
       });
     });
     `;
+  }
 
   return describeBlock;
 

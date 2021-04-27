@@ -27,60 +27,60 @@ import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/dracula.css';
 
-
+const port = chrome.runtime.connect({ name: "examin-demo" });
 
 
 const drawerWidth = 240;
-const code = `
-  // Initial describe statement for default initialized state
-  describe('default state', () => {
-    it('should return a default state when given an undefined input', () => {
-      // expect(currMemoizedState[0]).toEqual({});
-      // expect(currMemoizedState[1]).toEqual({});
-      // expect(currMemoizedState).toEqual([{},{}]);
-    });
-  });
-  // Initial describe statement for default initialized state
-  describe('default state', () => {
-    it('should return a default state when given an undefined input', () => {
-      // expect(currMemoizedState[0]).toEqual({});
-      // expect(currMemoizedState[1]).toEqual({});
-      // expect(currMemoizedState).toEqual([{},{}]);
-    });
-  });
-  // Initial describe statement for default initialized state
-  describe('default state', () => {
-    it('should return a default state when given an undefined input', () => {
-      // expect(currMemoizedState[0]).toEqual({});
-      // expect(currMemoizedState[1]).toEqual({});
-      // expect(currMemoizedState).toEqual([{},{}]);
-    });
-  });
-  // Initial describe statement for default initialized state
-  describe('default state', () => {
-    it('should return a default state when given an undefined input', () => {
-      // expect(currMemoizedState[0]).toEqual({});
-      // expect(currMemoizedState[1]).toEqual({});
-      // expect(currMemoizedState).toEqual([{},{}]);
-    });
-  });
-  // Initial describe statement for default initialized state
-  describe('default state', () => {
-    it('should return a default state when given an undefined input', () => {
-      // expect(currMemoizedState[0]).toEqual({});
-      // expect(currMemoizedState[1]).toEqual({});
-      // expect(currMemoizedState).toEqual([{},{}]);
-    });
-  });
-  // Initial describe statement for default initialized state
-  describe('default state', () => {
-    it('should return a default state when given an undefined input', () => {
-      // expect(currMemoizedState[0]).toEqual({});
-      // expect(currMemoizedState[1]).toEqual({});
-      // expect(currMemoizedState).toEqual([{},{}]);
-    });
-  });
-`;
+// const code = `
+//   // Initial describe statement for default initialized state
+//   describe('default state', () => {
+//     it('should return a default state when given an undefined input', () => {
+//       // expect(currMemoizedState[0]).toEqual({});
+//       // expect(currMemoizedState[1]).toEqual({});
+//       // expect(currMemoizedState).toEqual([{},{}]);
+//     });
+//   });
+//   // Initial describe statement for default initialized state
+//   describe('default state', () => {
+//     it('should return a default state when given an undefined input', () => {
+//       // expect(currMemoizedState[0]).toEqual({});
+//       // expect(currMemoizedState[1]).toEqual({});
+//       // expect(currMemoizedState).toEqual([{},{}]);
+//     });
+//   });
+//   // Initial describe statement for default initialized state
+//   describe('default state', () => {
+//     it('should return a default state when given an undefined input', () => {
+//       // expect(currMemoizedState[0]).toEqual({});
+//       // expect(currMemoizedState[1]).toEqual({});
+//       // expect(currMemoizedState).toEqual([{},{}]);
+//     });
+//   });
+//   // Initial describe statement for default initialized state
+//   describe('default state', () => {
+//     it('should return a default state when given an undefined input', () => {
+//       // expect(currMemoizedState[0]).toEqual({});
+//       // expect(currMemoizedState[1]).toEqual({});
+//       // expect(currMemoizedState).toEqual([{},{}]);
+//     });
+//   });
+//   // Initial describe statement for default initialized state
+//   describe('default state', () => {
+//     it('should return a default state when given an undefined input', () => {
+//       // expect(currMemoizedState[0]).toEqual({});
+//       // expect(currMemoizedState[1]).toEqual({});
+//       // expect(currMemoizedState).toEqual([{},{}]);
+//     });
+//   });
+//   // Initial describe statement for default initialized state
+//   describe('default state', () => {
+//     it('should return a default state when given an undefined input', () => {
+//       // expect(currMemoizedState[0]).toEqual({});
+//       // expect(currMemoizedState[1]).toEqual({});
+//       // expect(currMemoizedState).toEqual([{},{}]);
+//     });
+//   });
+// `;
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -90,8 +90,6 @@ interface TabPanelProps {
 
 function TabPanel(props: any) {
   const { children, value, index, ...other } = props;
-
-  
 
   return (
     <div
@@ -234,7 +232,30 @@ const PanelTabs = () => {
     setOpen(false);
   };
 
+  const [code, setCode] = useState('code test');
 
+  console.log('not inside of useEffect!');
+
+  useEffect(() => {
+    console.log('inside useEffect in PanelTabs')
+
+    port.postMessage({
+      name: 'connect',
+      tabId: chrome.devtools.inspectedWindow.tabId,
+    });
+
+    // chrome.runtime.sendMessage({ action: 'initial panel load'})
+
+    // window.postMessage({
+    //   type: 'initial panel load',
+    // }, '*')
+
+    
+    port.onMessage.addListener((message) => { 
+      setCode(message);
+    });
+
+  }, []);
 
   return (
     <div className={classes.root}>
