@@ -7,7 +7,7 @@ describe('default state', () => {
   });
 
   it('should return a default state when given an undefined input', () => {
-    expect(state[0]).value.toEqual({"text":"Walk the dog","complete":true});
+    expect(state[0]).toEqual({"text":"Walk the dog","complete":true});
     expect(state[1]).toEqual({"text":"Write app","complete":false});
     expect(state).toEqual(
       [{"text":"Walk the dog","complete":true},{"text":"Write app","complete":false}]
@@ -29,8 +29,8 @@ describe('state changed!', () => {
     expect(prevState).not.toEqual(currState);
   });
   it('should useStateHook variable where component changed', () => {
-    expect(currState).toStrictlyEqual([{"text":"Walk the dog","complete":true},{"text":"Write app","complete":false},{"text":"test","complete":false}]);
-    expect(stateDiff).toStrictlyEqual({"added":{"2":{"text":"test","complete":false}},"deleted":{},"updated":{}});
+    expect(currState).toEqual([{"text":"Walk the dog","complete":true},{"text":"Write app","complete":false},{"text":"test","complete":false}]);
+    expect(stateDiff).toEqual({"added":{"2":{"text":"test","complete":false}},"deleted":{},"updated":{}});
   });
 });
 //
@@ -48,7 +48,7 @@ describe('state changed!', () => {
     expect(prevState).not.toEqual(currState);
   });
   it('should useStateHook variable where component changed', () => {
-    expect(currState).toStrictlyEqual([{"text":"Walk the dog","complete":true},{"text":"Write app","complete":false},{"text":"test","complete":false},{"text":"additional test","complete":false}]);
-    expect(stateDiff).toStrictlyEqual({"added":{"3":{"text":"additional test","complete":false}},"deleted":{},"updated":{}});
+    expect(currState).toEqual([{"text":"Walk the dog","complete":true},{"text":"Write app","complete":false},{"text":"test","complete":false},{"text":"additional test","complete":false}]);
+    expect(stateDiff).toEqual({"added":{"3":{"text":"additional test","complete":false}},"deleted":{},"updated":{}});
   });
 });
