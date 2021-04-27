@@ -18,12 +18,17 @@ const dev = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
 let prevMemoizedState;
 let currMemoizedState;
 let memoizedStateDiff;
+// -----------------------------------------------------------------------------------
+// const stringArr = [];
+// Initializing a message object which will be posted to
+let msgObj = {type: 'addTest', message: []}
+// -----------------------------------------------------------------------------------
 
 // Save fiberRoot on load
 // let fiberNodeTest = dev.getFiberRoots(1);
 // console.log('fiber node test', fiberNodeTest)
 let fiberNode = dev.getFiberRoots(1).values().next().value.current.child;
-console.log('fiberNode on load:', fiberNode);
+console.log('fiberNode on load:', fiberNode)
 
 // findMemState returns the user's application's state
 const findMemState = (node) => {
@@ -31,19 +36,27 @@ const findMemState = (node) => {
 	while (node.memoizedState === null) {
 		node = node.child;
 	}
-	node = node.memoizedState;
-	while (typeof node.memoizedState !== 'object') {
-		node = node.next;
+	node = node.memoizedState
+	while (typeof(node.memoizedState) !== 'object') {
+		node = node.next
 	}
 	//return the memoizedState of the found fiberNode
 	return node.memoizedState;
-};
-
+}
+		
 //assign currMemoizedState the state object which findMemState finds on page load
 currMemoizedState = findMemState(fiberNode);
-// stateChanges(currMemoizedState);
-//invoke stateChanges on the currMemoizedState to generate the initial state tests
+
+// -----------------------------------------------------------------------------------
+
 let testArray = stateChanges(currMemoizedState);
+// stringArr.push(stateChanges(currMemoizedState));
+msgObj.message = testArray; // msgObj = {type: 'addTest', message: []}
+// window.postMessage(msgObj,'*');
+window.postMessage(msgObj,'*');
+// -----------------------------------------------------------------------------------
+
+//invoke stateChanges on the currMemoizedState to generate the initial state tests
 
 // console.log('fiberNode', fiberNode)
 console.log('currMemoizedState on load:', currMemoizedState);
@@ -80,6 +93,9 @@ dev.onCommitFiberRoot = (function (original) {
 			console.log('prevMemoizedState:', prevMemoizedState);
 			console.log('currMemoizedState:', currMemoizedState);
 			console.log('memoizedStateDiff:', memoizedStateDiff);
+
+      // ****** Invoke function to generate tests ******
+      // stateChanges(currMemoizedState, prevMemoizedState, memoizedStateDiff);
 			testArray = stateChanges(
 				currMemoizedState,
 				prevMemoizedState,
@@ -87,6 +103,14 @@ dev.onCommitFiberRoot = (function (original) {
 				false,
 				testArray
 			);
+
+      // -----------------------------------------------------------------------------------
+			// stringArr.push(testArray);
+      msgObj.message = testArray; // msgObj = { type: 'addTest', message: [(testArray)] }
+      // msgObj posted to content.js, which is running in the (active window?)
+	    window.postMessage(msgObj,'*') 
+      // -----------------------------------------------------------------------------------
+
 
 			// ****** Invoke function to generate tests ******
 			// stateChanges(currMemoizedState, prevMemoizedState, memoizedStateDiff);

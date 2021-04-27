@@ -8,7 +8,7 @@ const config = {
     // Entry for front-end files
     app: './src/app/index.tsx',
     // Entry for background.js service worker
-    background: './src/extension/background.ts',
+    background: './src/extension/background.js',
     // Entry for chrome extension content script
     content: './src/extension/content.js',
     // Entry for injected backend file bundle
