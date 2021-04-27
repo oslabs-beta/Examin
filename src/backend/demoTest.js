@@ -1,4 +1,5 @@
-// import { describe, expect, it } from '@jest/globals';
+// Demo test for Examin
+// Tests react-typescript-todo-app
 
 // Initial describe statement for default initialized state
 describe('default state', () => {
