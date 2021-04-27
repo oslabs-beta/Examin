@@ -4,49 +4,49 @@
 console.log('Currently in injected.js');
 
 import { detailedDiff } from 'deep-object-diff';
-import stateChanges from './statechanges.ts'
+import stateChanges from './statechanges.ts';
 
 // Trying to convert to Typescript:
 // declare global {
-	//   interface Window {
-		//     __REACT_DEVTOOLS_GLOBAL_HOOK__?: any;
-		//   }
-		// }
-		const dev = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
-		// console.log('dev ', dev);
-		
-		let prevMemoizedState;
-		let currMemoizedState;
-		let memoizedStateDiff;
-		
-		// Save fiberRoot on load
-		// let fiberNodeTest = dev.getFiberRoots(1);
-		// console.log('fiber node test', fiberNodeTest)
-		let fiberNode = dev.getFiberRoots(1).values().next().value.current.child;
-		console.log('fiberNode on load:', fiberNode)
-		
-		// findMemState returns the user's application's state
-		const findMemState = (node) => {
-			// Finds the fiberNode on which memoizedState resides
-			while (node.memoizedState === null) {
-				node = node.child;
-			}
-			node = node.memoizedState
-			while (typeof(node.memoizedState) !== 'object') {
-				node = node.next
-			}
-			//return the memoizedState of the found fiberNode
-			return node.memoizedState;
-		}
-		
-		//assign currMemoizedState the state object which findMemState finds on page load
+//   interface Window {
+//     __REACT_DEVTOOLS_GLOBAL_HOOK__?: any;
+//   }
+// }
+const dev = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+// console.log('dev ', dev);
+
+let prevMemoizedState;
+let currMemoizedState;
+let memoizedStateDiff;
+
+// Save fiberRoot on load
+// let fiberNodeTest = dev.getFiberRoots(1);
+// console.log('fiber node test', fiberNodeTest)
+let fiberNode = dev.getFiberRoots(1).values().next().value.current.child;
+console.log('fiberNode on load:', fiberNode);
+
+// findMemState returns the user's application's state
+const findMemState = (node) => {
+	// Finds the fiberNode on which memoizedState resides
+	while (node.memoizedState === null) {
+		node = node.child;
+	}
+	node = node.memoizedState;
+	while (typeof node.memoizedState !== 'object') {
+		node = node.next;
+	}
+	//return the memoizedState of the found fiberNode
+	return node.memoizedState;
+};
+
+//assign currMemoizedState the state object which findMemState finds on page load
 currMemoizedState = findMemState(fiberNode);
-stateChanges(currMemoizedState)
+// stateChanges(currMemoizedState);
 //invoke stateChanges on the currMemoizedState to generate the initial state tests
-//stateChanges(currMemoizedState)
+let testArray = stateChanges(currMemoizedState);
 
 // console.log('fiberNode', fiberNode)
-console.log('currMemoizedState on load:', currMemoizedState)
+console.log('currMemoizedState on load:', currMemoizedState);
 
 // ****** Invoke function to generate tests ******
 // stateChanges(currMemoizedState);
@@ -66,7 +66,7 @@ dev.onCommitFiberRoot = (function (original) {
 		// console.log('newMemState', newMemState);
 
 		// initialize a stateChange variable as a boolean which will tell if state changed or not
-		// onCommitFiberRoot will run every time the user interacts with the page, regardless of if 
+		// onCommitFiberRoot will run every time the user interacts with the page, regardless of if
 		// that interaction actually changes state
 		const stateChange =
 			JSON.stringify(newMemState) !== JSON.stringify(currMemoizedState);
@@ -75,15 +75,21 @@ dev.onCommitFiberRoot = (function (original) {
 			// console.log('state changed:', stateChange);
 			prevMemoizedState = currMemoizedState;
 			currMemoizedState = newMemState;
-      // memoizedState will return an object with 3 properties: {added: {}, deleted: {}, updated: {}}
+			// memoizedState will return an object with 3 properties: {added: {}, deleted: {}, updated: {}}
 			memoizedStateDiff = detailedDiff(prevMemoizedState, currMemoizedState);
 			console.log('prevMemoizedState:', prevMemoizedState);
 			console.log('currMemoizedState:', currMemoizedState);
 			console.log('memoizedStateDiff:', memoizedStateDiff);
-			stateChanges(currMemoizedState, prevMemoizedState, memoizedStateDiff)
+			testArray = stateChanges(
+				currMemoizedState,
+				prevMemoizedState,
+				memoizedStateDiff,
+				false,
+				testArray
+			);
 
-      // ****** Invoke function to generate tests ******
-      // stateChanges(currMemoizedState, prevMemoizedState, memoizedStateDiff);
+			// ****** Invoke function to generate tests ******
+			// stateChanges(currMemoizedState, prevMemoizedState, memoizedStateDiff);
 		}
 	};
 })(dev.onCommitFiberRoot);
