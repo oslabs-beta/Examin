@@ -13,14 +13,20 @@
 			"js": ["bundles/content.bundle.js"]
 		}
 	],
-	"web_accessible_resources": ["bundles/backend.bundle.js"],
+	"web_accessible_resources": ["bundles/backend.bundle.js", "injected.js"],
 	"permissions": [
 		"contextMenus",
 		"tabs",
 		"activeTab",
 		"http://localhost/*",
-		"https://localhost/*"
+		"https://localhost/*",
+    "<all_urls>",
+		"clipboardWrite", 
+		"clipboardRead"
 	],
+	"externally_connectable": {
+		"matches": ["http://localhost/*","https://localhost/*"]
+	},
 	"devtools_page": "./devtools.html",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
