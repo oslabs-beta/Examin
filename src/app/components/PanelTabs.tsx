@@ -27,7 +27,10 @@ import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/dracula.css';
 
+
+
 const drawerWidth = 240;
+
 const code = `
   // Initial describe statement for default initialized state
   describe('default state', () => {
