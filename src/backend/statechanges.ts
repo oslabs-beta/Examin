@@ -45,16 +45,18 @@ export default function stateChanges(
 		describeBlockArray.push(`
       // Initial describe statement for default initialized state
       describe('default state', () => {
+        let state;
+
+        beforeEach(() => {
+          state = ${currMemoizedState};
+        });
+
         it('should return a default state when given an undefined input', () => {
-          // expect(currMemoizedState[0]).toEqual(${JSON.stringify(
-						currMemoizedState[0]
-					)});
-          // expect(currMemoizedState[1]).toEqual(${JSON.stringify(
-						currMemoizedState[1]
-					)});
-          // expect(currMemoizedState).toEqual(${JSON.stringify(
-						currMemoizedState
-					)});
+          expect(state[0]).value.toEqual(${currMemoizedState[0]});
+          expect(state[1]).toEqual(${currMemoizedState[1]});
+          expect(state).toEqual(
+						${currMemoizedState}
+					);
         });
       });
     `);
@@ -68,11 +70,20 @@ export default function stateChanges(
 		describeBlockArray.push(`
       // Added a todo!
       describe('state changed!', () => {
-        // Added a first todo!
+        let prevState, currState, stateDiff;
+
+        beforeEach(() => {
+          prevState = ${prevMemoizedState};
+          currState = ${currMemoizedState};
+          stateDiff = ${memoizedStateDiff};
+        });
+
+        it('prevMemoizedState should not equal currMemoizedState', () => {
+          expect(prevState).not.toEqual(currState);
+        });
         it('should useStateHook variable where component changed', () => {
-          // expect(prevMemoizedState).toNotEqual(currMemoizedState);
-          // expect(currMemoizedState).toStrictlyEqual([{},{},{text: 'test1', complete: 'false'}]);
-          // expect(MemoizedStateDiff).toStrictlyEqual([{text: 'test1', complete: 'false'}])
+          expect(currState).toStrictlyEqual(${currMemoizedState});
+          expect(stateDiff).toStrictlyEqual(${memoizedStateDiff});
         });
       });
     //   `);
