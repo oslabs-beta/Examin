@@ -141,9 +141,9 @@ const ExaminPanel = () => {
     });
     
     port.onMessage.addListener((message) => { 
+      // Update code displayed on Examin panel
       setCode(message);
     });
-
   }, []);
 
   // ---------------------------------------------------------------
