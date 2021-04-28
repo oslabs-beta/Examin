@@ -20,9 +20,32 @@ let currMemoizedState;
 let memoizedStateDiff;
 // -----------------------------------------------------------------------------------
 // const stringArr = [];
-// Initializing a message object which will be posted to
+// Initializineg a message object which will be posted to
 let msgObj = {type: 'addTest', message: []}
 // -----------------------------------------------------------------------------------
+
+
+
+// Logic for pause/recording -----------------------------------------------------
+const mode = {
+  paused: false,
+};
+
+const handleMessage = (request, sender, sendResponse) => {
+  // console.log('The request is: ', request.data)
+  if (request.data.name === 'pauseClicked') {
+    mode.paused = true;
+    console.log('mode.paused should be true', mode.paused);
+  } 
+	if (request.data.name === 'recordClicked') {
+    mode.paused = false;
+    console.log('mode.paused should be false', mode.paused);
+  }
+};
+
+window.addEventListener('message', handleMessage);
+// -----------------------------------------------------------------------------------
+
 
 // Save fiberRoot on load
 // let fiberNodeTest = dev.getFiberRoots(1);
@@ -32,34 +55,37 @@ console.log('fiberNode on load:', fiberNode)
 
 // findMemState returns the user's application's state
 const findMemState = (node) => {
-	// Finds the fiberNode on which memoizedState resides
-	while (node.memoizedState === null) {
-		node = node.child;
-	}
-	node = node.memoizedState
-	while (typeof(node.memoizedState) !== 'object') {
-		node = node.next
-	}
-	//return the memoizedState of the found fiberNode
-	return node.memoizedState;
+  // Finds the fiberNode on which memoizedState resides
+  while (node.memoizedState === null) {
+    node = node.child;
+  }
+  node = node.memoizedState
+  while (typeof(node.memoizedState) !== 'object') {
+    node = node.next
+  }
+  //return the memoizedState of the found fiberNode
+  return node.memoizedState;
 }
-		
+    
 //assign currMemoizedState the state object which findMemState finds on page load
 currMemoizedState = findMemState(fiberNode);
 
 // -----------------------------------------------------------------------------------
-
 let testArray = stateChanges(currMemoizedState);
 // stringArr.push(stateChanges(currMemoizedState));
 msgObj.message = testArray; // msgObj = {type: 'addTest', message: []}
-// window.postMessage(msgObj,'*');
 window.postMessage(msgObj,'*');
 // -----------------------------------------------------------------------------------
 
 //invoke stateChanges on the currMemoizedState to generate the initial state tests
 
 // console.log('fiberNode', fiberNode)
-console.log('currMemoizedState on load:', currMemoizedState);
+// console.log('currMemoizedState on load:', currMemoizedState);
+
+
+
+
+
 
 // ****** Invoke function to generate tests ******
 // stateChanges(currMemoizedState);
@@ -68,56 +94,81 @@ console.log('currMemoizedState on load:', currMemoizedState);
 // patching / rewriting the onCommitFiberRoot functionality
 // onCommitFiberRoot runs functionality every time there is a change to the page
 dev.onCommitFiberRoot = (function (original) {
-	return function (...args) {
-		// console.log('args:', args);
+  return function (...args) {
 
-		// Reassign fiberNode when onCommitFiberRoot is invoked
-		fiberNode = args[1].current.child;
-		console.log('fibernode inside oncommitfiberroot', fiberNode)
+    if (!mode.paused) {
 
-		// save newMemState
-		const newMemState = findMemState(fiberNode);
-		// console.log('newMemState', newMemState);
+      // console.log('args:', args);
 
-		// initialize a stateChange variable as a boolean which will tell if state changed or not
-		// onCommitFiberRoot will run every time the user interacts with the page, regardless of if
-		// that interaction actually changes state
-		const stateChange =
-			JSON.stringify(newMemState) !== JSON.stringify(currMemoizedState);
-		// Run the test generation function only if the state has actually changed
-		if (stateChange) {
-			// console.log('state changed:', stateChange);
-			prevMemoizedState = currMemoizedState;
-			currMemoizedState = newMemState;
-			// memoizedState will return an object with 3 properties: {added: {}, deleted: {}, updated: {}}
-			memoizedStateDiff = detailedDiff(prevMemoizedState, currMemoizedState);
-			console.log('prevMemoizedState:', prevMemoizedState);
-			console.log('currMemoizedState:', currMemoizedState);
-			console.log('memoizedStateDiff:', memoizedStateDiff);
+      // Reassign fiberNode when onCommitFiberRoot is invoked
+      fiberNode = args[1].current.child;
 
-      // ****** Invoke function to generate tests ******
-      // stateChanges(currMemoizedState, prevMemoizedState, memoizedStateDiff);
-			testArray = stateChanges(
-				currMemoizedState,
-				prevMemoizedState,
-				memoizedStateDiff,
-				false,
-				testArray
-			);
+      // save newMemState
+      const newMemState = findMemState(fiberNode);
+      // console.log('newMemState', newMemState);
 
-      // -----------------------------------------------------------------------------------
-			// stringArr.push(testArray);
-      msgObj.message = testArray; // msgObj = { type: 'addTest', message: [(testArray)] }
-      // msgObj posted to content.js, which is running in the (active window?)
-	    window.postMessage(msgObj,'*') 
-      // -----------------------------------------------------------------------------------
+      // initialize a stateChange variable as a boolean which will tell if state changed or not
+      // onCommitFiberRoot will run every time the user interacts with the page, regardless of if
+      // that interaction actually changes state
+      const stateChange =
+        JSON.stringify(newMemState) !== JSON.stringify(currMemoizedState);
+      // Run the test generation function only if the state has actually changed
+      if (stateChange) {
+        // console.log('state changed:', stateChange);
+        prevMemoizedState = currMemoizedState;
+        currMemoizedState = newMemState;
+        // memoizedState will return an object with 3 properties: {added: {}, deleted: {}, updated: {}}
+        memoizedStateDiff = detailedDiff(prevMemoizedState, currMemoizedState);
+        console.log('prevMemoizedState:', prevMemoizedState);
+        console.log('currMemoizedState:', currMemoizedState);
+        console.log('memoizedStateDiff:', memoizedStateDiff);
+
+        // ****** Invoke function to generate tests ******
+        // stateChanges(currMemoizedState, prevMemoizedState, memoizedStateDiff);
+        testArray = stateChanges(
+          currMemoizedState,
+          prevMemoizedState,
+          memoizedStateDiff,
+          false,
+          testArray
+        );
+
+        // -----------------------------------------------------------------------------------
+        // stringArr.push(testArray);
+        msgObj.message = testArray; // msgObj = { type: 'addTest', message: [(testArray)] }
+        // msgObj posted to content.js, which is running in the (active window?)
+        window.postMessage(msgObj,'*') 
+        // -----------------------------------------------------------------------------------
 
 
-			// ****** Invoke function to generate tests ******
-			// stateChanges(currMemoizedState, prevMemoizedState, memoizedStateDiff);
-		}
-	};
+        // ****** Invoke function to generate tests ******
+        // stateChanges(currMemoizedState, prevMemoizedState, memoizedStateDiff);
+
+      }
+
+    }
+
+  };
 })(dev.onCommitFiberRoot);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // NOTES ABOUT DIFFING ALGORITHM / currently using deep-object-diff library
 // function diffingAlgo()

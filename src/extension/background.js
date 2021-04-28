@@ -13,6 +13,16 @@ chrome.runtime.onConnect.addListener((port) => {
     if (msg.name === 'connect' && msg.tabId) {
       // on 
       connections[msg.tabId] = port;
+    } else if (msg.name === 'pauseClicked' && msg.tabId) {
+      console.log('background.js hears pauseClicked!');
+      // Chrome sends a message to the tab at tabId to content.js with a shape of
+      // request = { name: 'pauseClicked ' }
+      chrome.tabs.sendMessage(msg.tabId, msg);
+    } else if (msg.name === 'recordClicked' && msg.tabId) {
+      console.log('background.js hears recordClicked!');
+      // Chrome sends a message to the tab at tabId to content.js with a shape of
+      // request = { name: 'recordClicked' }
+      chrome.tabs.sendMessage(msg.tabId, msg);
     }
   };
   // Listen from App.jsx
@@ -24,6 +34,7 @@ chrome.runtime.onConnect.addListener((port) => {
   chrome.runtime.sendMessage({ action: 'testMessage' });
   
 });
+
 
 // Chrome listening for messages (from content.js?)
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -74,8 +85,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       //   connections[tabId.toString()].postMessage('successful addTest')
       // }
       let joinedMsg = message.join('');
-      // let jsonMsg = JSON.stringify(joinedMsg)
-
 
       connections[tabId.toString()].postMessage(joinedMsg)
       
