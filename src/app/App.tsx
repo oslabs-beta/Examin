@@ -1,12 +1,12 @@
 import React from 'react'
-import PanelTabs from './components/PanelTabs'
+import ExaminPanel from './components/ExaminPanel'
 import { CssBaseline } from '@material-ui/core';
 
 const App = () => {
   return (
     <div>
       <CssBaseline />
-      <PanelTabs />      
+      <ExaminPanel />      
     </div>
   )
 }

@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    backgroundColor: theme.palette.background.paper,
     marginRight: drawerWidth,
   },
   drawer: {
