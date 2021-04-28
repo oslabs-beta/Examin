@@ -69,10 +69,11 @@ console.log('currMemoizedState on load:', currMemoizedState);
 // onCommitFiberRoot runs functionality every time there is a change to the page
 dev.onCommitFiberRoot = (function (original) {
 	return function (...args) {
-		console.log('args:', args);
+		// console.log('args:', args);
 
 		// Reassign fiberNode when onCommitFiberRoot is invoked
 		fiberNode = args[1].current.child;
+		console.log('fibernode inside oncommitfiberroot', fiberNode)
 
 		// save newMemState
 		const newMemState = findMemState(fiberNode);
