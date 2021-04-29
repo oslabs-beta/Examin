@@ -3,6 +3,7 @@ console.log('logging in background.js');
 const connections = {};
 
 let firstRun = true;
+let joinedMsg;
 
 // Chrome on connecting to the Examin Panel, add an Listener
 chrome.runtime.onConnect.addListener((port) => {
@@ -84,7 +85,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       // } else {
       //   connections[tabId.toString()].postMessage('successful addTest')
       // }
-      let joinedMsg = message.join('');
+      joinedMsg = message.join('');
 
       connections[tabId.toString()].postMessage(joinedMsg)
       
