@@ -44,11 +44,22 @@ window.addEventListener('message', (request, sender, sendResponse) => {
 
 
 
-// Listener for Frontend to Backend ---------------------------------------
+// Listener for Chrome Browser --------------------------------------------
 // Chrome Listening for messeges in the browser, if it recieves a 'message' (listening for background.js)
 chrome.runtime.onMessage.addListener((request) => {
-  // Send a postMessage to window to forward request to injected.js
-  window.postMessage(request, '*');
+  console.log('Recieved a msg from background.js, request is: ', request)
+
+  if (request.name === 'initial panel load') {
+    // Send a message back to background.js to initialize the initial state
+    console.log('In initial panel load!');
+    chrome.runtime.sendMessage({ action: 'initial panel load' })
+  } else if (request.name === 'pauseClicked' && request.tabId) {
+    // Send a postMessage to window to forward request to injected.js
+    window.postMessage(request, '*');
+  } else if (request.name === 'recordClicked' && request.tabId) {
+    // Send a postMessage to window to forward request to injected.js
+    window.postMessage(request, '*');
+  }
 })
 // ------------------------------------------------------------------------
 
