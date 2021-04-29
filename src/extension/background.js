@@ -9,6 +9,7 @@ console.log('logging in background.js');
 const connections = {};
 
 let firstRun = true;
+let joinedMsg = 'loading...';
 
 // Chrome on connecting to the Examin Panel, add an Listener
 chrome.runtime.onConnect.addListener((port) => {
@@ -17,7 +18,7 @@ chrome.runtime.onConnect.addListener((port) => {
   const listenerForDevtool = (msg, sender, sendResponse) => { // msg = request
     // creates a new key/value pair of current window & devtools tab
     
-    // Initial request shape = {
+    // Initial request (or msg) shape = {
     //   name: 'connect',
     //   tabId: chrome.devtools.inspectedWindow.tabId,
     // }
@@ -25,6 +26,14 @@ chrome.runtime.onConnect.addListener((port) => {
       // on 
       console.log('The tabId is: ', msg.tabId);
       connections[msg.tabId] = port;
+
+      // Chrome sends a message to the tab at tabId to content.js with a shape of
+      // request = { name: 'initial page load', tabId: msg.tabId }
+      // connections[msg.tabId].postMessage(joinedMsg);
+
+      
+      chrome.tabs.sendMessage(msg.tabId, {name: 'initial panel load', tabId: msg.tabId});
+
     } else if (msg.name === 'pauseClicked' && msg.tabId) {
       console.log('background.js hears pauseClicked!');
       // Chrome sends a message to the tab at tabId to content.js with a shape of
@@ -99,19 +108,21 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       //   connections[tabId.toString()].postMessage('successful addTest')
       // }
       // Concatenate array of strings (message: [(testArray)])
-      let joinedMsg = message.join('');
+      joinedMsg = message.join('');
 
       // Sending another message to the front-end examin panel (at the current tab)
       // Access tabId property on connections object and posting a message to Examin frontend panel
       // connections[tabId] value is the id of user’s application’s tab
-      connections[tabId.toString()].postMessage(joinedMsg)
-      
+      if (connections[tabId.toString()]) {
+        connections[tabId.toString()].postMessage(joinedMsg);
+      }
 			
 			break;
 			// chrome.runtime.sendMessage({ action: 'receivedAddTest' });
-		}
+		}  
     case 'initial panel load' :{
-      console.log('received initial panel load');
+      console.log('received initial panel load in background.js');
+      connections[tabId.toString()].postMessage(joinedMsg);
     }
 		default:
 			break;
