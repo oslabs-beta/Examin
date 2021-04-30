@@ -3,6 +3,7 @@
 // Uses React Dev Tools Global Hook to track state changes based on user interactions
 console.log('Currently in injected.js');
 
+
 import { detailedDiff } from 'deep-object-diff';
 import stateChanges from './statechanges.ts';
 
