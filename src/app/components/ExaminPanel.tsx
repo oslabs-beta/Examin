@@ -141,9 +141,9 @@ const ExaminPanel = () => {
     });
     
     port.onMessage.addListener((message) => { 
+      // Update code displayed on Examin panel
       setCode(message);
     });
-
   }, []);
 
   // ---------------------------------------------------------------
@@ -259,47 +259,52 @@ const ExaminPanel = () => {
         </List>
       </Drawer>
 
-      <Fab size="small" color="primary" aria-label="prev" className={classes.prevBtn}>
-        <FastRewindIcon />
-      </Fab>
-
-      <Fab 
-        size="medium" 
-        color={ isRecording ? 'secondary' : 'primary' }
-        aria-label="play" 
-        className={classes.recordBtn}
-        onClick={handlePauseRecClick}
+      <div
+        className={classes.btnContainer}
       >
-        {/* <FiberManualRecordIcon /> */}
-        {/* <PauseIcon /> */}
-        { isRecording ? <PauseIcon /> : <FiberManualRecordIcon /> }
-      </Fab>
+        <Fab size="small" color="primary" aria-label="prev" className={classes.prevBtn}>
+          <FastRewindIcon />
+        </Fab>
 
-      <Fab size="small" color="primary" aria-label="next" className={classes.nextBtn}>
-        <FastForwardIcon />
-      </Fab>
-
-      <Fab 
-        size="small" 
-        variant="extended" 
-        className={classes.copyBtn} 
-        onClick={() => {copy(code)}}
-      >
-        <FileCopyIcon className={classes.extendedIcon} />
-        Copy 
-      </Fab>
-
-    
-      <Fab 
-        size="small" 
-        variant="extended" 
-        className={classes.exportBtn}
-        onClick={() => exportHandler(code)}
-      >
-        <GetAppIcon className={classes.extendedIcon} />
-        Export
-      </Fab>
-
+        <Fab 
+          size="medium" 
+          // color={ isRecording ? 'secondary' : 'primary' }
+          style={ isRecording ? {backgroundColor: '#45c77c'} : {backgroundColor: '#0C4B40'}}
+          aria-label="play" 
+          className={classes.recordBtn}
+          onClick={handlePauseRecClick}
+        >
+          {/* <FiberManualRecordIcon /> */}
+          {/* <PauseIcon /> */}
+          { isRecording ? 
+            <PauseIcon /> : 
+            <FiberManualRecordIcon 
+              style={{color: 'white'}}
+            /> 
+          }
+        </Fab>
+        <Fab size="small" color="primary" aria-label="next" className={classes.nextBtn}>
+          <FastForwardIcon />
+        </Fab>
+        <Fab 
+          size="small" 
+          variant="extended" 
+          className={classes.copyBtn} 
+          onClick={() => {copy(code)}}
+        >
+          <FileCopyIcon className={classes.extendedIcon} />
+          Copy 
+        </Fab> 
+        <Fab 
+          size="small" 
+          variant="extended" 
+          className={classes.exportBtn}
+          onClick={() => exportHandler(code)}
+        >
+          <GetAppIcon className={classes.extendedIcon} />
+          Export
+        </Fab>
+      </div>
     </div>
   )
 }

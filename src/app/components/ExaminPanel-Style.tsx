@@ -1,6 +1,6 @@
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     bottom: 20,
     left: 'auto',
     position: 'fixed',
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + 2,
   },
   exportBtn: {
     margin: 0,
@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     bottom: 20,
     left: 'auto',
     position: 'fixed',
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + 2,
   },
   recordBtn: {
     position: 'fixed',
@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     bottom: 15,
     left: 70,
     right: 'auto',
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + 2,
   },
   prevBtn: {
     position: 'fixed',
@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     bottom: 20,
     left: 20,
     right: 'auto',
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + 2,
   },
   nextBtn: {
     position: 'fixed',
@@ -112,6 +112,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     bottom: 20,
     left: 130,
     right: 'auto',
+    zIndex: theme.zIndex.drawer + 2,
+  },
+  btnContainer: {
+    position: 'fixed',
+    bottom: 0,
+    height: 75,
+    width: '100%',
+    borderTop: '1px solid #dedede',
+    backgroundColor: theme.palette.background.paper,
     zIndex: theme.zIndex.drawer + 1,
   }
 }));
