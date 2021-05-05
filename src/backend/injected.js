@@ -138,24 +138,26 @@ const getComponentInfo = (node) => {
 	// let componentChildIndex = 0;
 	// let elementIndex = 0;
 
-	node = node.child;
-	while (node !== null) {
-		//some logic to fill out component/html children
-		// If React Component
-		if (node.elementType.name) {
-			componentInfo.componentChildren.push(grabComponentChildInfo(node));
+	const getComponentInfoHelper = (currNode) => {
+		currNode = currNode.child;
+		while (currNode !== null && currNode.elementType !== null) {
+			//some logic to fill out component/html children
+			// If React Component
+			if (currNode.elementType.name) {
+				componentInfo.componentChildren.push(grabComponentChildInfo(currNode));
 
-			// If html element
-		} else {
-			componentInfo.htmlChildren.push(grabHtmlChildInfo(node));
+				// If html element
+			} else {
+				componentInfo.htmlChildren.push(grabHtmlChildInfo(currNode));
+				getComponentInfoHelper(currNode);
+			}
+			currNode = currNode.sibling;
 		}
-		node = node.sibling;
-	}
+	};
+
+	getComponentInfoHelper(node);
 
 	return componentInfo;
-
-	// Check if child is a React Component or html element
-	// If child is React Component
 };
 
 const treeTraversal = (node) => {
