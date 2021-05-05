@@ -45,16 +45,16 @@ const handleMessage = (request, sender, sendResponse) => {
 
 window.addEventListener('message', handleMessage);
 // -----------------------------------------------------------------------------------
-
 // Save fiberNode on load
 let fiberNode = dev.getFiberRoots(1).values().next().value.current.child;
 console.log('fiberNode on load:', fiberNode);
-
 // -----------------------------------------------------------------------------------
+
+// NOT YET USED
 rootComponent = fiberNode.elementType.name;
 rootComponentLocation = fiberNode.elementType;
-console.log('rootComponent', rootComponent);
-console.log('rootComponentLocation', rootComponentLocation);
+// console.log('rootComponent', rootComponent);
+// console.log('rootComponentLocation', rootComponentLocation);
 
 //onLoad, check root component for props
 const getRootComponentInfo = (fiberNode) => {
@@ -68,7 +68,7 @@ const getRootComponentInfo = (fiberNode) => {
 	};
 };
 const componentInfoOnload = getRootComponentInfo(fiberNode);
-console.log('root componentInfoOnload:', componentInfoOnload);
+// console.log('root componentInfoOnload:', componentInfoOnload);
 // -----------------------------------------------------------------------------------
 // findMemState returns the user's application's state
 const findMemState = (node) => {
@@ -87,6 +87,96 @@ const findMemState = (node) => {
 
 // assign currMemoizedState the state object which findMemState finds on page load
 currMemoizedState = findMemState(fiberNode);
+
+const getComponentName = (node) => {
+	return node.elementType.name;
+};
+
+//	input =
+//	[
+// 		{
+// 			name: "<App>",
+// 			componentChildren: [
+//		  	{
+//	 				componentName: "<TodoList>",
+//					componentIndex: 0,
+//  			},
+// 			]
+// 			htmlChildren: [
+// 				{
+// 					elementType: 'li',
+// 					innerHtml: 'Walk the dog',
+//					elementIndex: 0
+// 				},
+//  			{
+// 					elementType: 'li',
+// 					innerHtml: 'Second item',
+//					elementIndex: 1,
+// 				}
+//			 ]
+// 			props: []
+// 		}
+// 	]
+const grabComponentChildInfo = (node) => {
+	const componentChildInfo = {};
+	componentChildInfo.componentName = node.elementType.name;
+	return componentChildInfo;
+};
+
+const grabHtmlChildInfo = (node) => {
+	const htmlChildInfo = {};
+	htmlChildInfo.elementType = node.elementType;
+	return htmlChildInfo;
+};
+
+const getComponentInfo = (node) => {
+	const componentInfo = {};
+	componentInfo.name = getComponentName(node);
+	componentInfo.props = node.memoizedProps;
+	componentInfo.componentChildren = [];
+	componentInfo.htmlChildren = [];
+	// let componentChildIndex = 0;
+	// let elementIndex = 0;
+
+	node = node.child;
+	while (node !== null) {
+		//some logic to fill out component/html children
+		// If React Component
+		if (node.elementType.name) {
+			componentInfo.componentChildren.push(grabComponentChildInfo(node));
+
+			// If html element
+		} else {
+			componentInfo.htmlChildren.push(grabHtmlChildInfo(node));
+		}
+		node = node.sibling;
+	}
+
+	return componentInfo;
+
+	// Check if child is a React Component or html element
+	// If child is React Component
+};
+
+const treeTraversal = (node) => {
+	const testInfoArray = [];
+	const treeHelper = (currNode) => {
+		if (currNode === null || currNode.elementType === null) return;
+		if (currNode.elementType.name) {
+			testInfoArray.push(getComponentInfo(currNode));
+		}
+		currNode = currNode.child;
+		while (currNode !== null) {
+			treeHelper(currNode);
+			currNode = currNode.sibling;
+		}
+	};
+	treeHelper(node);
+	return testInfoArray;
+};
+
+let testResult = treeTraversal(fiberNode);
+console.log('sample test object: ', testResult);
 
 // -----------------------------------------------------------------------------------
 // Generate test for default state
