@@ -6,6 +6,7 @@ console.log('Currently in injected.js');
 
 import { detailedDiff } from 'deep-object-diff';
 import stateChanges from './statechanges.ts';
+import testGenerator from './testGenerator.ts';
 
 const dev = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
 console.log('react devtools global hook object: ', dev);
@@ -48,10 +49,6 @@ window.addEventListener('message', handleMessage);
 // -----------------------------------------------------------------------------------
 // Save fiberNode on load
 let fiberNode = dev.getFiberRoots(1).values().next().value.current.child;
-<<<<<<< HEAD
-console.log('fiberNode on load:', fiberNode)
-console.log('args equivalent: ', dev.getFiberRoots(1).values().next().value);
-=======
 console.log('fiberNode on load:', fiberNode);
 // -----------------------------------------------------------------------------------
 
@@ -60,7 +57,6 @@ rootComponent = fiberNode.elementType.name;
 rootComponentLocation = fiberNode.elementType;
 // console.log('rootComponent', rootComponent);
 // console.log('rootComponentLocation', rootComponentLocation);
->>>>>>> 2770aa54752d984addab496d96f8ec7df6573ba3
 
 //onLoad, check root component for props
 const getRootComponentInfo = (fiberNode) => {
@@ -124,7 +120,7 @@ const getComponentName = (node) => {
 // 		}
 // 	]
 
-let indices = { TodoList: 1, li: 2 };
+let indices = {  };
 
 const grabComponentChildInfo = (node) => {
 	const componentChildInfo = {};
@@ -202,13 +198,15 @@ const treeTraversal = (node) => {
 };
 
 let testResult = treeTraversal(fiberNode);
-console.log('sample test object: ', testResult);
+let tests = testGenerator(testResult)
+console.log('the test result array: ', testResult)
+// console.log('sample test object: ', testResult);
 
 // -----------------------------------------------------------------------------------
 // Generate test for default state
 // invoke stateChanges on the currMemoizedState to generate the initial state tests
 let testArray = stateChanges(currMemoizedState);
-msgObj.message = testArray; // msgObj = {type: 'addTest', message: []}
+msgObj.message = tests; // msgObj = {type: 'addTest', message: []}
 window.postMessage(msgObj, '*');
 // -----------------------------------------------------------------------------------
 
@@ -216,49 +214,6 @@ window.postMessage(msgObj, '*');
 // patching / rewriting the onCommitFiberRoot functionality
 // onCommitFiberRoot runs functionality every time there is a change to the page
 dev.onCommitFiberRoot = (function (original) {
-<<<<<<< HEAD
-  return function (...args) {
-    if (!mode.paused) {
-      // Reassign fiberNode when onCommitFiberRoot is invoked
-      fiberNode = args[1].current.child;
-
-      // save newMemState
-      const newMemState = findMemState(fiberNode);
-      // console.log('args', args);
-
-      // initialize a stateChange variable as a boolean which will tell if state changed or not
-      // onCommitFiberRoot will run every time the user interacts with the page, regardless of if
-      // that interaction actually changes state
-      const stateChange =
-        JSON.stringify(newMemState) !== JSON.stringify(currMemoizedState);
-      // Run the test generation function only if the state has actually changed
-      if (stateChange) {
-        // console.log('state changed:', stateChange);
-        prevMemoizedState = currMemoizedState;
-        currMemoizedState = newMemState;
-        // memoizedState will return an object with 3 properties: {added: {}, deleted: {}, updated: {}}
-        memoizedStateDiff = detailedDiff(prevMemoizedState, currMemoizedState);
-        // console.log('prevMemoizedState:', prevMemoizedState);
-        // console.log('currMemoizedState:', currMemoizedState);
-        // console.log('memoizedStateDiff:', memoizedStateDiff);
-        // ****** Invoke function to generate tests ******
-        testArray = stateChanges(
-          currMemoizedState,
-          prevMemoizedState,
-          memoizedStateDiff,
-          false,
-          testArray
-        );
-        // -----------------------------------------------------------------------------------
-        // Sending the testArray as a message in the msgObj to the current window (content.js)
-        // msgObj posted to content.js, which is running in the (active window?)
-        msgObj.message = testArray; // msgObj = { type: 'addTest', message: [(testArray)] }
-        window.postMessage(msgObj,'*') 
-        // -----------------------------------------------------------------------------------
-      }
-    }
-  };
-=======
 	return function (...args) {
 		if (!mode.paused) {
 			// Reassign fiberNode when onCommitFiberRoot is invoked
@@ -276,6 +231,8 @@ dev.onCommitFiberRoot = (function (original) {
 			// Run the test generation function only if the state has actually changed
 			if (stateChange) {
 				testArray = treeTraversal(fiberNode);
+				// tests = testGenerator(testResult);
+				// console.log('the generated tests: ', tests)
 				console.log('sample test object in onCommitFiberRoot: ', testArray);
 
 				// msgObj.message = theirfunction(testArray);
@@ -304,6 +261,5 @@ dev.onCommitFiberRoot = (function (original) {
 			}
 		}
 	};
->>>>>>> 2770aa54752d984addab496d96f8ec7df6573ba3
 })(dev.onCommitFiberRoot);
 // -----------------------------------------------------------------------------------

@@ -269,7 +269,7 @@ const ExaminPanel = () => {
         <Fab 
           size="medium" 
           // color={ isRecording ? 'secondary' : 'primary' }
-          style={ isRecording ? { backgroundColor: '#adedc9' } : { backgroundColor: '#0C4B40' }}
+          style={ isRecording ? { backgroundColor: '#50fa7b' } : { backgroundColor: '#0C4B40' }}
           aria-label="play" 
           className={classes.recordBtn}
           onClick={handlePauseRecClick}
