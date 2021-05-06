@@ -16,6 +16,7 @@ let prevMemoizedState;
 let currMemoizedState;
 let memoizedStateDiff;
 
+let userInput = '';
 let rootComponent;
 let rootComponentLocation;
 let component;
@@ -33,6 +34,7 @@ const mode = {
 	paused: false,
 };
 
+// Listens to messages from content.js
 const handleMessage = (request, sender, sendResponse) => {
 	// console.log('The request is: ', request.data)
 	if (request.data.name === 'pauseClicked') {
@@ -42,6 +44,13 @@ const handleMessage = (request, sender, sendResponse) => {
 	if (request.data.name === 'recordClicked') {
 		mode.paused = false;
 		// console.log('mode.paused should be false', mode.paused);
+	}
+	// Handle logic for
+	if (request.data.name === 'submitRootDir') {
+		// console.log('mode.paused should be false', mode.paused);
+		console.log('injected hears the submit click!');
+		console.log('The user input is ', request.data.userInput);
+		userInput = request.data.userInput;
 	}
 };
 
@@ -89,6 +98,15 @@ const findMemState = (node) => {
 
 // assign currMemoizedState the state object which findMemState finds on page load
 currMemoizedState = findMemState(fiberNode);
+
+// TAKE USER INPUT FROM EXAMIN PANEL
+
+const getComponentFileName = (node, rootDirectory) => {
+	let fileName = node.child._debugSource.fileName;
+	const indexOfFirst = fileName.indexOf(rootDirectory);
+	const index = indexOfFirst + rootDirectory.length;
+	return '..' + fileName.slice(index);
+};
 
 const getComponentName = (node) => {
 	return node.elementType.name;
@@ -150,6 +168,7 @@ const grabHtmlChildInfo = (node) => {
 const getComponentInfo = (node) => {
 	const componentInfo = {};
 	componentInfo.name = getComponentName(node);
+	componentInfo.fileName = getComponentFileName(node, userInput);
 	componentInfo.props = node.memoizedProps;
 	componentInfo.componentChildren = [];
 	componentInfo.htmlChildren = [];
