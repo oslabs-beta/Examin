@@ -117,15 +117,31 @@ const getComponentName = (node) => {
 // 			props: []
 // 		}
 // 	]
+
+let indices = { TodoList: 1, li: 2 };
+
 const grabComponentChildInfo = (node) => {
 	const componentChildInfo = {};
 	componentChildInfo.componentName = node.elementType.name;
+	if (!indices.hasOwnProperty(componentChildInfo.componentName)) {
+		indices[componentChildInfo.componentName] = 0;
+	} else {
+		indices[componentChildInfo.componentName] += 1;
+	}
+	componentChildInfo.componentIndex = indices[componentChildInfo.componentName];
 	return componentChildInfo;
 };
 
 const grabHtmlChildInfo = (node) => {
 	const htmlChildInfo = {};
 	htmlChildInfo.elementType = node.elementType;
+	if (!indices.hasOwnProperty(htmlChildInfo.elementType)) {
+		indices[htmlChildInfo.elementType] = 0;
+	} else {
+		indices[htmlChildInfo.elementType] += 1;
+	}
+	htmlChildInfo.elementIndex = indices[htmlChildInfo.elementType];
+	htmlChildInfo.innerText = node.stateNode.innerText;
 	return htmlChildInfo;
 };
 
@@ -135,6 +151,7 @@ const getComponentInfo = (node) => {
 	componentInfo.props = node.memoizedProps;
 	componentInfo.componentChildren = [];
 	componentInfo.htmlChildren = [];
+	// let
 	// let componentChildIndex = 0;
 	// let elementIndex = 0;
 
@@ -165,6 +182,7 @@ const treeTraversal = (node) => {
 	const treeHelper = (currNode) => {
 		if (currNode === null || currNode.elementType === null) return;
 		if (currNode.elementType.name) {
+			indices = {};
 			testInfoArray.push(getComponentInfo(currNode));
 		}
 		currNode = currNode.child;
@@ -208,24 +226,30 @@ dev.onCommitFiberRoot = (function (original) {
 				JSON.stringify(newMemState) !== JSON.stringify(currMemoizedState);
 			// Run the test generation function only if the state has actually changed
 			if (stateChange) {
+				testArray = treeTraversal(fiberNode);
+				console.log('sample test object in onCommitFiberRoot: ', testArray);
+
+				// msgObj.message = theirfunction(testArray);
+
 				// console.log('state changed:', stateChange);
 				prevMemoizedState = currMemoizedState;
 				currMemoizedState = newMemState;
+
 				// memoizedState will return an object with 3 properties: {added: {}, deleted: {}, updated: {}}
-				memoizedStateDiff = detailedDiff(prevMemoizedState, currMemoizedState);
+				// memoizedStateDiff = detailedDiff(prevMemoizedState, currMemoizedState);
 				// console.log('prevMemoizedState:', prevMemoizedState);
 				// console.log('currMemoizedState:', currMemoizedState);
 				// console.log('memoizedStateDiff:', memoizedStateDiff);
 				// ****** Invoke function to generate tests ******
-				testArray = stateChanges(
-					currMemoizedState,
-					prevMemoizedState,
-					memoizedStateDiff,
-					false,
-					testArray
-				);
+				// testArray = stateChanges(
+				// 	currMemoizedState,
+				// 	prevMemoizedState,
+				// 	memoizedStateDiff,
+				// 	false,
+				// 	testArray
+				// );
 				// -----------------------------------------------------------------------------------
-				msgObj.message = testArray; // msgObj = { type: 'addTest', message: [(testArray)] }
+				// msgObj.message = testArray; // msgObj = { type: 'addTest', message: [(testArray)] }
 				// msgObj posted to content.js, which is running in the (active window?)
 				window.postMessage(msgObj, '*');
 			}
