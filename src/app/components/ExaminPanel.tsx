@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { useTheme } from '@material-ui/core/styles';
-import { 
-  AppBar, 
-  Box, 
-  Drawer, 
-  Divider, 
-  IconButton,
-  Fab, 
-  Grid,
-  List,
-  ListItem,
-  ListItemText, 
-  Tabs, 
-  Tab, 
-  Typography 
+import {
+	AppBar,
+	Box,
+	Drawer,
+	Divider,
+	IconButton,
+	Fab,
+	Grid,
+	List,
+	ListItem,
+	ListItemText,
+	Tabs,
+	Tab,
+	Typography,
+	TextField,
+	Button,
 } from '@material-ui/core';
 import { ChevronLeft, ChevronRight, Inbox, Mail } from '@material-ui/icons';
 import PauseIcon from '@material-ui/icons/Pause';
@@ -31,282 +33,325 @@ import copy from 'copy-to-clipboard';
 
 import { useStyles } from './ExaminPanel-Style';
 
-
 function TabPanel(props: any) {
-  const { children, value, index, ...other } = props;
-  
-  return (
-    <div
-    role="tabpanel"
-    hidden={value !== index}
-    id={`simple-tabpanel-${index}`}
-    aria-labelledby={`simple-tab-${index}`}
-    {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
+	const { children, value, index, ...other } = props;
 
+	return (
+		<div
+			role="tabpanel"
+			hidden={value !== index}
+			id={`simple-tabpanel-${index}`}
+			aria-labelledby={`simple-tab-${index}`}
+			{...other}
+		>
+			{value === index && (
+				<Box p={3}>
+					<Typography>{children}</Typography>
+				</Box>
+			)}
+		</div>
+	);
+}
 
 const ExaminPanel = () => {
-  // MaterialUI Styling Hook ---------------------------------------
-  const classes = useStyles();
-  const theme = useTheme();
-  // ---------------------------------------------------------------
+	// MaterialUI Styling Hook ---------------------------------------
+	const classes = useStyles();
+	const theme = useTheme();
+	// ---------------------------------------------------------------
 
-  // Stateful functions for handling Tab Logic ---------------------
-  const [tab, setTab] = useState(0);
-  
-  const handleChange = (event: React.ChangeEvent<{}>, newTab: number) => {
-    setTab(newTab);
-  };
-  // ---------------------------------------------------------------
+	// Stateful functions for handling Tab Logic ---------------------
+	const [tab, setTab] = useState(0);
 
-  
-  // Stateful functions for handling Drawer Logic ------------------
-  const [open, setOpen] = useState(false);
+	const handleChange = (event: React.ChangeEvent<{}>, newTab: number) => {
+		setTab(newTab);
+	};
+	// ---------------------------------------------------------------
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  // ---------------------------------------------------------------
+	// Stateful functions for handling Drawer Logic ------------------
+	const [open, setOpen] = useState(false);
 
-  
-  // Stateful functions for handling Pause/Recording Button--------
-  const [isRecording, setIsRecording] = useState(true);
+	const handleDrawerOpen = () => {
+		setOpen(true);
+	};
 
-  const handlePauseRecClick = () => {
-    if (isRecording) {
-      // Send a postMessage to background.js with payload shape of 
-      // request = { name: 'pauseClicked', tabId: '' }
-      port.postMessage({
-        name: 'pauseClicked',
-        tabId: chrome.devtools.inspectedWindow.tabId,
-      })
-      setIsRecording(false);
-    } else {
-      // Send a postMessage to background.js with payload shape of 
-      // request = { name: 'recordClicked', tabId: '' }
-      port.postMessage({
-        name: 'recordClicked',
-        tabId: chrome.devtools.inspectedWindow.tabId,
-      })
-      setIsRecording(true);
-    }
+	const handleDrawerClose = () => {
+		setOpen(false);
+	};
+	// ---------------------------------------------------------------
 
-  };
-  // ---------------------------------------------------------------
+	// Stateful functions for handling Pause/Recording Button--------
+	const [isRecording, setIsRecording] = useState(true);
 
-  // Export Button Handling ----------------------------------------
-  const exportHandler = (text: string) => {
-    // create invisible download anchor link
-    const fileDownload = document.createElement('a');
+	const handlePauseRecClick = () => {
+		if (isRecording) {
+			// Send a postMessage to background.js with payload shape of
+			// request = { name: 'pauseClicked', tabId: '' }
+			port.postMessage({
+				name: 'pauseClicked',
+				tabId: chrome.devtools.inspectedWindow.tabId,
+			});
+			setIsRecording(false);
+		} else {
+			// Send a postMessage to background.js with payload shape of
+			// request = { name: 'recordClicked', tabId: '' }
+			port.postMessage({
+				name: 'recordClicked',
+				tabId: chrome.devtools.inspectedWindow.tabId,
+			});
+			setIsRecording(true);
+		}
+	};
+	// ---------------------------------------------------------------
 
-    // set file in anchor link
-    fileDownload.href = URL.createObjectURL(
-      new Blob([text], {type: 'javascript'})
-      // new Blob([JSON.stringify(text)], {type: 'javascript'})
-    )
+	// Export Button Handling ----------------------------------------
+	const exportHandler = (text: string) => {
+		// create invisible download anchor link
+		const fileDownload = document.createElement('a');
 
-    // set anchor as file download and click it
-    fileDownload.setAttribute('download', 'testfile.js');
-    fileDownload.click();
+		// set file in anchor link
+		fileDownload.href = URL.createObjectURL(
+			new Blob([text], { type: 'javascript' })
+			// new Blob([JSON.stringify(text)], {type: 'javascript'})
+		);
 
-    // remove file url
-    URL.revokeObjectURL(fileDownload.href);
-  }
-  // ---------------------------------------------------------------
+		// set anchor as file download and click it
+		fileDownload.setAttribute('download', 'testfile.js');
+		fileDownload.click();
 
+		// remove file url
+		URL.revokeObjectURL(fileDownload.href);
+	};
+	// ---------------------------------------------------------------
 
-  // Stateful functions for handling code panel values -------------
-  const [code, setCode] = useState('loading...');
+	// Stateful functions for handling code panel values -------------
+	const [code, setCode] = useState('loading...');
+	const [userRootInput, setUserRootInput] = useState('');
 
-  // Connect chrome to the port where name is "examin-demo" from (examin panel?)
-  const port = chrome.runtime.connect({ name: "examin-demo" });
+	// Connect chrome to the port where name is "examin-demo" from (examin panel?)
+	const port = chrome.runtime.connect({ name: 'examin-demo' });
 
-  useEffect(() => {
-    
-    port.postMessage({
-      name: 'connect',
-      tabId: chrome.devtools.inspectedWindow.tabId,
-    });
-    
-    port.onMessage.addListener((message) => { 
-      // Update code displayed on Examin panel
-      setCode(message);
-    });
-  }, []);
+	useEffect(() => {
+		port.postMessage({
+			name: 'connect',
+			tabId: chrome.devtools.inspectedWindow.tabId,
+		});
 
-  // ---------------------------------------------------------------
-  
-  return (
-    <div className={classes.root}>
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Grid 
-          container 
-          justify="space-between"
-          alignItems="center"
-        >
-          <Grid item>
-            <Box style={{marginLeft: theme.spacing(2)}}>
-              <img 
-                className={classes.logo}
-                src='../assets/examin-small.svg'
-                alt="Examin Logo"
-              />
-            </Box>
-          </Grid>
-          <Grid item>
-            <Tabs 
-              value={tab} 
-              onChange={handleChange}
-              aria-label="simple tabs example"
-            >
-              <Tab label="Testing" />
-              <Tab label="Branched Testing" />
-              <Tab label="Components" />
-            </Tabs>
-          </Grid>
-          <Grid item>
-            <IconButton 
-              color="inherit"
-              aria-label="open drawer"
-              edge="end"
-              onClick={open ? handleDrawerClose : handleDrawerOpen}
-              className={clsx(open)}
-              style={{marginRight: theme.spacing(2)}}
-            >
-              { open ? <ChevronRight /> : <ChevronLeft />}
-            </IconButton>
-          </Grid>
-        </Grid>
-      </AppBar>
+		port.onMessage.addListener((message) => {
+			// Update code displayed on Examin panel
+			setCode(message);
+		});
+	}, []);
 
-      <TabPanel 
-        value={tab} 
-        index={0} 
-        className={clsx(classes.content, {
-          [classes.contentShift]: open,
-        })}
-      >
-        <div>
-          <Editor
-            language="javascript"
-            displayName="Initial Describe Block"
-            value={code}
-            onChange={setCode}
-          />
-        </div>
-      </TabPanel> 
-      <TabPanel 
-        value={tab} 
-        index={1}
-        className={clsx(classes.content, {
-          [classes.contentShift]: open,
-        })}
-      >
-        Branched Testing!
-      </TabPanel>
-      <TabPanel 
-        value={tab} 
-        index={2}
-        className={clsx(classes.content, {
-          [classes.contentShift]: open,
-        })}
-      >
-        Components
-      </TabPanel>
+	// ---------------------------------------------------------------
+	// handleSubmitRootDir submits user input (root-directory-name)
+	const handleSubmitRootDir = () => {
+		console.log('user root input', userRootInput);
+		port.postMessage({
+			name: 'submitRootDir',
+			tabId: chrome.devtools.inspectedWindow.tabId,
+			userInput: userRootInput,
+		});
+	};
+	// ---------------------------------------------------------------
 
-      <Drawer
-        className={classes.drawer}
-        variant="persistent"
-        anchor="right"
-        open={open}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <Inbox /> : <Mail />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <Inbox /> : <Mail />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
+	return (
+		<div className={classes.root}>
+			<AppBar
+				position="fixed"
+				className={clsx(classes.appBar, {
+					[classes.appBarShift]: open,
+				})}
+			>
+				<Grid container justify="space-between" alignItems="center">
+					<Grid item>
+						<Box style={{ marginLeft: theme.spacing(2) }}>
+							<img
+								className={classes.logo}
+								src="../assets/examin-small.svg"
+								alt="Examin Logo"
+							/>
+						</Box>
+					</Grid>
+					<Grid item>
+						<Tabs
+							value={tab}
+							onChange={handleChange}
+							aria-label="simple tabs example"
+						>
+							<Tab label="Testing" />
+							<Tab label="Branched Testing" />
+							<Tab label="Components" />
+						</Tabs>
+					</Grid>
+					<Grid item>
+						<IconButton
+							color="inherit"
+							aria-label="open drawer"
+							edge="end"
+							onClick={open ? handleDrawerClose : handleDrawerOpen}
+							className={clsx(open)}
+							style={{ marginRight: theme.spacing(2) }}
+						>
+							{open ? <ChevronRight /> : <ChevronLeft />}
+						</IconButton>
+					</Grid>
+				</Grid>
+			</AppBar>
 
-      <div
-        className={classes.btnContainer}
-      >
-        <Fab size="small" color="primary" aria-label="prev" className={classes.prevBtn}>
-          <FastRewindIcon />
-        </Fab>
+			<TabPanel
+				value={tab}
+				index={0}
+				className={clsx(classes.content, {
+					[classes.contentShift]: open,
+				})}
+			>
+				<div>
+					<TextField
+						id="outlined-full-width"
+						label="Recommended *"
+						style={{ margin: 8 }}
+						placeholder="root-directory-name"
+						helperText=""
+						// fullWidth
+						size="small"
+						margin="normal"
+						InputLabelProps={{
+							shrink: true,
+						}}
+						variant="outlined"
+						value={userRootInput}
+						onChange={(e) => setUserRootInput(e.target.value)}
+					/>
+					<Button
+						variant="outlined"
+						color="primary"
+						size="small"
+						onClick={handleSubmitRootDir}
+					>
+						Submit
+					</Button>
+				</div>
+				<div>
+					<Editor
+						language="javascript"
+						displayName="Initial Describe Block"
+						value={code}
+						onChange={setCode}
+					/>
+				</div>
+			</TabPanel>
+			<TabPanel
+				value={tab}
+				index={1}
+				className={clsx(classes.content, {
+					[classes.contentShift]: open,
+				})}
+			>
+				Branched Testing!
+			</TabPanel>
+			<TabPanel
+				value={tab}
+				index={2}
+				className={clsx(classes.content, {
+					[classes.contentShift]: open,
+				})}
+			>
+				Components
+			</TabPanel>
 
-        <Fab 
-          size="medium" 
-          // color={ isRecording ? 'secondary' : 'primary' }
-          style={ isRecording ? {backgroundColor: '#45c77c'} : {backgroundColor: '#0C4B40'}}
-          aria-label="play" 
-          className={classes.recordBtn}
-          onClick={handlePauseRecClick}
-        >
-          {/* <FiberManualRecordIcon /> */}
-          {/* <PauseIcon /> */}
-          { isRecording ? 
-            <PauseIcon /> : 
-            <FiberManualRecordIcon 
-              style={{color: 'white'}}
-            /> 
-          }
-        </Fab>
-        <Fab size="small" color="primary" aria-label="next" className={classes.nextBtn}>
-          <FastForwardIcon />
-        </Fab>
-        <Fab 
-          size="small" 
-          variant="extended" 
-          className={classes.copyBtn} 
-          onClick={() => {copy(code)}}
-        >
-          <FileCopyIcon className={classes.extendedIcon} />
-          Copy 
-        </Fab> 
-        <Fab 
-          size="small" 
-          variant="extended" 
-          className={classes.exportBtn}
-          onClick={() => exportHandler(code)}
-        >
-          <GetAppIcon className={classes.extendedIcon} />
-          Export
-        </Fab>
-      </div>
-    </div>
-  )
-}
+			<Drawer
+				className={classes.drawer}
+				variant="persistent"
+				anchor="right"
+				open={open}
+				classes={{
+					paper: classes.drawerPaper,
+				}}
+			>
+				<List>
+					{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+						<ListItem button key={text}>
+							<ListItemIcon>
+								{index % 2 === 0 ? <Inbox /> : <Mail />}
+							</ListItemIcon>
+							<ListItemText primary={text} />
+						</ListItem>
+					))}
+				</List>
+				<Divider />
+				<List>
+					{['All mail', 'Trash', 'Spam'].map((text, index) => (
+						<ListItem button key={text}>
+							<ListItemIcon>
+								{index % 2 === 0 ? <Inbox /> : <Mail />}
+							</ListItemIcon>
+							<ListItemText primary={text} />
+						</ListItem>
+					))}
+				</List>
+			</Drawer>
 
-export default ExaminPanel
+			<div className={classes.btnContainer}>
+				<Fab
+					size="small"
+					color="primary"
+					aria-label="prev"
+					className={classes.prevBtn}
+				>
+					<FastRewindIcon />
+				</Fab>
+
+				<Fab
+					size="medium"
+					// color={ isRecording ? 'secondary' : 'primary' }
+					style={
+						isRecording
+							? { backgroundColor: '#45c77c' }
+							: { backgroundColor: '#0C4B40' }
+					}
+					aria-label="play"
+					className={classes.recordBtn}
+					onClick={handlePauseRecClick}
+				>
+					{/* <FiberManualRecordIcon /> */}
+					{/* <PauseIcon /> */}
+					{isRecording ? (
+						<PauseIcon />
+					) : (
+						<FiberManualRecordIcon style={{ color: 'white' }} />
+					)}
+				</Fab>
+				<Fab
+					size="small"
+					color="primary"
+					aria-label="next"
+					className={classes.nextBtn}
+				>
+					<FastForwardIcon />
+				</Fab>
+				<Fab
+					size="small"
+					variant="extended"
+					className={classes.copyBtn}
+					onClick={() => {
+						copy(code);
+					}}
+				>
+					<FileCopyIcon className={classes.extendedIcon} />
+					Copy
+				</Fab>
+				<Fab
+					size="small"
+					variant="extended"
+					className={classes.exportBtn}
+					onClick={() => exportHandler(code)}
+				>
+					<GetAppIcon className={classes.extendedIcon} />
+					Export
+				</Fab>
+			</div>
+		</div>
+	);
+};
+
+export default ExaminPanel;
