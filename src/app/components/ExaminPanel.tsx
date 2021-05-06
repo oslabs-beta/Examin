@@ -86,7 +86,7 @@ const ExaminPanel = () => {
 
   const handlePauseRecClick = () => {
     if (isRecording) {
-      // Send a postMessage to background.js with payload shape of 
+      // fSend a postMessage to background.js with payload shape of 
       // request = { name: 'pauseClicked', tabId: '' }
       port.postMessage({
         name: 'pauseClicked',
@@ -117,7 +117,7 @@ const ExaminPanel = () => {
       // new Blob([JSON.stringify(text)], {type: 'javascript'})
     )
 
-    // set anchor as file download and click it
+    // set anchor as file download and click it 
     fileDownload.setAttribute('download', 'testfile.js');
     fileDownload.click();
 
@@ -269,7 +269,7 @@ const ExaminPanel = () => {
         <Fab 
           size="medium" 
           // color={ isRecording ? 'secondary' : 'primary' }
-          style={ isRecording ? {backgroundColor: '#adedc9'} : {backgroundColor: '#0C4B40'}}
+          style={ isRecording ? { backgroundColor: '#adedc9' } : { backgroundColor: '#0C4B40' }}
           aria-label="play" 
           className={classes.recordBtn}
           onClick={handlePauseRecClick}

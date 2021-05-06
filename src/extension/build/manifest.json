@@ -13,7 +13,7 @@
 			"js": ["bundles/content.bundle.js"]
 		}
 	],
-	"web_accessible_resources": ["bundles/backend.bundle.js", "injected.js"],
+	"web_accessible_resources": ["bundles/backend.bundle.js"],
 	"permissions": [
 		"contextMenus",
 		"tabs",

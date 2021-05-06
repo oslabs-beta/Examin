@@ -1,7 +1,7 @@
 const path = require("path");
 const ChromeExtensionReloader = require("webpack-chrome-extension-reloader");
 
-// REACTIME / ATOMOS
+// Webpack Config Object
 const config = {
   devtool: 'eval-cheap-module-source-map',
   entry: {
@@ -49,18 +49,6 @@ const config = {
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
-      },
-      {
-        test: /\.(png|jpe?g|gif)$/i,
-        use: [
-          {
-            loader: 'file-loader',
-          },
-        ],
-      },
-      {
-        test: /\.txt$/i,
-        use: 'raw-loader',
       },
     ],
   },

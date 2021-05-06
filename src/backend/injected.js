@@ -41,6 +41,7 @@ window.addEventListener('message', handleMessage);
 // Save fiberNode on load
 let fiberNode = dev.getFiberRoots(1).values().next().value.current.child;
 console.log('fiberNode on load:', fiberNode)
+console.log('args equivalent: ', dev.getFiberRoots(1).values().next().value);
 
 // findMemState returns the user's application's state
 const findMemState = (node) => {
@@ -79,7 +80,7 @@ dev.onCommitFiberRoot = (function (original) {
 
       // save newMemState
       const newMemState = findMemState(fiberNode);
-      // console.log('newMemState', newMemState);
+      // console.log('args', args);
 
       // initialize a stateChange variable as a boolean which will tell if state changed or not
       // onCommitFiberRoot will run every time the user interacts with the page, regardless of if
@@ -105,9 +106,11 @@ dev.onCommitFiberRoot = (function (original) {
           testArray
         );
         // -----------------------------------------------------------------------------------
-        msgObj.message = testArray; // msgObj = { type: 'addTest', message: [(testArray)] }
+        // Sending the testArray as a message in the msgObj to the current window (content.js)
         // msgObj posted to content.js, which is running in the (active window?)
+        msgObj.message = testArray; // msgObj = { type: 'addTest', message: [(testArray)] }
         window.postMessage(msgObj,'*') 
+        // -----------------------------------------------------------------------------------
       }
     }
   };
