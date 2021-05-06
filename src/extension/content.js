@@ -57,6 +57,9 @@ chrome.runtime.onMessage.addListener((request) => {
 	} else if (request.name === 'recordClicked' && request.tabId) {
 		// Send a postMessage to window to forward request to injected.js
 		window.postMessage(request, '*');
+	} else if (request.name === 'submitRootDir' && request.tabId) {
+		// Send a postMessage to window to forward request to injedted.js
+		window.postMessage(request, '*');
 	}
 });
 // ------------------------------------------------------------------------
