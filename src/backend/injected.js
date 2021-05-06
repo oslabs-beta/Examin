@@ -88,6 +88,12 @@ const findMemState = (node) => {
 // assign currMemoizedState the state object which findMemState finds on page load
 currMemoizedState = findMemState(fiberNode);
 
+const getComponentFileName = (node) => {
+	// return node.elementType.__proto__;
+	return node.child._debugSource.fileName;
+	// return 'test';
+};
+
 const getComponentName = (node) => {
 	return node.elementType.name;
 };
@@ -148,6 +154,7 @@ const grabHtmlChildInfo = (node) => {
 const getComponentInfo = (node) => {
 	const componentInfo = {};
 	componentInfo.name = getComponentName(node);
+	componentInfo.fileName = getComponentFileName(node);
 	componentInfo.props = node.memoizedProps;
 	componentInfo.componentChildren = [];
 	componentInfo.htmlChildren = [];
