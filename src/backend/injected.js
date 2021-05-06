@@ -88,10 +88,13 @@ const findMemState = (node) => {
 // assign currMemoizedState the state object which findMemState finds on page load
 currMemoizedState = findMemState(fiberNode);
 
-const getComponentFileName = (node) => {
-	// return node.elementType.__proto__;
-	return node.child._debugSource.fileName;
-	// return 'test';
+const rootDirectory = 'react-typescript-todo-app';
+
+const getComponentFileName = (node, rootDirectory) => {
+	let fileName = node.child._debugSource.fileName;
+	const indexOfFirst = fileName.indexOf(rootDirectory);
+	const index = indexOfFirst + rootDirectory.length;
+	return '..' + fileName.slice(index);
 };
 
 const getComponentName = (node) => {
@@ -154,7 +157,7 @@ const grabHtmlChildInfo = (node) => {
 const getComponentInfo = (node) => {
 	const componentInfo = {};
 	componentInfo.name = getComponentName(node);
-	componentInfo.fileName = getComponentFileName(node);
+	componentInfo.fileName = getComponentFileName(node, rootDirectory);
 	componentInfo.props = node.memoizedProps;
 	componentInfo.componentChildren = [];
 	componentInfo.htmlChildren = [];
