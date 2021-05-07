@@ -104,7 +104,7 @@ interface ComponentChildrenObject {
 
 interface ComponentInfoObject {
 	name: string;
- // fileName: string;
+  fileName: string;
 	componentChildren: Array<ComponentChildrenObject>;
 	htmlChildren: any;
 	props: Array<object>;
@@ -134,7 +134,14 @@ export default function testGenerator(
     // ---------------------------------------------------------
 
     // Initialize an object to check if component has been added to describeBlock already
-    // let componentHasBeenAdded = {}; 
+    let componentHasBeenAdded = {}; 
+    for (let i = 0; i < componentData.length; i++) {
+      if (!componentHasBeenAdded[componentData[i].name]) {
+        componentHasBeenAdded[componentData[i].name] = true;
+        describeBlockArray.push(`import ${componentData[i].name} from '${componentData[i].fileName}';
+`);
+      }
+    }
 
     // Iterate through the componentData and generate the initial component render tests
     for (let i = 0; i < componentData.length; i++) {

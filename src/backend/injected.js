@@ -34,6 +34,12 @@ const mode = {
 	paused: false,
 };
 
+// -----------------------------------------------------------------------------------
+// Save fiberNode on load
+let fiberNode = dev.getFiberRoots(1).values().next().value.current.child;
+console.log('fiberNode on load:', fiberNode);
+// -----------------------------------------------------------------------------------
+
 // Listens to messages from content.js
 const handleMessage = (request, sender, sendResponse) => {
 	// console.log('The request is: ', request.data)
@@ -51,15 +57,15 @@ const handleMessage = (request, sender, sendResponse) => {
 		console.log('injected hears the submit click!');
 		console.log('The user input is ', request.data.userInput);
 		userInput = request.data.userInput;
+		// makes the tests and puts it into the examin window - ensuring refresh
+		testResult = treeTraversal(fiberNode);
+		tests = testGenerator(testResult);
+		msgObj.message = tests; 
+		window.postMessage(msgObj, '*');		
 	}
 };
 
 window.addEventListener('message', handleMessage);
-// -----------------------------------------------------------------------------------
-// Save fiberNode on load
-let fiberNode = dev.getFiberRoots(1).values().next().value.current.child;
-console.log('fiberNode on load:', fiberNode);
-// -----------------------------------------------------------------------------------
 
 // NOT YET USED
 rootComponent = fiberNode.elementType.name;
@@ -249,7 +255,8 @@ dev.onCommitFiberRoot = (function (original) {
 				JSON.stringify(newMemState) !== JSON.stringify(currMemoizedState);
 			// Run the test generation function only if the state has actually changed
 			if (stateChange) {
-				testArray = treeTraversal(fiberNode);
+				testResult = treeTraversal(fiberNode);
+				let tests = testGenerator(testResult);
 				// tests = testGenerator(testResult);
 				// console.log('the generated tests: ', tests)
 				console.log('sample test object in onCommitFiberRoot: ', testArray);

@@ -17,7 +17,7 @@ interface MemStateObject {
 export default function stateChanges(
 	currMemoizedState: Array<object>,
 	prevMemoizedState: Array<object> = null,
-	memoizedStateDiff: MemStateObject = null,
+	memoizedStateDiff: MemStateObject = null, 
 	firstInvocation: boolean = true,
 	describeBlockArray: Array<string> = []
 ) {
