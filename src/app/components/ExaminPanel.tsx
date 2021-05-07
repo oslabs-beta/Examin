@@ -146,6 +146,8 @@ const ExaminPanel = () => {
 	// handleSubmitRootDir submits user input (root-directory-name)
 	const handleSubmitRootDir = () => {
 		console.log('user root input', userRootInput);
+    let text = code;
+    console.log('the code split at describe is: ', text.split('describe'));
 		port.postMessage({
 			name: 'submitRootDir',
 			tabId: chrome.devtools.inspectedWindow.tabId,
