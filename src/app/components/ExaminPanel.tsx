@@ -205,14 +205,14 @@ const ExaminPanel = () => {
 					[classes.contentShift]: open,
 				})}
 			>
-				<div>
+				<Box display="flex" alignItems="center" justifyContent="flex-end" className={classes.rootDirInput}>
 					<TextField
 						id="outlined-full-width"
-						label="Recommended *"
+						label="Root Directory"
 						style={{ margin: 8 }}
 						placeholder="root-directory-name"
 						helperText=""
-						// fullWidth
+						fullWidth
 						size="small"
 						margin="normal"
 						InputLabelProps={{
@@ -225,12 +225,11 @@ const ExaminPanel = () => {
 					<Button
 						variant="outlined"
 						color="primary"
-						size="small"
 						onClick={handleSubmitRootDir}
 					>
 						Submit
 					</Button>
-				</div>
+				</Box>
 				<div>
 					<Editor
 						language="javascript"

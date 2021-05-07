@@ -3,8 +3,10 @@
 // Uses React Dev Tools Global Hook to track state changes based on user interactions
 console.log('Currently in injected.js');
 
+
 import { detailedDiff } from 'deep-object-diff';
 import stateChanges from './statechanges.ts';
+import testGenerator from './testGenerator.ts';
 
 const dev = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
 console.log('react devtools global hook object: ', dev);
@@ -32,6 +34,12 @@ const mode = {
 	paused: false,
 };
 
+// -----------------------------------------------------------------------------------
+// Save fiberNode on load
+let fiberNode = dev.getFiberRoots(1).values().next().value.current.child;
+console.log('fiberNode on load:', fiberNode);
+// -----------------------------------------------------------------------------------
+
 // Listens to messages from content.js
 const handleMessage = (request, sender, sendResponse) => {
 	// console.log('The request is: ', request.data)
@@ -49,15 +57,15 @@ const handleMessage = (request, sender, sendResponse) => {
 		console.log('injected hears the submit click!');
 		console.log('The user input is ', request.data.userInput);
 		userInput = request.data.userInput;
+		// makes the tests and puts it into the examin window - ensuring refresh
+		testResult = treeTraversal(fiberNode);
+		tests = testGenerator(testResult);
+		msgObj.message = tests; 
+		window.postMessage(msgObj, '*');		
 	}
 };
 
 window.addEventListener('message', handleMessage);
-// -----------------------------------------------------------------------------------
-// Save fiberNode on load
-let fiberNode = dev.getFiberRoots(1).values().next().value.current.child;
-console.log('fiberNode on load:', fiberNode);
-// -----------------------------------------------------------------------------------
 
 // NOT YET USED
 rootComponent = fiberNode.elementType.name;
@@ -136,7 +144,7 @@ const getComponentName = (node) => {
 // 		}
 // 	]
 
-let indices = { TodoList: 1, li: 2 };
+let indices = {  };
 
 const grabComponentChildInfo = (node) => {
 	const componentChildInfo = {};
@@ -215,13 +223,15 @@ const treeTraversal = (node) => {
 };
 
 let testResult = treeTraversal(fiberNode);
-console.log('sample test object: ', testResult);
+let tests = testGenerator(testResult)
+console.log('the test result array: ', testResult)
+// console.log('sample test object: ', testResult);
 
 // -----------------------------------------------------------------------------------
 // Generate test for default state
 // invoke stateChanges on the currMemoizedState to generate the initial state tests
 let testArray = stateChanges(currMemoizedState);
-msgObj.message = testArray; // msgObj = {type: 'addTest', message: []}
+msgObj.message = tests; // msgObj = {type: 'addTest', message: []}
 window.postMessage(msgObj, '*');
 // -----------------------------------------------------------------------------------
 
@@ -245,7 +255,10 @@ dev.onCommitFiberRoot = (function (original) {
 				JSON.stringify(newMemState) !== JSON.stringify(currMemoizedState);
 			// Run the test generation function only if the state has actually changed
 			if (stateChange) {
-				testArray = treeTraversal(fiberNode);
+				testResult = treeTraversal(fiberNode);
+				let tests = testGenerator(testResult);
+				// tests = testGenerator(testResult);
+				// console.log('the generated tests: ', tests)
 				console.log('sample test object in onCommitFiberRoot: ', testArray);
 
 				// msgObj.message = theirfunction(testArray);

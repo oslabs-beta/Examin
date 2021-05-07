@@ -122,7 +122,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderTop: '1px solid #dedede',
     backgroundColor: theme.palette.background.paper,
     zIndex: theme.zIndex.drawer + 1,
-  }
+  },
+  rootDirInput: {
+    marginRight: 10,
+    marginBottom: 10,
+  },
 }));
 
 

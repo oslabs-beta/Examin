@@ -13,7 +13,7 @@ const App = () => {
       },
       secondary: {
         light: '#0C4B40',
-        main: '#C5F3D9',
+        main: '#50fa7b',
       }
     }
   });
@@ -28,4 +28,4 @@ const App = () => {
   )
 }
 
-export default App
+export default App;
