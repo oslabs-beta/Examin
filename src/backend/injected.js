@@ -105,13 +105,20 @@ const findMemState = (node) => {
 // assign currMemoizedState the state object which findMemState finds on page load
 currMemoizedState = findMemState(fiberNode);
 
-// TAKE USER INPUT FROM EXAMIN PANEL
-
+// Accpes user input from Examin Panel
 const getComponentFileName = (node, rootDirectory) => {
+	if (!node.child._debugSource) {
+		return '<ADD FILE PATH>';
+	}
 	let fileName = node.child._debugSource.fileName;
-	const indexOfFirst = fileName.indexOf(rootDirectory);
-	const index = indexOfFirst + rootDirectory.length;
-	return '..' + fileName.slice(index);
+	if (rootDirectory === '') {
+		return fileName;
+	}
+	if (fileName.includes(rootDirectory)) {
+		const indexOfFirst = fileName.indexOf(rootDirectory);
+		const index = indexOfFirst + rootDirectory.length;
+		return '..' + fileName.slice(index);
+	}
 };
 
 const getComponentName = (node) => {
@@ -256,7 +263,9 @@ dev.onCommitFiberRoot = (function (original) {
 			// Run the test generation function only if the state has actually changed
 			if (stateChange) {
 				testResult = treeTraversal(fiberNode);
-				let tests = testGenerator(testResult);
+				tests = testGenerator(testResult);
+				msgObj.message = tests; 
+				window.postMessage(msgObj, '*');	
 				// tests = testGenerator(testResult);
 				// console.log('the generated tests: ', tests)
 				console.log('sample test object in onCommitFiberRoot: ', testArray);
@@ -283,7 +292,6 @@ dev.onCommitFiberRoot = (function (original) {
 				// -----------------------------------------------------------------------------------
 				// msgObj.message = testArray; // msgObj = { type: 'addTest', message: [(testArray)] }
 				// msgObj posted to content.js, which is running in the (active window?)
-				window.postMessage(msgObj, '*');
 			}
 		}
 	};
