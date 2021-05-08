@@ -165,7 +165,9 @@ describe('${componentData[i].name} Component', () => {`);
 								componentData[i].htmlChildren[j].innerText
 							);
 							let regex = /\\n/g;
-							innerTextStr = innerTextStr.replace(regex, '');
+							if (innerTextStr) {
+								innerTextStr = innerTextStr.replace(regex, '');
+							}
 							describeBlockArray.push(`
     expect(wrapper.find('${componentData[i].htmlChildren[j].elementType}').text()).toEqual(${innerTextStr});`);
 						}
