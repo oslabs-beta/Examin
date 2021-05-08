@@ -3,9 +3,8 @@
 // Uses React Dev Tools Global Hook to track state changes based on user interactions
 console.log('Currently in injected.js');
 
-
 import { detailedDiff } from 'deep-object-diff';
-import stateChanges from './statechanges.ts';
+// import stateChanges from './statechanges.ts';
 import testGenerator from './testGenerator.ts';
 
 const dev = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
@@ -60,8 +59,8 @@ const handleMessage = (request, sender, sendResponse) => {
 		// makes the tests and puts it into the examin window - ensuring refresh
 		testResult = treeTraversal(fiberNode);
 		tests = testGenerator(testResult);
-		msgObj.message = tests; 
-		window.postMessage(msgObj, '*');		
+		msgObj.message = tests;
+		window.postMessage(msgObj, '*');
 	}
 };
 
@@ -103,11 +102,11 @@ const findMemState = (node) => {
 };
 
 // assign currMemoizedState the state object which findMemState finds on page load
-currMemoizedState = findMemState(fiberNode);
+// currMemoizedState = findMemState(fiberNode);
 
 // Accpes user input from Examin Panel
 const getComponentFileName = (node, rootDirectory) => {
-	if (!node.child._debugSource) {
+	if (!node.child || !node.child._debugSource) {
 		return '<ADD FILE PATH>';
 	}
 	let fileName = node.child._debugSource.fileName;
@@ -137,8 +136,7 @@ const getComponentName = (node) => {
 // 			]
 // 			htmlChildren: [
 // 				{
-// 					elementType: 'li',
-// 					innerHtml: 'Walk the dog',
+// 					elementType: 'div',
 //					elementIndex: 0
 // 				},
 //  			{
@@ -151,7 +149,7 @@ const getComponentName = (node) => {
 // 		}
 // 	]
 
-let indices = {  };
+let indices = {};
 
 const grabComponentChildInfo = (node) => {
 	const componentChildInfo = {};
@@ -167,6 +165,7 @@ const grabComponentChildInfo = (node) => {
 
 const grabHtmlChildInfo = (node) => {
 	const htmlChildInfo = {};
+	htmlChildInfo.innerText = '';
 	htmlChildInfo.elementType = node.elementType;
 	if (!indices.hasOwnProperty(htmlChildInfo.elementType)) {
 		indices[htmlChildInfo.elementType] = 0;
@@ -174,7 +173,12 @@ const grabHtmlChildInfo = (node) => {
 		indices[htmlChildInfo.elementType] += 1;
 	}
 	htmlChildInfo.elementIndex = indices[htmlChildInfo.elementType];
-	htmlChildInfo.innerText = node.stateNode.innerText;
+	if (
+		htmlChildInfo.elementType !== 'div' &&
+		htmlChildInfo.elementType !== 'ul'
+	) {
+		htmlChildInfo.innerText = node.stateNode.innerText;
+	}
 	return htmlChildInfo;
 };
 
@@ -191,14 +195,15 @@ const getComponentInfo = (node) => {
 
 	const getComponentInfoHelper = (currNode) => {
 		currNode = currNode.child;
-		while (currNode !== null && currNode.elementType !== null) {
+		// while (currNode !== null && currNode.elementType !== null) {
+		while (currNode !== null) {
 			//some logic to fill out component/html children
 			// If React Component
-			if (currNode.elementType.name) {
+			if (currNode.elementType && currNode.elementType.name) {
 				componentInfo.componentChildren.push(grabComponentChildInfo(currNode));
 
 				// If html element
-			} else {
+			} else if (currNode.elementType) {
 				componentInfo.htmlChildren.push(grabHtmlChildInfo(currNode));
 				getComponentInfoHelper(currNode);
 			}
@@ -216,10 +221,17 @@ const treeTraversal = (node) => {
 	const treeHelper = (currNode) => {
 		if (currNode === null || currNode.elementType === null) return;
 		if (currNode.elementType.name) {
+			// console.log(
+			// 	'this is the currNode.elementType.name: ',
+			// 	currNode.elementType.name
+			// );
 			indices = {};
 			testInfoArray.push(getComponentInfo(currNode));
+		} else {
+			// console.log('this is the currNode.elementType: ', currNode.elementType);
 		}
 		currNode = currNode.child;
+		// console.log('currNode after currNode.child reset', currNode);
 		while (currNode !== null) {
 			treeHelper(currNode);
 			currNode = currNode.sibling;
@@ -230,14 +242,14 @@ const treeTraversal = (node) => {
 };
 
 let testResult = treeTraversal(fiberNode);
-let tests = testGenerator(testResult)
-console.log('the test result array: ', testResult)
+let tests = testGenerator(testResult);
+console.log('the test result array: ', testResult);
 // console.log('sample test object: ', testResult);
 
 // -----------------------------------------------------------------------------------
 // Generate test for default state
 // invoke stateChanges on the currMemoizedState to generate the initial state tests
-let testArray = stateChanges(currMemoizedState);
+// let testArray = stateChanges(currMemoizedState);
 msgObj.message = tests; // msgObj = {type: 'addTest', message: []}
 window.postMessage(msgObj, '*');
 // -----------------------------------------------------------------------------------
@@ -264,11 +276,11 @@ dev.onCommitFiberRoot = (function (original) {
 			if (stateChange) {
 				testResult = treeTraversal(fiberNode);
 				tests = testGenerator(testResult);
-				msgObj.message = tests; 
-				window.postMessage(msgObj, '*');	
+				msgObj.message = tests;
+				window.postMessage(msgObj, '*');
 				// tests = testGenerator(testResult);
 				// console.log('the generated tests: ', tests)
-				console.log('sample test object in onCommitFiberRoot: ', testArray);
+				console.log('sample test object in onCommitFiberRoot: ', testResult);
 
 				// msgObj.message = theirfunction(testArray);
 
