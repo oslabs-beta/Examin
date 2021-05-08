@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: 0,
     top: 'auto',
     bottom: 15,
-    left: 70,
+    left: 20,
     right: 'auto',
     zIndex: theme.zIndex.drawer + 2,
   },
@@ -151,6 +151,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
+  copyText: {
+    padding: theme.spacing(2),
+  }
 }));
 
 
