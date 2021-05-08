@@ -51,6 +51,8 @@ configure({ adapter: new Adapter() });
 
 	// Iterate through the componentData and generate the initial component render tests
 	for (let i = 0; i < componentData.length; i++) {
+		// if (!componentHasBeenAdded[componentData[i].name]) {
+		//   componentHasBeenAdded[componentData[i].name] = true;
 		// Push the initialization describe string into describeBlockArray
 		describeBlockArray.push(`
 describe('${componentData[i].name} Component', () => {`);
@@ -73,6 +75,8 @@ describe('${componentData[i].name} Component', () => {`);
 				}
 			}
 			// Push the current element's props into the describeBlock
+			//         describeBlockArray.push(`
+			//   let ${componentData[i].name}Props = ${JSON.stringify(componentData[i].props)}
 			console.log('temp props log: ', tempProps);
 			console.log('strigified props', JSON.stringify(currentProps));
 			// `
@@ -114,6 +118,9 @@ describe('${componentData[i].name} Component', () => {`);
 				childFreq[componentData[i].componentChildren[j].componentName] = 1;
 			}
 		}
+		// childFreq(for App element) = {"TodoList": 1, "AddTodoForm": 1}
+		// console.log('childFreq', childFreq)
+		// );
 		// Conditional: check if childFreq is not empty
 		if (Object.keys(childFreq).length !== 0) {
 			// Enumerate through childFreq
@@ -139,6 +146,7 @@ describe('${componentData[i].name} Component', () => {`);
 				htmlFreq[componentData[i].htmlChildren[j].elementType] = 1;
 			}
 		}
+		// console.log('htmlFreq', htmlFreq)
 
 		// Conditional: check if htmlChildren length is not 0
 		if (componentData[i].htmlChildren.length !== 0) {
@@ -165,7 +173,9 @@ describe('${componentData[i].name} Component', () => {`);
 								componentData[i].htmlChildren[j].innerText
 							);
 							let regex = /\\n/g;
-							innerTextStr = innerTextStr.replace(regex, '');
+							if (innerTextStr) {
+								innerTextStr = innerTextStr.replace(regex, '');
+							}
 							describeBlockArray.push(`
     expect(wrapper.find('${componentData[i].htmlChildren[j].elementType}').text()).toEqual(${innerTextStr});`);
 						}
