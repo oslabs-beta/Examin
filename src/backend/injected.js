@@ -109,13 +109,16 @@ const getComponentFileName = (node, rootDirectory) => {
 	if (!node.child || !node.child._debugSource) {
 		return '<ADD FILE PATH>';
 	}
+	let regex = /\\/g
 	let fileName = node.child._debugSource.fileName;
 	if (rootDirectory === '') {
+		fileName = fileName.replace(regex, '/');
 		return fileName;
 	}
 	if (fileName.includes(rootDirectory)) {
 		const indexOfFirst = fileName.indexOf(rootDirectory);
 		const index = indexOfFirst + rootDirectory.length;
+		fileName = fileName.replace(regex, '/');
 		return '..' + fileName.slice(index);
 	}
 };
@@ -175,7 +178,8 @@ const grabHtmlChildInfo = (node) => {
 	htmlChildInfo.elementIndex = indices[htmlChildInfo.elementType];
 	if (
 		htmlChildInfo.elementType !== 'div' &&
-		htmlChildInfo.elementType !== 'ul'
+		htmlChildInfo.elementType !== 'ul' 
+		// && node.stateNode
 	) {
 		htmlChildInfo.innerText = node.stateNode.innerText;
 	}
