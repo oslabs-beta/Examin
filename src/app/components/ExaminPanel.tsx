@@ -19,14 +19,13 @@ import {
 	Typography,
 	TextField,
 	Button,
+  Popover,
 } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import PauseIcon from '@material-ui/icons/Pause';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import FastRewindIcon from '@material-ui/icons/FastRewind';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import FastForwardIcon from '@material-ui/icons/FastForward';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -307,8 +306,20 @@ const ExaminPanel = () => {
 	};
 	// ---------------------------------------------------------------
 
-  
+  // Copy Button Popover Handling ----------------------------------
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
+  const handleCopyClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    copy(code);
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCopyClose = () => {
+    setAnchorEl(null);
+  };
+
+  const copyPopOpen = Boolean(anchorEl);
+  // ---------------------------------------------------------------
 
 	return (
 		<div className={classes.root}>
@@ -335,8 +346,6 @@ const ExaminPanel = () => {
 							aria-label="simple tabs example"
 						>
 							<Tab label="Testing" />
-							<Tab label="Branched Testing" />
-							<Tab label="Components" />
 						</Tabs>
 					</Grid>
 					<Grid item>
@@ -489,14 +498,14 @@ const ExaminPanel = () => {
 			</Drawer>
 
 			<div className={classes.btnContainer}>
-				<Fab
+				{/* <Fab
 					size="small"
 					color="primary"
 					aria-label="prev"
 					className={classes.prevBtn}
 				>
 					<FastRewindIcon />
-				</Fab>
+				</Fab> */}
 
 				<Fab
 					size="medium"
@@ -510,33 +519,55 @@ const ExaminPanel = () => {
 					className={classes.recordBtn}
 					onClick={handlePauseRecClick}
 				>
-					{/* <FiberManualRecordIcon /> */}
-					{/* <PauseIcon /> */}
 					{isRecording ? (
 						<PauseIcon />
 					) : (
 						<FiberManualRecordIcon style={{ color: 'white' }} />
 					)}
 				</Fab>
-				<Fab
+				{/* <Fab
 					size="small"
 					color="primary"
 					aria-label="next"
 					className={classes.nextBtn}
 				>
 					<FastForwardIcon />
-				</Fab>
+				</Fab> */}
 				<Fab
 					size="small"
 					variant="extended"
 					className={classes.copyBtn}
-					onClick={() => {
-						copy(code);
-					}}
+					// onClick={() => {
+					// 	copy(code);
+					// }}
+          onClick={
+						handleCopyClick
+					}
 				>
 					<FileCopyIcon className={classes.extendedIcon} />
 					Copy
 				</Fab>
+        <Popover
+          id={'copy-popover'}
+          open={copyPopOpen}
+          anchorEl={anchorEl}
+          onClose={handleCopyClose}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+        >
+          <Typography 
+            variant='body1' 
+            className={classes.copyText}
+          >
+            Copied to Clipboard!
+          </Typography>
+        </Popover>
 				<Fab
 					size="small"
 					variant="extended"
