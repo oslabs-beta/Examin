@@ -1,128 +1,72 @@
 # Examin
 
-## _Automatic React Unit Test Generator._
+## _Automatic React Unit Test Generator_
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/react) [![CircleCI Status](https://circleci.com/gh/facebook/react.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/facebook/react) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://reactjs.org/docs/how-to-contribute.html#your-first-pull-request)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/master/LICENSE)
+[![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://badge.fury.io/gh/tterb%2FHyde)
+[![GitHub Release](https://img.shields.io/static/v1?label=release&message=1.0.0.1&color=brightgreen)]()
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![GitHub contributors](https://img.shields.io/static/v1?label=contributers&message=4&color=yellowgreen)]()
+[![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/)
 
-Examin is a browser-extension, currently compatibility,
-React.
+## Features ⚡
 
-- Taking out the grunt work.  
-- right-click inspect and find Examin next to your dev-tools  
-- ✨Magic ✨
+Examin is a Chrome extension that generates React unit tests for your application. Ensure your application renders as expected before adding new features. Examin generates the baseline unit tests and allows developers to customize their tests for their application.
 
-## Features
+- Install the Examin extension
+- Install npm dependencies for Jest/Enzyme
+- Navigate to the Examin panel in Chrome developer tools
+- ✨ Generate tests ✨
 
-- Export a Test File for you to use in your app.  
-- Record State changes  
-- Branch Testing
+![Preview of Examin](./src/extension/build/assets/main.png)
 
-Team [Examin] is looking to simplify [ unit-testing.][df1]
+## Installation 🔌
 
-> The overriding goal for Examin's
-> unit testing platform is to make testing
-> as easy as possible. The idea is that a
-> to have test automatically generated with  
-> the click of a few buttons, and have your project  
-> testable as-is without having to write time consuming test files
-> or formatting instructions.
+To get started, manually install Examin in Developer mode.
 
-We hope you enjoy the tool!  
+1. Clone the repo <br/>
+   `git clone https://github.com/oslabs-beta/Examin.git`
+2. Install NPM packages <br/>
+   `npm install`
+3. Create a build directory <br/>
+   `npm run build`
+4. Load the unpacked extension from src/extension/build to Chrome
 
-## Tech
+NOTE: The React Developer Tools extension is also required for Examin to run, if you do not already have it installed on your browser.
 
-Examin uses a number of open source projects to work properly:
+## How to Use ❓️
 
-- [React] - HTML enhanced for web apps!
-- [TypeScript] - awesome web-based text editor
-- [node.js] - evented I/O for the backend
+1. Install Jest/Enzyme for your project
 
-And of course Examin itself is open source with a [public repository][dill]
- on GitHub.
+   - `npm install jest enzyme enzyme-adapter-react-16 @babel/core @babel/preset-env`
+   - Add presets to your `.babelrc` file <br/>
+     `{ "presets": ["@babel/preset-env", "@babel/preset-react"] }`
 
-## Installation
+2. Run the Examin build using npm run dev
 
-Examin requires [Node.js](https://nodejs.org/) v10+ to run.
+3. Navigate to the Examin panel in Chrome DevTools
 
-Install the dependencies and devDependencies and start the server.
+   - Must be in developer mode
+   - Revise import statements as needed
 
-```sh
-cd examin
-npm i
-node app
-```
+4. Add Generated tests into your application
+   - Add `__tests__` directory in root directory
+   - Add test js file to `__tests__` directory
+   - Run tests using `jest` or `jest <filename>`
 
-For production environments...
+## Troubleshooting ⁉️
 
-```sh
-npm install --production
-NODE_ENV=production node app
-```
+- [Jest docs](https://jestjs.io/docs/getting-started)
+- [Enzyme docs](https://enzymejs.github.io/enzyme/)
+- Error: Unable to resolve dependency tree while installing `enzyme-adapter-react-16`
+  - Add peerDependencies to your **package.json** file
+    ```sh
+    "peerDependencies": { "react": "^16.8.0 || ^17.0.0", "react-dom": "^16.8.0 || ^17.0.0" }
+    ```
 
-## Plugins
+## Core Team ☕ 💼
 
-Examin is currently extended with the following plugins.
-Instructions on how to use them in your own application are linked below.
-
-| Plugin | README |
-| ------ | ------ |
-| MaterialUI | [plugins/Material/README.md][PlMaterialUI] |
-| CodeMirror | [plugins/CodeMirror/README.md][PlCM] |
-| Jest | [plugins/Jest/README.md][PlJest] |
-| Babel | [plugins/babel/README.md][PlBabel] |
-
-## Development
-
-Want to contribute? Great!
-
-Examin uses Webpack for fast developing.
-Make a change in your file and instantaneously see your updates!
-
-Open your favorite Terminal and run these commands.
-
-First Tab:
-
-```sh
-npm install
-```
-
-Second Tab:
-
-```sh
-npm run dev
-```
-
-(optional) Third:
-
-```sh
-third command
-```
-
-### Building for source
-
-For production release:
-
-```sh
-first command
-```
-
-Generating pre-built zip archives for distribution:
-
-```sh
-second command
-```
-
-## License
-
-MIT
-
-**Free Software, Hell Yeah!**
-
-[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
-  
-   [git-repo-url]: <https://github.com/os-labs/examin.git>
-   [markdown-it]: <https://github.com/markdown-it/markdown-it>
-   [node.js]: <http://nodejs.org>
-
-   [PlJest]: <https://github.com/os-labs/examin/tree/master/plugins/jest/README.md>
-   [PlMateralUI]: <https://github.com/os-labs/examin/tree/master/plugins/material/README.md>
+- **Cliff Assuncao** - [@Github](https://github.com/WizardSource) - [@LinkedIn](https://www.linkedin.com/in/cliff-assuncao-1b2593211/)
+- **Kirsten Yoon** - [@Github](https://github.com/kirstenyoon) - [@LinkedIn](http://linkedin.com/in/kirstenyoon)
+- **Nicholas Brush** - [@Github](https://github.com/Njbrush) - [@LinkedIn](https://www.linkedin.com/in/nicholas-j-brush/)
+- **Ty Doan** - [@Github](https://github.com/tdoan35) - [@LinkedIn](https://www.linkedin.com/in/ty-thanh-doan/)
