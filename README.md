@@ -6,22 +6,26 @@
 
 ## Features
 
-Examin is a Chrome extension that generates React unit tests for your application. Ensure your application renders as expected before adding new features. Examin generates the baseline and allows developers to customize their tests for their application.
+Examin is a Chrome extension that generates React unit tests for your application. Ensure your application renders as expected before adding new features. Examin generates the baseline unit tests and allows developers to customize their tests for their application.
 
 - Install the Examin extension
 - Install npm dependencies for Jest/Enzyme
 - Navigate to the Examin panel in Chrome developer tools
 - ✨ Generate tests ✨
 
+![Preview of Examin](./src/extension/build/assets/main.png)
+
+<!-- (https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true) -->
+
 ## Installation
 
 To get started, manually install Examin in Developer mode.
 
-1. Clone the repo
+1. Clone the repo <br/>
    `git clone https://github.com/oslabs-beta/Examin.git`
-2. Install NPM packages
+2. Install NPM packages <br/>
    `npm install`
-3. Create a build directory
+3. Create a build directory <br/>
    `npm run build`
 4. Load the unpacked extension from src/extension/build to Chrome
 
@@ -32,7 +36,7 @@ NOTE: The React Developer Tools extension is also required for Examin to run, if
 1. Install Jest/Enzyme for your project
 
    - `npm install jest enzyme enzyme-adapter-react-16 @babel/core @babel/preset-env`
-   - Add presets to your `.babelrc` file
+   - Add presets to your `.babelrc` file <br/>
      `{ "presets": ["@babel/preset-env", "@babel/preset-react"] }`
 
 2. Run the Examin build using npm run dev
