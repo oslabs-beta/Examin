@@ -4,6 +4,7 @@ import { useTheme } from '@material-ui/core/styles';
 import {
 	AppBar,
 	Box,
+  Checkbox,
 	Drawer,
 	Divider,
 	IconButton,
@@ -12,20 +13,22 @@ import {
 	List,
 	ListItem,
 	ListItemText,
+  ListItemSecondaryAction,
 	Tabs,
 	Tab,
 	Typography,
 	TextField,
 	Button,
+  Popover,
 } from '@material-ui/core';
-import { ChevronLeft, ChevronRight, Inbox, Mail } from '@material-ui/icons';
+import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import PauseIcon from '@material-ui/icons/Pause';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import FastRewindIcon from '@material-ui/icons/FastRewind';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import FastForwardIcon from '@material-ui/icons/FastForward';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 import Editor from './Editor';
 
@@ -123,10 +126,137 @@ const ExaminPanel = () => {
 	};
 	// ---------------------------------------------------------------
 
+
+  // Stateful functions for handling componentNames ----------------
+  const [componentNames, setComponentNames] = useState([]); 
+  const [componentData, setComponentData] = useState([]);
+  // [app, todolist]
+  // {app: describeTest}
+  // [{app: describe, isChecked: true}, {}]
+  const createComponentNamesArray = (messageString) => {
+    let componentNames = [];
+    let componentData = [];
+    let checkedComps = [];
+    const strArray = messageString.split("describe('");
+
+    // Iterate through the split messageString
+    for (let i = 0; i < strArray.length; i++) {
+      // if(tempObj[i]) // dont overwrite previously created objects
+      
+      // Initialize a temp object
+			let tempObj = {};
+      if (i === 0) {
+        tempObj = { import: strArray[0], isChecked: true };
+				// tempObj = { name: componentNames[i], import: strArray[0], isChecked: true };
+        componentData.push(tempObj);
+      } else {
+        // Substantiate the checkedComponents State variable
+        checkedComps.push(true);
+
+        componentNames.push(strArray[i].split(' ')[0]);
+				// Set temporary key / value pairs that will change as for loop [i] increments 
+        let val = "describe('" + strArray[i];
+        let key = strArray[i].split(' ')[0];
+
+        tempObj = { [key] : val, isChecked: true };
+
+        componentData.push(tempObj);
+			}
+      // componentData[componentNames[i-1]] = "describe('" + strArray[i];
+    }
+    setCheckedComponents(checkedComps);
+    console.log('result of checkedComponents: ', checkedComps);
+    setComponentNames(componentNames);
+    // console.log('result of componentNames: ', componentNames);
+    setComponentData(componentData);
+    // console.log('result of componentData: ', componentData);
+
+    codeFromComponentData(componentData);
+  };
+  // ---------------------------------------------------------------
+
+  // Function for Generating New Code String -----------------------
+  // Input: componentData = [{import: '...', isChecked: true}, {}, {}, {}]
+  // Output: String = 'import ... describe ....'
+  const codeFromComponentData = (componentData) => {
+    // Initialize a resultant string
+    let codeString = '';
+    // Iterate through the componentData array
+    componentData.forEach(element => {
+      for (const key in element) {
+        if (key !== 'isChecked') {
+          if (element.isChecked) {
+            codeString += element[key];
+          }
+        } 
+      }
+    });
+    // Return the resultant string
+    setCode(codeString);
+  };
+  // ---------------------------------------------------------------
+  
+  // isChecked Handling --------------------------------------------
+  const [checkedImport, setCheckedImport] = React.useState(true);
+  const [checkedComponents, setCheckedComponents] = React.useState([]);
+  
+  const handleCheckbox = (key: any) => () => {
+    console.log('the index is ', key);
+    let currComponentData = componentData;
+    let currCheckedComponents = checkedComponents;
+    // console.log(currComponentData);
+    if (key === -1) {
+      let tempObj = {};
+      tempObj = currComponentData[0];
+      if (tempObj['isChecked']) {
+        tempObj['isChecked'] = false;
+        currComponentData.shift();
+        currComponentData.unshift(tempObj);
+        setCheckedImport(false);
+        setComponentData(currComponentData);
+        codeFromComponentData(currComponentData);
+      } else {
+        tempObj['isChecked'] = true;
+        currComponentData.shift();
+        currComponentData.unshift(tempObj);
+        setCheckedImport(true);
+        setComponentData(currComponentData);
+        codeFromComponentData(currComponentData);
+      }
+      console.log(currComponentData);
+    } else {
+      let tempObj = {};
+      tempObj = currComponentData[key+1];
+      if (currComponentData[key+1]['isChecked']) {
+        tempObj['isChecked'] = false;
+        currComponentData[key+1] = tempObj;
+        // Handle checkedComponents here
+        currCheckedComponents[key] = false;
+        setCheckedComponents(currCheckedComponents);
+
+        setComponentData(currComponentData);
+        codeFromComponentData(currComponentData);
+      } else {
+        tempObj['isChecked'] = true;
+        currComponentData[key+1] = tempObj;
+        // Handle checkedComponents here
+        currCheckedComponents[key] = true;
+        setCheckedComponents(currCheckedComponents);
+
+        setComponentData(currComponentData);
+        codeFromComponentData(currComponentData);
+      }
+      console.log(currComponentData);
+    }
+  };
+  // ---------------------------------------------------------------
+
+
+
+
 	// Stateful functions for handling code panel values -------------
 	const [code, setCode] = useState('loading...');
-	const [userRootInput, setUserRootInput] = useState('');
-
+	
 	// Connect chrome to the port where name is "examin-demo" from (examin panel?)
 	const port = chrome.runtime.connect({ name: 'examin-demo' });
 
@@ -138,16 +268,36 @@ const ExaminPanel = () => {
 
 		port.onMessage.addListener((message) => {
 			// Update code displayed on Examin panel
-			setCode(message);
+      // console.log('message: ', message);
+      console.log('useeffect fired');
+      // Start handling componentNames
+      let text = message;
+			createComponentNamesArray(text);
+      setCheckedImport(true);
+      // let compData = componentData;
+      // console.log(compData);
+      // codeFromComponentData(compData);
+			// setCode(message);
 		});
 	}, []);
 
-	// ---------------------------------------------------------------
+	// Stateful functions for handling Root Dir ---------------------
+  const [openRootDir, setOpenRootDir] = useState(false);
+  const [userRootInput, setUserRootInput] = useState('');
+
+  const handleRootDirOpen = () => {
+    setOpenRootDir(true);
+  };
+
+  const handleRootDirClose = () => {
+    setOpenRootDir(false);
+  };
+
 	// handleSubmitRootDir submits user input (root-directory-name)
 	const handleSubmitRootDir = () => {
-		console.log('user root input', userRootInput);
-    let text = code;
-    console.log('the code split at describe is: ', text.split('describe'));
+    // setUserRootInput('');
+		// console.log('user root input', userRootInput);
+    // let text = code;
 		port.postMessage({
 			name: 'submitRootDir',
 			tabId: chrome.devtools.inspectedWindow.tabId,
@@ -155,6 +305,21 @@ const ExaminPanel = () => {
 		});
 	};
 	// ---------------------------------------------------------------
+
+  // Copy Button Popover Handling ----------------------------------
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+
+  const handleCopyClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    copy(code);
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCopyClose = () => {
+    setAnchorEl(null);
+  };
+
+  const copyPopOpen = Boolean(anchorEl);
+  // ---------------------------------------------------------------
 
 	return (
 		<div className={classes.root}>
@@ -181,8 +346,6 @@ const ExaminPanel = () => {
 							aria-label="simple tabs example"
 						>
 							<Tab label="Testing" />
-							<Tab label="Branched Testing" />
-							<Tab label="Components" />
 						</Tabs>
 					</Grid>
 					<Grid item>
@@ -207,39 +370,51 @@ const ExaminPanel = () => {
 					[classes.contentShift]: open,
 				})}
 			>
-				<Box display="flex" alignItems="center" justifyContent="flex-end" className={classes.rootDirInput}>
-					<TextField
-						id="outlined-full-width"
-						label="Root Directory"
-						style={{ margin: 8 }}
-						placeholder="root-directory-name"
-						helperText=""
-						fullWidth
-						size="small"
-						margin="normal"
-						InputLabelProps={{
-							shrink: true,
-						}}
-						variant="outlined"
-						value={userRootInput}
-						onChange={(e) => setUserRootInput(e.target.value)}
-					/>
-					<Button
-						variant="outlined"
-						color="primary"
-						onClick={handleSubmitRootDir}
-					>
-						Submit
-					</Button>
-				</Box>
-				<div>
+				{ openRootDir ?
+          <Box 
+            display="flex" 
+            alignItems="center" 
+            justifyContent="flex-end" 
+            className={clsx(classes.rootDirInput, {
+              [classes.rootDirInputShift]: openRootDir,
+            })}
+          >
+            <TextField
+              id="outlined-full-width"
+              label="Root Directory"
+              style={{ margin: 8 }}
+              placeholder="root-directory-name"
+              helperText=""
+              fullWidth
+              size="small"
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              value={userRootInput}
+              onChange={(e) => setUserRootInput(e.target.value)}
+            />
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleSubmitRootDir}
+            >
+              Submit
+            </Button>
+          </Box> :
+          <></>
+        }
+				<Box className={clsx(classes.codeEditor, {
+					[classes.codeEditorShift]: openRootDir,
+				})}>
 					<Editor
 						language="javascript"
 						displayName="Initial Describe Block"
 						value={code}
 						onChange={setCode}
 					/>
-				</div>
+				</Box>
 			</TabPanel>
 			<TabPanel
 				value={tab}
@@ -270,37 +445,67 @@ const ExaminPanel = () => {
 				}}
 			>
 				<List>
-					{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-						<ListItem button key={text}>
-							<ListItemIcon>
-								{index % 2 === 0 ? <Inbox /> : <Mail />}
-							</ListItemIcon>
-							<ListItemText primary={text} />
-						</ListItem>
-					))}
-				</List>
+          <ListItem 
+            dense 
+            // button 
+            key="Import"
+            // onClick={handleCheckbox(-1)}
+          >
+            <ListItemIcon>
+              <Checkbox 
+                // defaultChecked
+                checked={checkedImport}
+                color="primary"
+                onClick={handleCheckbox(-1)}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Import Block" />
+            <ListItemSecondaryAction>
+              <IconButton 
+                edge="end" 
+                aria-label="settings"
+                onClick={openRootDir ? handleRootDirClose : handleRootDirOpen}
+              >
+                {openRootDir ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        </List>
 				<Divider />
 				<List>
-					{['All mail', 'Trash', 'Spam'].map((text, index) => (
-						<ListItem button key={text}>
-							<ListItemIcon>
-								{index % 2 === 0 ? <Inbox /> : <Mail />}
-							</ListItemIcon>
-							<ListItemText primary={text} />
-						</ListItem>
-					))}
+          { componentNames.map((name, index) => (
+            <ListItem 
+              dense 
+              // button 
+              key={name+index}
+              // onClick={handleCheckbox(index)}
+              // onClick={handleToggle(index)}
+            >
+              <ListItemIcon>
+                <Checkbox 
+									checked={checkedComponents[index]}
+                  // checked={checkIsChecked(index)}
+                  // defaultChecked
+                  color="primary"
+                  onClick={handleCheckbox(index)}
+                  // onClick={()=> {checkIsChecked(index)}}
+                />
+              </ListItemIcon>
+              <ListItemText primary={name} />
+            </ListItem>
+          ))}
 				</List>
 			</Drawer>
 
 			<div className={classes.btnContainer}>
-				<Fab
+				{/* <Fab
 					size="small"
 					color="primary"
 					aria-label="prev"
 					className={classes.prevBtn}
 				>
 					<FastRewindIcon />
-				</Fab>
+				</Fab> */}
 
 				<Fab
 					size="medium"
@@ -314,33 +519,55 @@ const ExaminPanel = () => {
 					className={classes.recordBtn}
 					onClick={handlePauseRecClick}
 				>
-					{/* <FiberManualRecordIcon /> */}
-					{/* <PauseIcon /> */}
 					{isRecording ? (
 						<PauseIcon />
 					) : (
 						<FiberManualRecordIcon style={{ color: 'white' }} />
 					)}
 				</Fab>
-				<Fab
+				{/* <Fab
 					size="small"
 					color="primary"
 					aria-label="next"
 					className={classes.nextBtn}
 				>
 					<FastForwardIcon />
-				</Fab>
+				</Fab> */}
 				<Fab
 					size="small"
 					variant="extended"
 					className={classes.copyBtn}
-					onClick={() => {
-						copy(code);
-					}}
+					// onClick={() => {
+					// 	copy(code);
+					// }}
+          onClick={
+						handleCopyClick
+					}
 				>
 					<FileCopyIcon className={classes.extendedIcon} />
 					Copy
 				</Fab>
+        <Popover
+          id={'copy-popover'}
+          open={copyPopOpen}
+          anchorEl={anchorEl}
+          onClose={handleCopyClose}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+        >
+          <Typography 
+            variant='body1' 
+            className={classes.copyText}
+          >
+            Copied to Clipboard!
+          </Typography>
+        </Popover>
 				<Fab
 					size="small"
 					variant="extended"

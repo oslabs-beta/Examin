@@ -101,19 +101,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		case 'addTest': {
 			console.log('received addTest');
 			console.log('The request message is: ', message);
-			// const tabId = sender.tab.id.toString();
-			// if (firstRun) {
-			//   chrome.runtime.onConnect.addListener((port) => {
-			//     console.log('in addTest internal event listener')
-			//     connections[tabId.toString()].postMessage('successful addTest')
-			//     firstRun = false;
-			//   })
-			// } else {
-			//   connections[tabId.toString()].postMessage('successful addTest')
-			// }
-			// Concatenate array of strings (message: [(testArray)])
 			joinedMsg = message.join('');
-
 			// Sending another message to the front-end examin panel (at the current tab)
 			// Access tabId property on connections object and posting a message to Examin frontend panel
 			// connections[tabId] value is the id of user’s application’s tab
@@ -122,7 +110,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 			}
 
 			break;
-			// chrome.runtime.sendMessage({ action: 'receivedAddTest' });
 		}
 		case 'initial panel load': {
 			console.log('received initial panel load in background.js');

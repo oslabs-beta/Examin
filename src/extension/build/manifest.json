@@ -1,7 +1,8 @@
 {
-	"name": "examin-demo",
-	"description": "basic demo chrome extension",
-	"version": "0.1",
+	"name": "Examin",
+	"description": "A Chrome extension developer tool that generators Jest/Enzyme render unit tests for React applications",
+	"version": "1.0.0.1",
+  "author": "Ty Doan, Kirsten Yoon, Nicholas Brush, Cliff Assuncao",
 	"manifest_version": 2,
   "background": {
     "scripts": ["bundles/background.bundle.js"],
@@ -15,14 +16,8 @@
 	],
 	"web_accessible_resources": ["bundles/backend.bundle.js"],
 	"permissions": [
-		"contextMenus",
-		"tabs",
-		"activeTab",
 		"http://localhost/*",
-		"https://localhost/*",
-    "<all_urls>",
-		"clipboardWrite", 
-		"clipboardRead"
+		"https://localhost/*"
 	],
 	"externally_connectable": {
 		"matches": ["http://localhost/*","https://localhost/*"]

@@ -1,6 +1,6 @@
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 
-const drawerWidth = 200;
+const drawerWidth = 230;
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -59,6 +59,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-start',
   },
+  codeEditor: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  codeEditorShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
   extendedIcon: {
     marginRight: theme.spacing(1),
   },
@@ -92,7 +104,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: 0,
     top: 'auto',
     bottom: 15,
-    left: 70,
+    left: 20,
     right: 'auto',
     zIndex: theme.zIndex.drawer + 2,
   },
@@ -126,7 +138,22 @@ const useStyles = makeStyles((theme: Theme) => ({
   rootDirInput: {
     marginRight: 10,
     marginBottom: 10,
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   },
+  rootDirInputShift: {
+    marginRight: 10,
+    marginBottom: 10,
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  copyText: {
+    padding: theme.spacing(2),
+  }
 }));
 
 
