@@ -1,128 +1,65 @@
 # Examin
 
-## _Automatic React Unit Test Generator._
+## _Automatic React Unit Test Generator_
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/react) [![CircleCI Status](https://circleci.com/gh/facebook/react.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/facebook/react) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://reactjs.org/docs/how-to-contribute.html#your-first-pull-request)
-
-Examin is a browser-extension, currently compatibility,
-React.
-
-- Taking out the grunt work.  
-- right-click inspect and find Examin next to your dev-tools  
-- ✨Magic ✨
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/master/LICENSE)
 
 ## Features
 
-- Export a Test File for you to use in your app.  
-- Record State changes  
-- Branch Testing
+Examin is a Chrome extension that generates React unit tests for your application. Ensure your application renders as expected before adding new features. Examin generates the baseline and allows developers to customize their tests for their application.
 
-Team [Examin] is looking to simplify [ unit-testing.][df1]
-
-> The overriding goal for Examin's
-> unit testing platform is to make testing
-> as easy as possible. The idea is that a
-> to have test automatically generated with  
-> the click of a few buttons, and have your project  
-> testable as-is without having to write time consuming test files
-> or formatting instructions.
-
-We hope you enjoy the tool!  
-
-## Tech
-
-Examin uses a number of open source projects to work properly:
-
-- [React] - HTML enhanced for web apps!
-- [TypeScript] - awesome web-based text editor
-- [node.js] - evented I/O for the backend
-
-And of course Examin itself is open source with a [public repository][dill]
- on GitHub.
+- Install the Examin extension
+- Install npm dependencies for Jest/Enzyme
+- Navigate to the Examin panel in Chrome developer tools
+- ✨ Generate tests ✨
 
 ## Installation
 
-Examin requires [Node.js](https://nodejs.org/) v10+ to run.
+To get started, manually install Examin in Developer mode.
 
-Install the dependencies and devDependencies and start the server.
+1. Clone the repo
+   `git clone https://github.com/oslabs-beta/Examin.git`
+2. Install NPM packages
+   `npm install`
+3. Create a build directory
+   `npm run build`
+4. Load the unpacked extension from src/extension/build to Chrome
 
-```sh
-cd examin
-npm i
-node app
-```
+NOTE: The React Developer Tools extension is also required for Examin to run, if you do not already have it installed on your browser.
 
-For production environments...
+## How to Use
 
-```sh
-npm install --production
-NODE_ENV=production node app
-```
+1. Install Jest/Enzyme for your project
 
-## Plugins
+   - `npm install jest enzyme enzyme-adapter-react-16 @babel/core @babel/preset-env`
+   - Add presets to your `.babelrc` file
+     `{ "presets": ["@babel/preset-env", "@babel/preset-react"] }`
 
-Examin is currently extended with the following plugins.
-Instructions on how to use them in your own application are linked below.
+2. Run the Examin build using npm run dev
 
-| Plugin | README |
-| ------ | ------ |
-| MaterialUI | [plugins/Material/README.md][PlMaterialUI] |
-| CodeMirror | [plugins/CodeMirror/README.md][PlCM] |
-| Jest | [plugins/Jest/README.md][PlJest] |
-| Babel | [plugins/babel/README.md][PlBabel] |
+3. Navigate to the Examin panel in Chrome DevTools
 
-## Development
+   - Must be in developer mode
+   - Revise import statements as needed
 
-Want to contribute? Great!
+4. Add Generated tests into your application
+   - Add `__tests__` directory in root directory
+   - Add test js file to `__tests__` directory
+   - Run tests using `jest <filename>`
 
-Examin uses Webpack for fast developing.
-Make a change in your file and instantaneously see your updates!
+## Troubleshooting
 
-Open your favorite Terminal and run these commands.
+- Jest docs: https://jestjs.io/docs/getting-started
+- Enzyme docs: https://enzymejs.github.io/enzyme/
+- Unable to resolve dependency tree while installing `enzyme-adapter-react-16`
+  - Add peerDependencies to your **package.json** file
+    ```sh
+    "peerDependencies": { "react": "^16.8.0 || ^17.0.0", "react-dom": "^16.8.0 || ^17.0.0" }
+    ```
 
-First Tab:
+## Core Team
 
-```sh
-npm install
-```
-
-Second Tab:
-
-```sh
-npm run dev
-```
-
-(optional) Third:
-
-```sh
-third command
-```
-
-### Building for source
-
-For production release:
-
-```sh
-first command
-```
-
-Generating pre-built zip archives for distribution:
-
-```sh
-second command
-```
-
-## License
-
-MIT
-
-**Free Software, Hell Yeah!**
-
-[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
-  
-   [git-repo-url]: <https://github.com/os-labs/examin.git>
-   [markdown-it]: <https://github.com/markdown-it/markdown-it>
-   [node.js]: <http://nodejs.org>
-
-   [PlJest]: <https://github.com/os-labs/examin/tree/master/plugins/jest/README.md>
-   [PlMateralUI]: <https://github.com/os-labs/examin/tree/master/plugins/material/README.md>
+- Cliff Assuncao - [Github](https://github.com/WizardSource) - [LinkedIn](https://www.linkedin.com/in/cliff-assuncao-1b2593211/)
+- Kirsten Yoon - [Github](https://github.com/kirstenyoon) - [LinkedIn](http://linkedin.com/in/kirstenyoon)
+- Nicholas Brush - [Github](https://github.com/Njbrush) - [LinkedIn](https://www.linkedin.com/in/nicholas-j-brush/)
+- Ty Doan - [Github](https://github.com/tdoan35) - [LinkedIn](https://www.linkedin.com/in/ty-thanh-doan/)
