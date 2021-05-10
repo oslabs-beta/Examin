@@ -3,11 +3,10 @@
 ## _Automatic React Unit Test Generator_
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/master/LICENSE)
-[![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://badge.fury.io/gh/tterb%2FHyde)
+[![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)]()
 [![GitHub Release](https://img.shields.io/static/v1?label=release&message=1.0.0.1&color=brightgreen)]()
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)]()
 [![GitHub contributors](https://img.shields.io/static/v1?label=contributers&message=4&color=yellowgreen)]()
-[![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/)
 
 ## Features ⚡
 
