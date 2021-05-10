@@ -14,6 +14,14 @@
 			"js": ["bundles/content.bundle.js"]
 		}
 	],
+  "icons": {
+    "16": "assets/16.png",
+    "38": "assets/38.png",
+    "48": "assets/48.png",
+    "128": "assets/128.png",
+    "148": "assets/148.png",
+    "192": "assets/192.png"
+  },
 	"web_accessible_resources": ["bundles/backend.bundle.js"],
 	"permissions": [
 		"http://localhost/*",
