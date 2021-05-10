@@ -3,8 +3,13 @@
 ## _Automatic React Unit Test Generator_
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/master/LICENSE)
+[![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://badge.fury.io/gh/tterb%2FHyde)
+[![GitHub Release](https://img.shields.io/static/v1?label=release&message=1.0.0.1&color=brightgreen)]()
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![GitHub contributors](https://img.shields.io/static/v1?label=contributers&message=4&color=yellowgreen)]()
+[![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/)
 
-## Features
+## Features ⚡
 
 Examin is a Chrome extension that generates React unit tests for your application. Ensure your application renders as expected before adding new features. Examin generates the baseline unit tests and allows developers to customize their tests for their application.
 
@@ -15,9 +20,7 @@ Examin is a Chrome extension that generates React unit tests for your applicatio
 
 ![Preview of Examin](./src/extension/build/assets/main.png)
 
-<!-- (https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true) -->
-
-## Installation
+## Installation 🔌
 
 To get started, manually install Examin in Developer mode.
 
@@ -31,7 +34,7 @@ To get started, manually install Examin in Developer mode.
 
 NOTE: The React Developer Tools extension is also required for Examin to run, if you do not already have it installed on your browser.
 
-## How to Use
+## How to Use ❓️
 
 1. Install Jest/Enzyme for your project
 
@@ -49,21 +52,21 @@ NOTE: The React Developer Tools extension is also required for Examin to run, if
 4. Add Generated tests into your application
    - Add `__tests__` directory in root directory
    - Add test js file to `__tests__` directory
-   - Run tests using `jest <filename>`
+   - Run tests using `jest` or `jest <filename>`
 
-## Troubleshooting
+## Troubleshooting ⁉️
 
-- Jest docs: https://jestjs.io/docs/getting-started
-- Enzyme docs: https://enzymejs.github.io/enzyme/
-- Unable to resolve dependency tree while installing `enzyme-adapter-react-16`
+- [Jest docs](https://jestjs.io/docs/getting-started)
+- [Enzyme docs](https://enzymejs.github.io/enzyme/)
+- Error: Unable to resolve dependency tree while installing `enzyme-adapter-react-16`
   - Add peerDependencies to your **package.json** file
     ```sh
     "peerDependencies": { "react": "^16.8.0 || ^17.0.0", "react-dom": "^16.8.0 || ^17.0.0" }
     ```
 
-## Core Team
+## Core Team ☕ 💼
 
-- Cliff Assuncao - [Github](https://github.com/WizardSource) - [LinkedIn](https://www.linkedin.com/in/cliff-assuncao-1b2593211/)
-- Kirsten Yoon - [Github](https://github.com/kirstenyoon) - [LinkedIn](http://linkedin.com/in/kirstenyoon)
-- Nicholas Brush - [Github](https://github.com/Njbrush) - [LinkedIn](https://www.linkedin.com/in/nicholas-j-brush/)
-- Ty Doan - [Github](https://github.com/tdoan35) - [LinkedIn](https://www.linkedin.com/in/ty-thanh-doan/)
+- **Cliff Assuncao** - [@Github](https://github.com/WizardSource) - [@LinkedIn](https://www.linkedin.com/in/cliff-assuncao-1b2593211/)
+- **Kirsten Yoon** - [@Github](https://github.com/kirstenyoon) - [@LinkedIn](http://linkedin.com/in/kirstenyoon)
+- **Nicholas Brush** - [@Github](https://github.com/Njbrush) - [@LinkedIn](https://www.linkedin.com/in/nicholas-j-brush/)
+- **Ty Doan** - [@Github](https://github.com/tdoan35) - [@LinkedIn](https://www.linkedin.com/in/ty-thanh-doan/)
