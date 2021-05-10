@@ -73,6 +73,10 @@ const getComponentFileName = (node, rootDirectory) => {
 	}
 	let regex = /\\/g
 	let fileName = node.child._debugSource.fileName;
+	// let scopesTest = '[[Scopes]]';
+	// let fileName = node.elementType[2].module.i;
+	// console.log('Scope', fileName);
+	// return fileName;
 	if (rootDirectory === '') {
 		fileName = fileName.replace(regex, '/');
 		return fileName;
@@ -158,11 +162,16 @@ const treeTraversal = (node) => {
 	const treeHelper = (currNode) => {
 		if (currNode === null || currNode.elementType === null) return;
 		if (currNode.elementType.name) {
+			// console.log(
+			// 	'this is the currNode.elementType.name: ',
+			// 	currNode.elementType.name
+			// );
 			indices = {};
 			testInfoArray.push(getComponentInfo(currNode));
 		} else {
 		}
 		currNode = currNode.child;
+		// console.log('currNode after currNode.child reset', currNode);
 		while (currNode !== null) {
 			treeHelper(currNode);
 			currNode = currNode.sibling;
