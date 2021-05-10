@@ -1,3 +1,20 @@
+interface componentChildInfo {
+    componentName : string;
+}
+
+interface htmlChildInfo {
+    innerText: string;
+    elementType: string;
+}
+
+interface componentInfo {
+    name: string;
+    fileName: string;
+    props: object;
+    componentChildren: Array<componentChildInfo>;
+    htmlChildren: Array<htmlChildInfo>;
+}
+
 const getComponentName = (node) => {
 	return node.elementType.name;
 };
@@ -25,27 +42,20 @@ const getComponentFileName = (node, rootDirectory) => {
 };
 
 const grabComponentChildInfo = (node) => {
-	const componentChildInfo = {};
+	const componentChildInfo : componentChildInfo = { 
+        componentName: ''
+    };
 	componentChildInfo.componentName = node.elementType.name;
-	if (!indices.hasOwnProperty(componentChildInfo.componentName)) {
-		indices[componentChildInfo.componentName] = 0;
-	} else {
-		indices[componentChildInfo.componentName] += 1;
-	}
-	componentChildInfo.componentIndex = indices[componentChildInfo.componentName];
 	return componentChildInfo;
 };
 
 const grabHtmlChildInfo = (node) => {
-	const htmlChildInfo = {};
+	const htmlChildInfo : htmlChildInfo = {
+        innerText : '',
+        elementType: ''
+    };
 	htmlChildInfo.innerText = '';
 	htmlChildInfo.elementType = node.elementType;
-	if (!indices.hasOwnProperty(htmlChildInfo.elementType)) {
-		indices[htmlChildInfo.elementType] = 0;
-	} else {
-		indices[htmlChildInfo.elementType] += 1;
-	}
-	htmlChildInfo.elementIndex = indices[htmlChildInfo.elementType];
 	if (
 		htmlChildInfo.elementType !== 'div' &&
 		htmlChildInfo.elementType !== 'ul' 
@@ -56,10 +66,16 @@ const grabHtmlChildInfo = (node) => {
 	return htmlChildInfo;
 };
 
-const getComponentInfo = (node) => {
-	const componentInfo = {};
+const getComponentInfo = (node, rootDirectory) => {
+	const componentInfo : componentInfo = {
+        name: '',
+        fileName: '',
+        props: {},
+        componentChildren: [],
+        htmlChildren: []
+    };
 	componentInfo.name = getComponentName(node);
-	componentInfo.fileName = getComponentFileName(node, userInput);
+	componentInfo.fileName = getComponentFileName(node, rootDirectory);
 	componentInfo.props = node.memoizedProps;
 	componentInfo.componentChildren = [];
 	componentInfo.htmlChildren = [];
@@ -86,17 +102,12 @@ const getComponentInfo = (node) => {
 	return componentInfo;
 };
 
-const treeTraversal = (node) => {
-	const testInfoArray = [];
+const treeTraversal = (node, rootDirectory) => {
+	const testInfoArray : Array<componentInfo> = [];
 	const treeHelper = (currNode) => {
 		if (currNode === null || currNode.elementType === null) return;
 		if (currNode.elementType.name) {
-			// console.log(
-			// 	'this is the currNode.elementType.name: ',
-			// 	currNode.elementType.name
-			// );
-			indices = {};
-			testInfoArray.push(getComponentInfo(currNode));
+			testInfoArray.push(getComponentInfo(currNode, rootDirectory));
 		} else {
 		}
 		currNode = currNode.child;
@@ -110,3 +121,4 @@ const treeTraversal = (node) => {
 	return testInfoArray;
 };
 
+export default treeTraversal;
