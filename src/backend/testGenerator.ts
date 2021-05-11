@@ -74,17 +74,15 @@ const endWithLineBreak = `
 const endWithoutLineBreak = `
   });`;
 
-const finalEnd = `
+const finalEnd = ` 
 });
 `
 
-export default function testGenerator(
-	componentData: Array<componentInfo>,
-	describeBlockArray: Array<string> = []
-) {
+const testGenerator : TestGenerator = (componentData) => {
+	const describeBlockArray = [];
 	// --------- Create and fill the frequency table ---------
 	// Initialize a cache object to check frequency of names
-	const nameFreq: object = {};
+	const nameFreq = {};
 	// Iterate through the componentData object and fill the nameFreq object
 	for (let i = 0; i < componentData.length; i++) {
 		// Conditional: check if the name already is in the object
@@ -102,7 +100,7 @@ export default function testGenerator(
 	describeBlockArray.push(initialImportString);
 
 	// Initialize an object to check if component has been added to describeBlock already
-	let componentHasBeenAdded = {};
+	const componentHasBeenAdded = {};
 	for (let i = 0; i < componentData.length; i++) {
 		if (!componentHasBeenAdded[componentData[i].name]) {
 			componentHasBeenAdded[componentData[i].name] = true;
@@ -115,9 +113,9 @@ export default function testGenerator(
 		// Push the initialization describe string into describeBlockArray 
 		describeBlockArray.push(describeBlockGen(componentData[i].name));
 		// Initialize a currentProps variable
-		let currentProps = componentData[i].props;
+		const currentProps = componentData[i].props;
 		// Initialize a tempProps variable
-		let tempProps = {};
+		const tempProps = {};
 
 		// Conditional: check if the current element has props (length not equal to zero)
 		if (Object.keys(currentProps).length !== 0) {
@@ -150,7 +148,7 @@ export default function testGenerator(
 		// }
 		// ----------- Construct Render Tests --------------------------
 		// Initialize a cache object to check frequency of child components
-		let childFreq: object = {};
+		const childFreq = {};
 		// Iterate through the componentData.componentChildren and fill the childFreq object
 		for (let j = 0; j < componentData[i].componentChildren.length; j++) {
 			// Conditional: check if the name already is in object
@@ -171,7 +169,7 @@ export default function testGenerator(
 		}
 
 		// Initialize a cache object to check frequency of child components
-		let htmlFreq: object = {};
+		const htmlFreq = {};
 		// Iterate through the componentData.componentChildren and fill the childFreq object
 		for (let j = 0; j < componentData[i].htmlChildren.length; j++) {
 			// Conditional: check if the name already is in object
@@ -197,13 +195,17 @@ export default function testGenerator(
 				describeBlockArray.push(htmlInnertextItGen(componentData[i].name));
 				// Iterate through the htmlChildren array
 				for (let j = 0; j < componentData[i].htmlChildren.length; j++) {
-					// Conditional: check if htmlChildren.innerText is not an empty string
-					if (componentData[i].htmlChildren[j].innerText !== '') {
+					// Conditional: check if htmlChildren.innerText is not an empty string or undefined
+					if (
+						componentData[i].htmlChildren[j].innerText !== '' &&
+						componentData[i].htmlChildren[j].innerText !== undefined
+						) {						
 						if (htmlFreq[componentData[i].htmlChildren[j].elementType] === 1) {
 							let innerTextStr: string = JSON.stringify(
 								componentData[i].htmlChildren[j].innerText
 							);
-							let regex = /\\n/g;
+							// regex to remove new line characters from each string
+							const regex = /\\n/g;
 							if (innerTextStr) {
 								innerTextStr = innerTextStr.replace(regex, '');
 							}
@@ -221,3 +223,5 @@ export default function testGenerator(
 	// Return the describeBlockArray
 	return describeBlockArray;
 }
+
+export default testGenerator

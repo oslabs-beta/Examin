@@ -1,29 +1,37 @@
-type componentChildInfo = {
+type ComponentChildInfo = {
     componentName : string;
 }
 
-type htmlChildInfo = {
+type HtmlChildInfo = {
     innerText: string;
     elementType: string;
 }
 
-type componentInfo = {
+// any types are used when those values are pulled from the user's page and can have different shapes
+
+type ComponentInfo = {
     name: string;
     fileName: string;
-    props: object;
-    componentChildren: Array<componentChildInfo>;
-    htmlChildren: Array<htmlChildInfo>;
+    props: any;
+    componentChildren: Array<ComponentChildInfo>;
+    htmlChildren: Array<HtmlChildInfo>;
 }
 
-type node = {
+type FiberNode = {
 	elementType :  any;
-	child : node;
-	sibling : node;
+	child : FiberNode;
+	sibling : FiberNode;
 	_debugSource : {
 		fileName: string;
 	}
-	memoizedProps : object;
+	memoizedProps : any;
+	memoizedState: any;
 	stateNode : {
 		innerText : string;
 	}
-}
+	next: FiberNode;
+} 
+
+type TreeTraversal = ( fiberNode : FiberNode, rootDirectory : string) => Array<ComponentInfo>
+
+type TestGenerator = ( componentData: Array<ComponentInfo> ) => Array<string>
