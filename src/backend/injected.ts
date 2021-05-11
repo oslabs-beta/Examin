@@ -3,22 +3,21 @@
 // Uses React Dev Tools Global Hook to track state changes based on user interactions
 console.log('Currently in injected.js');
 
+// any declaration is necessary here because the window will only have the react devtools global hook
+// property once the page is loading into a chrome browser with the 
 declare const window: any;
 
 import testGenerator from './testGenerator';
 import treeTraversal from './treeTraversal';
 
 const dev = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
-console.log('react devtools global hook object: ', dev);
 
-let prevMemoizedState;
 let currMemoizedState;
 
 let userInput = '';
-let componentElements = []; // [{element: '', count: 0}]
 // -----------------------------------------------------------------------------------
 // Initializineg a message object which will be sent to content.js
-let msgObj = { type: 'addTest', message: [] };
+const msgObj = { type: 'addTest', message: [] };
 // -----------------------------------------------------------------------------------
 
 // Logic for pause/recording -----------------------------------------------------
@@ -29,11 +28,11 @@ const mode = {
 // -----------------------------------------------------------------------------------
 // Save fiberNode on load
 let fiberNode = dev.getFiberRoots(1).values().next().value.current.child;
-// console.log('fiberNode on load:', fiberNode);
+console.log('fiberNode on load:', fiberNode);
 // -----------------------------------------------------------------------------------
 
 // Listens to messages from content.js
-const handleMessage = (request, sender, sendResponse) => {
+const handleMessage = (request) => {
 	if (request.data.name === 'pauseClicked') {
 		mode.paused = true;
 	}
@@ -52,13 +51,12 @@ window.addEventListener('message', handleMessage);
 
 // -----------------------------------------------------------------------------------
 // findMemState returns the user's application's state
-const findMemState = (node) => {
+const findMemState = ( node : FiberNode) => {
 	// Finds the fiberNode on which memoizedState resides
 	while (node.memoizedState === null) {
 		node = node.child;
 	}
 	node = node.memoizedState;
-	// Isn't this finding props, not state?
 	while (typeof node.memoizedState !== 'object') {
 		node = node.next;
 	}
@@ -68,7 +66,7 @@ const findMemState = (node) => {
 
 // the createAndSendTestArray will use the fibernode and user input (root directory) to generate the array of
 // test strings and send that array to the panel to be rendered
-const createAndSendTestArray = (node, rootDirectory) => {
+const createAndSendTestArray = (node : FiberNode, rootDirectory : string) => {
 	//the imported treeTraversal function generates the array of objects needed by testGenerator to create the tests
 	const testInfoArray = treeTraversal(node, rootDirectory);
 	// testGenerator uses that array to create the array of test strings 
@@ -88,6 +86,7 @@ createAndSendTestArray(fiberNode, userInput)
 // patching / rewriting the onCommitFiberRoot functionality
 // onCommitFiberRoot runs functionality every time there is a change to the page
 dev.onCommitFiberRoot = (function (original) {
+	console.log('original test', original)
 	return function (...args) {
 		if (!mode.paused) {
 			// Reassign fiberNode when onCommitFiberRoot is invoked
@@ -103,9 +102,7 @@ dev.onCommitFiberRoot = (function (original) {
 				JSON.stringify(newMemState) !== JSON.stringify(currMemoizedState);
 			// Run the test generation function only if the state has actually changed
 			if (stateChange) {
-				createAndSendTestArray(fiberNode, userInput)
-				console.log('sample test object in onCommitFiberRoot: ');
-				prevMemoizedState = currMemoizedState;
+				createAndSendTestArray(fiberNode, userInput);
 				currMemoizedState = newMemState;				
 			}
 		}
