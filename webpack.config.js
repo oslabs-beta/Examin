@@ -12,7 +12,7 @@ const config = {
     // Entry for chrome extension content script
     content: './src/extension/build/content.js',
     // Entry for injected backend file bundle
-    backend: './src/backend/injected.js',
+    backend: './src/backend/injected.ts', 
   },
   output: {
     path: path.resolve(__dirname, 'src/extension/build/bundles'),

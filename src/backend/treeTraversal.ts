@@ -1,30 +1,16 @@
-interface componentChildInfo {
-    componentName : string;
-}
 
-interface htmlChildInfo {
-    innerText: string;
-    elementType: string;
-}
-
-interface componentInfo {
-    name: string;
-    fileName: string;
-    props: object;
-    componentChildren: Array<componentChildInfo>;
-    htmlChildren: Array<htmlChildInfo>;
-}
-
-const getComponentName = (node) => {
+const getComponentName = (node : node) => {
 	return node.elementType.name;
 };
 
-const getComponentFileName = (node, rootDirectory) => {
+
+// Accpes user input from Examin Panel
+const getComponentFileName = (node : node, rootDirectory : string) => {
 	if (!node.child || !node.child._debugSource) {
 		return '<ADD FILE PATH>';
 	}
-	let regex = /\\/g
-	let fileName = node.child._debugSource.fileName;
+	const regex  = /\\/g
+	let fileName : string = node.child._debugSource.fileName;
 	// let scopesTest = '[[Scopes]]';
 	// let fileName = node.elementType[2].module.i;
 	// console.log('Scope', fileName);
@@ -41,7 +27,7 @@ const getComponentFileName = (node, rootDirectory) => {
 	}
 };
 
-const grabComponentChildInfo = (node) => {
+const grabComponentChildInfo = (node : node) => {
 	const componentChildInfo : componentChildInfo = { 
         componentName: ''
     };
@@ -49,7 +35,7 @@ const grabComponentChildInfo = (node) => {
 	return componentChildInfo;
 };
 
-const grabHtmlChildInfo = (node) => {
+const grabHtmlChildInfo = (node :  node) => {
 	const htmlChildInfo : htmlChildInfo = {
         innerText : '',
         elementType: ''
@@ -66,7 +52,7 @@ const grabHtmlChildInfo = (node) => {
 	return htmlChildInfo;
 };
 
-const getComponentInfo = (node, rootDirectory) => {
+const getComponentInfo = (node  :  node , rootDirectory : string) => {
 	const componentInfo : componentInfo = {
         name: '',
         fileName: '',
@@ -80,7 +66,7 @@ const getComponentInfo = (node, rootDirectory) => {
 	componentInfo.componentChildren = [];
 	componentInfo.htmlChildren = [];
 
-	const getComponentInfoHelper = (currNode) => {
+	const getComponentInfoHelper = (currNode : node) => {
 		currNode = currNode.child;
 		while (currNode !== null) {
 			//some logic to fill out component/html children
@@ -102,13 +88,12 @@ const getComponentInfo = (node, rootDirectory) => {
 	return componentInfo;
 };
 
-const treeTraversal = (node, rootDirectory) => {
+const treeTraversal = (fiberNode : node, rootDirectory : string) => {
 	const testInfoArray : Array<componentInfo> = [];
-	const treeHelper = (currNode) => {
+	const treeHelper = (currNode : node) => {
 		if (currNode === null || currNode.elementType === null) return;
 		if (currNode.elementType.name) {
 			testInfoArray.push(getComponentInfo(currNode, rootDirectory));
-		} else {
 		}
 		currNode = currNode.child;
 		// console.log('currNode after currNode.child reset', currNode);
@@ -117,7 +102,7 @@ const treeTraversal = (node, rootDirectory) => {
 			currNode = currNode.sibling;
 		}
 	};
-	treeHelper(node);
+	treeHelper(fiberNode);
 	return testInfoArray;
 };
 
