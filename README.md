@@ -17,7 +17,7 @@ Examin is a Chrome extension that generates React unit tests for your applicatio
 - Navigate to the Examin panel in Chrome developer tools
 - ✨ Generate tests ✨
 
-<img alt="Preview of Examin" src="./src/extension/build/assets/main.png" width="700">
+<img alt="Preview of Examin" src="./src/extension/assets/main.png" width="700">
 
 ## Installation 🔌
 
@@ -29,7 +29,7 @@ To get started, manually install Examin in Developer mode.
    `npm install`
 3. Create a build directory <br/>
    `npm run build`
-4. Load the unpacked extension from src/extension/build to Chrome
+4. Load the unpacked extension from src/extension to Chrome
 
 NOTE: The React Developer Tools extension is also required for Examin to run, if you do not already have it installed on your browser.
 
@@ -53,11 +53,11 @@ NOTE: The React Developer Tools extension is also required for Examin to run, if
    - Add test js file to `__tests__` directory
    - Run tests using `jest` or `jest <filename>`
 
-<img alt="Editing Import Statements Demo Gif" src="./src/extension/build/assets/edit-import-statements.gif" width="700">
+<br/><img alt="Editing Import Statements Demo Gif" src="./src/extension/assets/edit-import-statements.gif" width="700">
 
 - Editing import statements
 
-<img alt="State Change and Component Selection Demo Gif" src="./src/extension/build/assets/state-changes-component-selection.gif" width="700">
+<br/><img alt="State Change and Component Selection Demo Gif" src="./src/extension/assets/state-changes-component-selection.gif" width="700">
 
 - Updating tests with state changes
 - Selecting components for generated tests
