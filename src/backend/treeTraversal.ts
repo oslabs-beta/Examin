@@ -8,19 +8,19 @@ const getComponentFileName = (node: FiberNode, rootDirectory: string) => {
 	const regex = /\\/g;
 	// acquire the filepath from the passed in node
 	let fileName: string = node.child._debugSource.fileName;
-	// if the user has not input a root Directory, return the absolute filepath
-	if (rootDirectory === '') {
+	// if the user has not input a root Directory or has input a root directory that is not included in the absolute filepath
+	// return the absolute filepath
+	if (rootDirectory === '' || !fileName.includes(rootDirectory)) {
 		fileName = fileName.replace(regex, '/');
 		return fileName;
 	}
 	//  if the user has input a filepath and the absolute filepath includes that filepath,
 	// return .. followed by the path after the root directory (the relative filepath)
-	if (fileName.includes(rootDirectory)) {
-		const indexOfFirst = fileName.indexOf(rootDirectory);
-		const index = indexOfFirst + rootDirectory.length;
-		fileName = fileName.replace(regex, '/');
-		return '..' + fileName.slice(index);
-	}
+
+	const indexOfFirst = fileName.indexOf(rootDirectory);
+	const index = indexOfFirst + rootDirectory.length;
+	fileName = fileName.replace(regex, '/');
+	return '..' + fileName.slice(index);
 };
 
 // function to acquire the information of react functional component children
