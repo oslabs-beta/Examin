@@ -1,10 +1,8 @@
-import React from "react";
-import MarkdownPreview from "@uiw/react-markdown-preview";
+import React from 'react';
+import MarkdownPreview from '@uiw/react-markdown-preview';
 
 const source = `
 # How to use 
-
-## _Automatic React Unit Test Generator_
 
 1. Install Jest/Enzyme for your project
 
@@ -27,34 +25,21 @@ const source = `
 
 
 
-## Troubleshooting ⁉
+## Additional Information
+- **exmain.dev**
+- GitHub: **github.com/oslabs-beta/Examin**
+- Contact: **examindev@gmail.com** 
 
-- Jest docs
-- Enzyme docs
-- Error: Unable to resolve dependency tree while installing enzyme-adapter-react-16
-  - Add peerDependencies to your **package.json** file
-    sh
-    "peerDependencies": { "react": "^16.8.0 || ^17.0.0", "react-dom": "^16.8.0 || ^17.0.0" }
-
-
-## Contributing
-
-Examin is open source on Github through the tech accelerator umbrella OS Labs. Please read the our github readme to learn more on how you can participate in improvements.
-
-## If you need further assistance, please contact
-
-- **examindev@gmail.com** -
-- **** -
 
 
         `;
 
 function Howto() {
-  return (
-    <div>
-      <MarkdownPreview source={source} />
-    </div>
-  );
+	return (
+		<div>
+			<MarkdownPreview source={source} />
+		</div>
+	);
 }
 
 export default Howto;
