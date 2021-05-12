@@ -3,69 +3,68 @@ import { configure, shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 configure({ adapter: new Adapter() });
 
-`
+`;
 
-const fileNameImports = (componentName : string, fileName: string) => {
+const fileNameImports = (componentName: string, fileName: string) => {
 	return `import ${componentName} from '${fileName}';
-`
-}
+`;
+};
 
-const describeBlockGen = (componentName : string) => {
+const describeBlockGen = (componentName: string) => {
 	return `
-describe('${componentName} Component', () => {`
-}
+describe('${componentName} Component', () => {`;
+};
 
-const mockfnGen = (key : string) => {
+const mockfnGen = (key: string) => {
 	return `
-  let mock${key} = jest.fn();`
-}
+  let mock${key} = jest.fn();`;
+};
 
-const propsGen = ( componentName : string, propsStr : string) => {
-	return 	`
+const propsGen = (componentName: string, propsStr: string) => {
+	return `
   let ${componentName}Props = ${propsStr};
-  `
-}
+  `;
+};
 
-const shallowNoProps = ( componentName : string) => {
+const shallowNoProps = (componentName: string) => {
 	return `
   const wrapper = shallow(<${componentName} />);
-  `
-}
+  `;
+};
 
-const shallowWithProps = ( componentName : string ) => {
+const shallowWithProps = (componentName: string) => {
 	return `
   const wrapper = shallow(<${componentName} {...${componentName}Props} />);
-  `
-}
+  `;
+};
 
-const componentItGen = ( key : string, childFreqKey : string) => {
+const componentItGen = (key: string, childFreqKey: string) => {
 	return `
   it('Contains ${key} component', () => {
     expect(wrapper.find(${key}).length).toBe(${childFreqKey})
   })
-  `
-}
+  `;
+};
 
-const htmlCountItGen = ( componentName : string) => {
+const htmlCountItGen = (componentName: string) => {
 	return `
-  it('${componentName} includes html elements', () => {`	
-}
+  it('${componentName} includes html elements', () => {`;
+};
 
-const htmlCountFindGen = ( key : string, htmlFreqKey : string) => {
+const htmlCountFindGen = (key: string, htmlFreqKey: string) => {
 	return `
-    expect(wrapper.find('${key}').length).toEqual(${htmlFreqKey});`
-}
+    expect(wrapper.find('${key}').length).toEqual(${htmlFreqKey});`;
+};
 
-const htmlInnertextItGen = ( componentName : string) => {
+const htmlInnertextItGen = (componentName: string) => {
 	return `
-  it('${componentName} includes correct html innerText', () => {`
-}
+  it('${componentName} includes correct html innerText', () => {`;
+};
 
-const htmlInnertextFindGen = ( elementType : string, innerText : string) => {
+const htmlInnertextFindGen = (elementType: string, innerText: string) => {
 	return `
-    expect(wrapper.find('${elementType}').text()).toEqual(${innerText});`
-
-}
+    expect(wrapper.find('${elementType}').text()).toEqual(${innerText});`;
+};
 
 const endWithLineBreak = `
   });
@@ -76,9 +75,9 @@ const endWithoutLineBreak = `
 
 const finalEnd = ` 
 });
-`
+`;
 
-const testGenerator : TestGenerator = (componentData) => {
+const testGenerator: TestGenerator = (componentData) => {
 	const describeBlockArray = [];
 	// --------- Create and fill the frequency table ---------
 	// Initialize a cache object to check frequency of names
@@ -104,13 +103,15 @@ const testGenerator : TestGenerator = (componentData) => {
 	for (let i = 0; i < componentData.length; i++) {
 		if (!componentHasBeenAdded[componentData[i].name]) {
 			componentHasBeenAdded[componentData[i].name] = true;
-			describeBlockArray.push(fileNameImports(componentData[i].name, componentData[i].fileName));
+			describeBlockArray.push(
+				fileNameImports(componentData[i].name, componentData[i].fileName)
+			);
 		}
 	}
 
 	// Iterate through the componentData and generate the initial component render tests
 	for (let i = 0; i < componentData.length; i++) {
-		// Push the initialization describe string into describeBlockArray 
+		// Push the initialization describe string into describeBlockArray
 		describeBlockArray.push(describeBlockGen(componentData[i].name));
 		// Initialize a currentProps variable
 		const currentProps = componentData[i].props;
@@ -134,14 +135,16 @@ const testGenerator : TestGenerator = (componentData) => {
 			console.log('strigified props', JSON.stringify(currentProps));
 			// `
 			// );
-			describeBlockArray.push(propsGen(componentData[i].name, JSON.stringify(tempProps)));
+			describeBlockArray.push(
+				propsGen(componentData[i].name, JSON.stringify(tempProps))
+			);
 		}
 
 		// Conditional: check if the current element has componentComponent children of length > 0
 		if (Object.keys(componentData[i].props).length > 0) {
 			// If so, push the mount component describe string into describeBlockArray
 			describeBlockArray.push(shallowWithProps(componentData[i].name));
-		} else  {
+		} else {
 			describeBlockArray.push(shallowNoProps(componentData[i].name));
 		}
 
@@ -199,7 +202,7 @@ const testGenerator : TestGenerator = (componentData) => {
 					if (
 						componentData[i].htmlChildren[j].innerText !== '' &&
 						componentData[i].htmlChildren[j].innerText !== undefined
-						) {						
+					) {
 						if (htmlFreq[componentData[i].htmlChildren[j].elementType] === 1) {
 							let innerTextStr: string = JSON.stringify(
 								componentData[i].htmlChildren[j].innerText
@@ -209,7 +212,12 @@ const testGenerator : TestGenerator = (componentData) => {
 							if (innerTextStr) {
 								innerTextStr = innerTextStr.replace(regex, '');
 							}
-							describeBlockArray.push(htmlInnertextFindGen(componentData[i].htmlChildren[j].elementType, innerTextStr));
+							describeBlockArray.push(
+								htmlInnertextFindGen(
+									componentData[i].htmlChildren[j].elementType,
+									innerTextStr
+								)
+							);
 						}
 					}
 				}
@@ -222,6 +230,6 @@ const testGenerator : TestGenerator = (componentData) => {
 	} // Closing the current element componentData for loop
 	// Return the describeBlockArray
 	return describeBlockArray;
-}
+};
 
-export default testGenerator
+export default testGenerator;

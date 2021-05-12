@@ -17,7 +17,7 @@ Examin is a Chrome extension that generates React unit tests for your applicatio
 - Navigate to the Examin panel in Chrome developer tools
 - ✨ Generate tests ✨
 
-![Preview of Examin](./src/extension/build/assets/main.png)
+<img alt="Preview of Examin" src="./src/extension/assets/main.png" width="700">
 
 ## Installation 🔌
 
@@ -29,7 +29,7 @@ To get started, manually install Examin in Developer mode.
    `npm install`
 3. Create a build directory <br/>
    `npm run build`
-4. Load the unpacked extension from src/extension/build to Chrome
+4. Load the unpacked extension from src/extension to Chrome
 
 NOTE: The React Developer Tools extension is also required for Examin to run, if you do not already have it installed on your browser.
 
@@ -53,6 +53,15 @@ NOTE: The React Developer Tools extension is also required for Examin to run, if
    - Add test js file to `__tests__` directory
    - Run tests using `jest` or `jest <filename>`
 
+<br/><img alt="Editing Import Statements Demo Gif" src="./src/extension/assets/edit-import-statements.gif" width="700">
+
+- Editing import statements
+
+<br/><img alt="State Change and Component Selection Demo Gif" src="./src/extension/assets/state-changes-component-selection.gif" width="700">
+
+- Updating tests with state changes
+- Selecting components for generated tests
+
 ## Troubleshooting ⁉️
 
 - [Jest docs](https://jestjs.io/docs/getting-started)
@@ -62,6 +71,10 @@ NOTE: The React Developer Tools extension is also required for Examin to run, if
     ```sh
     "peerDependencies": { "react": "^16.8.0 || ^17.0.0", "react-dom": "^16.8.0 || ^17.0.0" }
     ```
+
+## Contributing
+
+Examin is open source on Github through the tech accelerator umbrella OS Labs. Please read the [contribution documentation](./contributing.md) to learn more on how you can participate in improvements.
 
 ## Core Team ☕ 💼
 
