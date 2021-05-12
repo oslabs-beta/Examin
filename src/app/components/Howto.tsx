@@ -1,60 +1,39 @@
-import React from "react";
-import MarkdownPreview from "@uiw/react-markdown-preview";
+import React from 'react';
+import MarkdownPreview from '@uiw/react-markdown-preview';
 
 const source = `
-# How to use 
+# How to Use 
 
-## _Automatic React Unit Test Generator_
+**1. Setup**
+   - **Install Jest/Enzyme** for your project <br/>
+      ${`npm install jest enzyme enzyme-adapter-react-16 @babel/core @babel/preset-env`}
+   - Add **presets** to your .babelrc file <br/>
+      { "presets": ["@babel/preset-env", "@babel/preset-react"] } 
+   - Must have **React DevTools** extenion installed
+   - Must be in developer mode (no minification or uglification)
+   
+**2. Select Unit Tests**
+   - Select the components you want to test
+   - Edit import statements as needed
 
-1. Install Jest/Enzyme for your project
+**3. Export to Project Files**
+   - Copy/Pase or Expot the Jest test file into your Project Directory
 
-   - ${`npm install jest enzyme enzyme-adapter-react-16 @babel/core @babel/preset-env`}
-   - Add presets to your .babelrc file <br/>
-     { "presets": ["@babel/preset-env", "@babel/preset-react"] } 
+## Additional Information
+- **exmain.dev**
+- GitHub: **github.com/oslabs-beta/Examin**
+- Contact: **examindev@gmail.com** 
 
-2. Run the Examin build using npm run dev
-
-3. Navigate to the Examin panel in Chrome DevTools
-
-   - Must be in developer mode
-   - Revise import statements as needed
-
-4. Add Generated tests into your application
-   - Add __tests__ directory in root directory
-   - Add test js file to __tests__ directory
-   - Run tests using jest or jest <filename>
-
-
-
-
-## Troubleshooting ⁉
-
-- Jest docs
-- Enzyme docs
-- Error: Unable to resolve dependency tree while installing enzyme-adapter-react-16
-  - Add peerDependencies to your **package.json** file
-    sh
-    "peerDependencies": { "react": "^16.8.0 || ^17.0.0", "react-dom": "^16.8.0 || ^17.0.0" }
-
-
-## Contributing
-
-Examin is open source on Github through the tech accelerator umbrella OS Labs. Please read the our github readme to learn more on how you can participate in improvements.
-
-## If you need further assistance, please contact
-
-- **examindev@gmail.com** -
-- **** -
 
 
         `;
 
 function Howto() {
-  return (
-    <div>
-      <MarkdownPreview source={source} />
-    </div>
-  );
+	return (
+		<div>
+			<MarkdownPreview source={source} />
+		</div>
+	);
 }
 
 export default Howto;
