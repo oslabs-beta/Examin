@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-// import 'codemirror/lib/codemirror.css';
-// import 'codemirror/theme/dracula.css';
-// import 'codemirror/mode/xml/xml';
-// import 'codemirror/mode/javascript/javascript';
-// import 'codemirror/mode/css/css';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/dracula.css';
+import 'codemirror/mode/xml/xml';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/css/css';
 import { Controlled as ControlledEditor } from 'react-codemirror2';
-// import './Editor.css';
+import './Editor.css';
 
 // import CodeMirror from '@uiw/react-codemirror';
 
