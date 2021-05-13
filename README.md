@@ -2,7 +2,7 @@
 
 <hr>
 <h2>Examin</h2>
-_Automatic React Unit Test Generator_
+<i>Automatic React Unit Test Generator</i>
 <hr>
 
 <br/>
