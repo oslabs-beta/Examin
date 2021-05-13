@@ -10,7 +10,7 @@
 
 ## Features ⚡
 
-Examin is a Chrome extension that generates React unit tests for your application. Ensure your application renders as expected before adding new features. Examin generates the baseline unit tests and allows developers to customize their tests for their application.
+Examin is a developer tool that generates React unit tests for your application. Ensure your application renders as expected before adding new features. Examin writes the baseline unit tests and allows developers to customize their tests for their application.
 
 - Install the Examin extension
 - Install npm dependencies for Jest/Enzyme
