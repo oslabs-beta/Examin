@@ -1,6 +1,11 @@
-# Examin
+<img alt="Examin Cover" src="./src/extension/assets/githubcover-img.png" width="700">
 
-## _Automatic React Unit Test Generator_
+<hr>
+<h2>Examin</h2>
+_Automatic React Unit Test Generator_
+<hr>
+
+<br/>
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/master/LICENSE)
 [![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)]()
@@ -53,11 +58,11 @@ NOTE: The React Developer Tools extension is also required for Examin to run, if
    - Add test js file to `__tests__` directory
    - Run tests using `jest` or `jest <filename>`
 
-<br/><img alt="Editing Import Statements Demo Gif" src="./src/extension/assets/edit-import-statements.gif" width="700">
+<br/><img alt="Editing Import Statements Demo Gif" src="./src/extension/assets/step3.gif" width="700">
 
 - Editing import statements
 
-<br/><img alt="State Change and Component Selection Demo Gif" src="./src/extension/assets/state-changes-component-selection.gif" width="700">
+<br/><img alt="State Change and Component Selection Demo Gif" src="./src/extension/assets/step2.gif" width="700">
 
 - Updating tests with state changes
 - Selecting components for generated tests
