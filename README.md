@@ -2,7 +2,8 @@
 
 <hr>
 <h2>Examin</h2>
-<i>Automatic React Unit Test Generator</i>
+<i>Automatic React Unit Test Generator</i><br>
+<a href="https://www.examin.dev/">examin.dev</a> | <a href="https://chrome.google.com/webstore/detail/examin/ihhopbmcfgkpjklemfdbhgingabdkcpe">Install Examin</a>
 <hr>
 
 <br/>
@@ -66,6 +67,12 @@ NOTE: The React Developer Tools extension is also required for Examin to run, if
 
 - Updating tests with state changes
 - Selecting components for generated tests
+
+## Compatibility
+
+- Requires React v16.8.0 or higher
+- Functional components + React hooks
+- Not yet compatible with component libraries or Context API
 
 ## Troubleshooting ⁉️
 
