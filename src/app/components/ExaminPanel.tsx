@@ -41,7 +41,7 @@ function TabPanel(props: any) {
 
   return (
     <div
-      role='tabpanel'
+      role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
@@ -133,9 +133,9 @@ const ExaminPanel = () => {
   // {app: describeTest}
   // [{app: describe, isChecked: true}, {}]
   const createComponentNamesArray = (messageString) => {
-    let componentNames = [];
-    let componentData = [];
-    let checkedComps = [];
+    const componentNames = [];
+    const componentData = [];
+    const checkedComps = [];
     const strArray = messageString.split("describe('");
 
     // Iterate through the split messageString
@@ -154,8 +154,8 @@ const ExaminPanel = () => {
 
         componentNames.push(strArray[i].split(" ")[0]);
         // Set temporary key / value pairs that will change as for loop [i] increments
-        let val = "describe('" + strArray[i];
-        let key = strArray[i].split(" ")[0];
+        const val = "describe('" + strArray[i];
+        const key = strArray[i].split(" ")[0];
 
         tempObj = { [key]: val, isChecked: true };
 
@@ -164,7 +164,7 @@ const ExaminPanel = () => {
       // componentData[componentNames[i-1]] = "describe('" + strArray[i];
     }
     setCheckedComponents(checkedComps);
-    console.log("result of checkedComponents: ", checkedComps);
+    // console.log("result of checkedComponents: ", checkedComps);
     setComponentNames(componentNames);
     // console.log('result of componentNames: ', componentNames);
     setComponentData(componentData);
@@ -201,8 +201,8 @@ const ExaminPanel = () => {
 
   const handleCheckbox = (key: any) => () => {
     console.log("the index is ", key);
-    let currComponentData = componentData;
-    let currCheckedComponents = checkedComponents;
+    const currComponentData = componentData;
+    const currCheckedComponents = checkedComponents;
     // console.log(currComponentData);
     if (key === -1) {
       let tempObj = {};
@@ -222,7 +222,7 @@ const ExaminPanel = () => {
         setComponentData(currComponentData);
         codeFromComponentData(currComponentData);
       }
-      console.log(currComponentData);
+      // console.log(currComponentData);
     } else {
       let tempObj = {};
       tempObj = currComponentData[key + 1];
@@ -245,7 +245,7 @@ const ExaminPanel = () => {
         setComponentData(currComponentData);
         codeFromComponentData(currComponentData);
       }
-      console.log(currComponentData);
+      // console.log(currComponentData);
     }
   };
   // ---------------------------------------------------------------
@@ -265,9 +265,9 @@ const ExaminPanel = () => {
     port.onMessage.addListener((message) => {
       // Update code displayed on Examin panel
       // console.log('message: ', message);
-      console.log("useeffect fired");
+      // console.log("useeffect fired");
       // Start handling componentNames
-      let text = message;
+      const text = message;
       createComponentNamesArray(text);
       setCheckedImport(true);
       // let compData = componentData;
@@ -303,8 +303,9 @@ const ExaminPanel = () => {
   // ---------------------------------------------------------------
 
   // Copy Button Popover Handling ----------------------------------
-  const [anchorEl, setAnchorEl] =
-    React.useState<HTMLButtonElement | null>(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
 
   const handleCopyClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     copy(code);
@@ -321,18 +322,18 @@ const ExaminPanel = () => {
   return (
     <div className={classes.root}>
       <AppBar
-        position='fixed'
+        position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
       >
-        <Grid container justify='space-between' alignItems='center'>
+        <Grid container justify="space-between" alignItems="center">
           <Grid item>
             <Box style={{ marginLeft: theme.spacing(2) }}>
               <img
                 className={classes.logo}
-                src='../assets/examin-small.svg'
-                alt='Examin Logo'
+                src="../assets/examin-small.svg"
+                alt="Examin Logo"
               />
             </Box>
           </Grid>
@@ -340,17 +341,17 @@ const ExaminPanel = () => {
             <Tabs
               value={tab}
               onChange={handleChange}
-              aria-label='simple tabs example'
+              aria-label="simple tabs example"
             >
-              <Tab label='Testing' />
-              <Tab label='How to use' />
+              <Tab label="Testing" />
+              <Tab label="How to use" />
             </Tabs>
           </Grid>
           <Grid item>
             <IconButton
-              color='inherit'
-              aria-label='open drawer'
-              edge='end'
+              color="inherit"
+              aria-label="open drawer"
+              edge="end"
               onClick={open ? handleDrawerClose : handleDrawerOpen}
               className={clsx(open)}
               style={{ marginRight: theme.spacing(2) }}
@@ -370,32 +371,32 @@ const ExaminPanel = () => {
       >
         {openRootDir ? (
           <Box
-            display='flex'
-            alignItems='center'
-            justifyContent='flex-end'
+            display="flex"
+            alignItems="center"
+            justifyContent="flex-end"
             className={clsx(classes.rootDirInput, {
               [classes.rootDirInputShift]: openRootDir,
             })}
           >
             <TextField
-              id='outlined-full-width'
-              label='Root Directory'
+              id="outlined-full-width"
+              label="Root Directory"
               style={{ margin: 8 }}
-              placeholder='root-directory-name'
-              helperText=''
+              placeholder="root-directory-name"
+              helperText=""
               fullWidth
-              size='small'
-              margin='normal'
+              size="small"
+              margin="normal"
               InputLabelProps={{
                 shrink: true,
               }}
-              variant='outlined'
+              variant="outlined"
               value={userRootInput}
               onChange={(e) => setUserRootInput(e.target.value)}
             />
             <Button
-              variant='outlined'
-              color='primary'
+              variant="outlined"
+              color="primary"
               onClick={handleSubmitRootDir}
             >
               Submit
@@ -410,8 +411,8 @@ const ExaminPanel = () => {
           })}
         >
           <Editor
-            language='javascript'
-            displayName='Initial Describe Block'
+            language="javascript"
+            displayName="Initial Describe Block"
             value={code}
             onChange={setCode}
           />
@@ -438,8 +439,8 @@ const ExaminPanel = () => {
 
       <Drawer
         className={classes.drawer}
-        variant='persistent'
-        anchor='right'
+        variant="persistent"
+        anchor="right"
         open={open}
         classes={{
           paper: classes.drawerPaper,
@@ -449,22 +450,22 @@ const ExaminPanel = () => {
           <ListItem
             dense
             // button
-            key='Import'
+            key="Import"
             // onClick={handleCheckbox(-1)}
           >
             <ListItemIcon>
               <Checkbox
                 // defaultChecked
                 checked={checkedImport}
-                color='primary'
+                color="primary"
                 onClick={handleCheckbox(-1)}
               />
             </ListItemIcon>
-            <ListItemText primary='Import Block' />
+            <ListItemText primary="Import Block" />
             <ListItemSecondaryAction>
               <IconButton
-                edge='end'
-                aria-label='settings'
+                edge="end"
+                aria-label="settings"
                 onClick={openRootDir ? handleRootDirClose : handleRootDirOpen}
               >
                 {openRootDir ? (
@@ -491,7 +492,7 @@ const ExaminPanel = () => {
                   checked={checkedComponents[index]}
                   // checked={checkIsChecked(index)}
                   // defaultChecked
-                  color='primary'
+                  color="primary"
                   onClick={handleCheckbox(index)}
                   // onClick={()=> {checkIsChecked(index)}}
                 />
@@ -513,14 +514,14 @@ const ExaminPanel = () => {
 				</Fab> */}
 
         <Fab
-          size='medium'
+          size="medium"
           // color={ isRecording ? 'secondary' : 'primary' }
           style={
             isRecording
               ? { backgroundColor: "#45c77c" }
               : { backgroundColor: "#0C4B40" }
           }
-          aria-label='play'
+          aria-label="play"
           className={classes.recordBtn}
           onClick={handlePauseRecClick}
         >
@@ -539,8 +540,8 @@ const ExaminPanel = () => {
 					<FastForwardIcon />
 				</Fab> */}
         <Fab
-          size='small'
-          variant='extended'
+          size="small"
+          variant="extended"
           className={classes.copyBtn}
           // onClick={() => {
           // 	copy(code);
@@ -564,13 +565,13 @@ const ExaminPanel = () => {
             horizontal: "right",
           }}
         >
-          <Typography variant='body1' className={classes.copyText}>
+          <Typography variant="body1" className={classes.copyText}>
             Copied to Clipboard!
           </Typography>
         </Popover>
         <Fab
-          size='small'
-          variant='extended'
+          size="small"
+          variant="extended"
           className={classes.exportBtn}
           onClick={() => exportHandler(code)}
         >

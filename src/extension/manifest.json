@@ -23,7 +23,8 @@
     "192": "assets/192.png"
   },
 	"web_accessible_resources": ["bundles/backend.bundle.js"],
-	"permissions": ["http://localhost/*", "https://localhost/*"],
+	"permissions": ["http://localhost/*", "https://localhost/*", 
+        "scripting"],
 	"externally_connectable": {
 		"matches": ["http://localhost/*", "https://localhost/*"]
 	},
