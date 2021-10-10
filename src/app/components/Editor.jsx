@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
 import 'codemirror/mode/xml/xml';

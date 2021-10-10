@@ -1,4 +1,4 @@
-import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
+import { makeStyles, Theme } from "@material-ui/core/styles";
 
 const drawerWidth = 230;
 
@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   appBar: {
-    transition: theme.transitions.create(['margin', 'width'], {
+    transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   appBarShift: {
     // width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['margin', 'width'], {
+    transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   content: {
     flexGrow: 1,
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingBottom: theme.spacing(0),
   },
   contentShift: {
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -52,21 +52,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: drawerWidth,
   },
   drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
   },
   codeEditor: {
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
   codeEditorShift: {
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: theme.spacing(1),
   },
   hide: {
-    display: 'none',
+    display: "none",
   },
   logo: {
     width: 70,
@@ -83,62 +83,62 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   copyBtn: {
     margin: 0,
-    top: 'auto',
+    top: "auto",
     right: 150,
     bottom: 20,
-    left: 'auto',
-    position: 'fixed',
+    left: "auto",
+    position: "fixed",
     zIndex: theme.zIndex.drawer + 2,
   },
   exportBtn: {
     margin: 0,
-    top: 'auto',
+    top: "auto",
     right: 20,
     bottom: 20,
-    left: 'auto',
-    position: 'fixed',
+    left: "auto",
+    position: "fixed",
     zIndex: theme.zIndex.drawer + 2,
   },
   recordBtn: {
-    position: 'fixed',
+    position: "fixed",
     margin: 0,
-    top: 'auto',
+    top: "auto",
     bottom: 15,
     left: 20,
-    right: 'auto',
+    right: "auto",
     zIndex: theme.zIndex.drawer + 2,
   },
   prevBtn: {
-    position: 'fixed',
+    position: "fixed",
     margin: 0,
-    top: 'auto',
+    top: "auto",
     bottom: 20,
     left: 20,
-    right: 'auto',
+    right: "auto",
     zIndex: theme.zIndex.drawer + 2,
   },
   nextBtn: {
-    position: 'fixed',
+    position: "fixed",
     margin: 0,
-    top: 'auto',
+    top: "auto",
     bottom: 20,
     left: 130,
-    right: 'auto',
+    right: "auto",
     zIndex: theme.zIndex.drawer + 2,
   },
   btnContainer: {
-    position: 'fixed',
+    position: "fixed",
     bottom: 0,
     height: 75,
-    width: '100%',
-    borderTop: '1px solid #dedede',
+    width: "100%",
+    borderTop: "1px solid #dedede",
     backgroundColor: theme.palette.background.paper,
     zIndex: theme.zIndex.drawer + 1,
   },
   rootDirInput: {
     marginRight: 10,
     marginBottom: 10,
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -146,15 +146,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   rootDirInputShift: {
     marginRight: 10,
     marginBottom: 10,
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
   copyText: {
     padding: theme.spacing(2),
-  }
+  },
 }));
-
 
 export { useStyles };
