@@ -11,6 +11,6 @@ Examin encourages open source contributions and feedback to this product.
 
 ## Issues
 
-Examin utilizes community feedback and is always looking to optimize the developer and user experience. The team behind Exmain is interested in hearing about your experience and how we can improve it.
+Examin utilizes community feedback and is always looking to optimize the developer and user experience. The team behind Examin is interested in hearing about your experience and how we can improve it.
 
 When submitting issues, ensure your description is clear and has instructions to be able to reproduce the issue.
