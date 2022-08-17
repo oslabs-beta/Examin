@@ -8,7 +8,7 @@ console.log('Chrome Extension READY!!');
 let firstRun = true;
 
 // Listener for Frontend to Backend ---------------------------------------
-// Window Listening for messeges in the window, if it recieves a 'message' (listening for injected.js)
+// Window Listening for messeges in the window, if it receives a 'message' (listening for injected.js)
 window.addEventListener('message', (request, sender, sendResponse) => {
 	// the shape of request.data = { type: 'addTest', message: [(testArray)] }
 	if (request.data.type === 'addTest') {
@@ -23,9 +23,9 @@ window.addEventListener('message', (request, sender, sendResponse) => {
 // ------------------------------------------------------------------------
 
 // Listener for Chrome Browser --------------------------------------------
-// Chrome Listening for messeges in the browser, if it recieves a 'message' (listening for background.js)
+// Chrome Listening for messeges in the browser, if it receives a 'message' (listening for background.js)
 chrome.runtime.onMessage.addListener((request) => {
-	console.log('Recieved a msg from background.js, request is: ', request);
+	console.log('Received a msg from background.js, request is: ', request);
 
 	if (request.name === 'initial panel load') {
 		// Send a message back to background.js to initialize the initial state
