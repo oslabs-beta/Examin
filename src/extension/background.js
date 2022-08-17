@@ -97,7 +97,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 			break;
 		}
 		// Where action = 'addTest', and message = testArray;
-		// shape of message being recieve = { action: 'addTest', message: [(testArray)] }
+		// shape of message being receive = { action: 'addTest', message: [(testArray)] }
 		case 'addTest': {
 			console.log('received addTest');
 			console.log('The request message is: ', message);
